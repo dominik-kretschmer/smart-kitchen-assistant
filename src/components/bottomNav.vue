@@ -4,22 +4,22 @@ import { computed, ref } from 'vue'
 const value = ref(1)
 const color = computed(() => {
   switch (value.value) {
-    case 0: return 'blue-grey'
-    case 1: return 'teal'
-    case 2: return 'brown'
-    case 3: return 'indigo'
-    default: return 'blue-grey'
+    case 0:
+      return 'blue-grey'
+    case 1:
+      return 'teal'
+    case 2:
+      return 'brown'
+    case 3:
+      return 'indigo'
+    default:
+      return 'blue-grey'
   }
 })
 </script>
-
 <template>
-  <v-layout class="overflow-visible" style="height: 56px;">
-    <v-bottom-navigation
-      v-model="value"
-      :bg-color="color"
-      mode="shift"
-    >
+  <v-layout class="overflow-visible" style="height: 56px">
+    <v-bottom-navigation v-model="value" :bg-color="color" mode="shift">
       <v-btn to="/" replace>
         <v-icon>mdi-television-play</v-icon>
         <span>Home</span>

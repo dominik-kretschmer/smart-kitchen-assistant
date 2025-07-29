@@ -1,0 +1,8 @@
+erDiagram
+    User ||--o{ Stock: has
+    User ||--o{ Recipe: creates
+    User ||--o{ ShoppingList: creates
+    ShoppingList ||--o{ Ingredient: contains
+    Stock ||--o{ Ingredient: contains
+    Recipe ||--o{ RecipeIngredient: contains
+    RecipeIngredient ||--o{ Ingredient: are
