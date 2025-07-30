@@ -2,12 +2,10 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-// CREATE
 async function createUser(data) {
   return prisma.user.create({ data });
 }
 
-// READ (get by id)
 async function getUser(id) {
   return prisma.user.findUnique({
     where: { id },
@@ -35,37 +33,6 @@ async function getUser(id) {
   });
 }
 
-// READ ALL
-async function getAllUsers() {
-  return prisma.user.findMany({
-    include: {
-      stock: {
-        include: {
-          ingredient: true
-        }
-      },
-      recipes: {
-        include: {
-          recipeIngredients: {
-            include: {
-              ingredient: true
-            }
-          }
-        }
-      },
-      shoppingLists: {
-        include: {
-          ingredient: true
-        }
-      }
-    }
-  });
-}
-
-// UPDATE
-async function updateUser(id, data) {
-  return prisma.user.update({ where: { id }, data });
-}
 
 // DELETE
 async function deleteUser(id) {
