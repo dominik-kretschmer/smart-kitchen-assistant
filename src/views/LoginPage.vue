@@ -1,11 +1,30 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const username = ref('');
 const password = ref('');
 const error = ref('');
 const router = useRouter();
+const isLoggedIn = ref(false);
+
+// Check if user is already logged in
+const checkLoginStatus = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/auth/me', {
+      credentials: 'include',
+    });
+
+    if (response.ok) {
+      isLoggedIn.value = true;
+    }
+  } catch (err) {
+    console.error('Error checking login status:', err);
+  }
+};
+
+// Check login status when component mounts
+onMounted(checkLoginStatus);
 
 const login = async () => {
   try {
@@ -28,13 +47,13 @@ const login = async () => {
       credentials: 'include',
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const data = await response.json();
       throw new Error(data.error || 'Login failed');
     }
 
-    const userData = await response.json();
-
+    const userData = data;
     localStorage.setItem('user', JSON.stringify(userData));
 
     router.push('/');
@@ -47,40 +66,46 @@ const login = async () => {
 
 <template>
   <div class="login-container">
-    <h1>Login</h1>
+    <div v-if="isLoggedIn" class="already-logged-in">
+      <h1>You are already logged in</h1>
+      <router-link to="/" class="home-link">Go to Home</router-link>
+    </div>
+    <div v-else>
+      <h1>Login</h1>
 
-    <form @submit.prevent="login" class="login-form">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input
-          id="username"
-          v-model="username"
-          type="text"
-          placeholder="Enter your username"
-          required />
-      </div>
+      <form @submit.prevent="login" class="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            v-model="username"
+            type="text"
+            placeholder="Enter your username"
+            required />
+        </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          v-model="password"
-          type="password"
-          placeholder="Enter your password"
-          required />
-      </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            v-model="password"
+            type="password"
+            placeholder="Enter your password"
+            required />
+        </div>
 
-      <div v-if="error" class="error-message">
-        {{ error }}
-      </div>
+        <div v-if="error" class="error-message">
+          {{ error }}
+        </div>
 
-      <button type="submit" class="login-button">Login</button>
+        <button type="submit" class="login-button">Login</button>
 
-      <div class="register-link">
-        Don't have an account?
-        <router-link to="/register">Register</router-link>
-      </div>
-    </form>
+        <div class="register-link">
+          Don't have an account?
+          <router-link to="/register">Register</router-link>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -140,5 +165,24 @@ input {
 .register-link {
   text-align: center;
   margin-top: 15px;
+}
+
+.already-logged-in {
+  text-align: center;
+  padding: 20px;
+}
+
+.home-link {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.home-link:hover {
+  background-color: #45a049;
 }
 </style>
