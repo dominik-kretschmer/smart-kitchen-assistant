@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import AddStock from '../components/addStock.vue'
+import { onMounted, ref } from 'vue';
+import AddStock from '../components/addStock.vue';
 
 interface StockItem {
-  id: number
-  name: string
-  quantity: number
-  unit: string
+  id: number;
+  name: string;
+  quantity: number;
+  unit: string;
 }
 
-const stockItems = ref<StockItem[]>([])
-const loading = ref(false)
-const error = ref('')
+const stockItems = ref<StockItem[]>([]);
+const loading = ref(false);
+const error = ref('');
 
 async function fetchStockItems() {
-  loading.value = true
-  error.value = ''
+  loading.value = true;
+  error.value = '';
 
   try {
-    const response = await fetch('/api/stock')
+    const response = await fetch('/api/stock');
     if (!response.ok) {
-      throw new Error(`Error fetching stock items: ${response.statusText}`)
+      throw new Error(`Error fetching stock items: ${response.statusText}`);
     }
 
-    stockItems.value = await response.json()
+    stockItems.value = await response.json();
   } catch (err) {
-    console.error('Failed to fetch stock items:', err)
-    error.value = 'Failed to load stock items. Please try again later.'
+    console.error('Failed to fetch stock items:', err);
+    error.value = 'Failed to load stock items. Please try again later.';
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
 async function addStockItem(item: Omit<StockItem, 'id'>) {
-  loading.value = true
-  error.value = ''
+  loading.value = true;
+  error.value = '';
 
   try {
     const response = await fetch('/api/stock', {
@@ -43,26 +43,25 @@ async function addStockItem(item: Omit<StockItem, 'id'>) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(item),
-    })
+    });
 
     if (!response.ok) {
-      throw new Error(`Error creating stock item: ${response.statusText}`)
+      throw new Error(`Error creating stock item: ${response.statusText}`);
     }
 
-    const newStockItem = await response.json()
-    stockItems.value.push(newStockItem)
+    const newStockItem = await response.json();
+    stockItems.value.push(newStockItem);
   } catch (err) {
-    console.error('Failed to create stock item:', err)
-    error.value = 'Failed to add stock item. Please try again later.'
+    console.error('Failed to create stock item:', err);
+    error.value = 'Failed to add stock item. Please try again later.';
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
-// Fetch stock items when component is mounted
 onMounted(() => {
-  fetchStockItems()
-})
+  fetchStockItems();
+});
 </script>
 
 <template>
@@ -76,8 +75,7 @@ onMounted(() => {
       variant="tonal"
       class="mb-4"
       closable
-      @click:close="error = ''"
-    >
+      @click:close="error = ''">
       {{ error }}
     </v-alert>
 
@@ -90,8 +88,7 @@ onMounted(() => {
         v-if="loading"
         indeterminate
         color="primary"
-        class="d-block mx-auto my-8"
-      ></v-progress-circular>
+        class="d-block mx-auto my-8"></v-progress-circular>
 
       <div v-else>
         <v-list v-if="stockItems.length > 0" class="bg-transparent">

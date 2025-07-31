@@ -1,12 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
+import {
   createShoppingList,
   getShoppingListsByUser,
   updateShoppingList,
-  deleteShoppingList
-} = require('../prisma/crud/shoppingList');
+  deleteShoppingList,
+} from '../prisma/crud/shoppingList.js';
 
 router.post('/', async (req, res) => {
   try {
@@ -48,4 +47,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

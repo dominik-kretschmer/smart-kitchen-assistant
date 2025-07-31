@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function createRecipe(data) {
@@ -7,21 +6,17 @@ async function createRecipe(data) {
 
   return prisma.$transaction(async (tx) => {
     const recipe = await tx.recipe.create({
-      data: recipeData
+      data: recipeData,
     });
 
     if (ingredients && ingredients.length > 0) {
-      const recipeIngredients = ingredients.map(ing => ({
+      const recipeIngredients = ingredients.map((ing) => ({
         ingredientId: ing.ingredientId,
         amount: ing.amount,
-        recipeId: recipe.id
+        recipeId: recipe.id,
       }));
 
-      await Promise.all(
-        recipeIngredients.map(ri =>
-          tx.recipeIngredient.create({ data: ri })
-        )
-      );
+      await Promise.all(recipeIngredients.map((ri) => tx.recipeIngredient.create({ data: ri })));
     }
 
     return tx.recipe.findUnique({
@@ -29,11 +24,11 @@ async function createRecipe(data) {
       include: {
         recipeIngredients: {
           include: {
-            ingredient: true
-          }
+            ingredient: true,
+          },
         },
-        user: true
-      }
+        user: true,
+      },
     });
   });
 }
@@ -44,11 +39,11 @@ async function getRecipe(id) {
     include: {
       recipeIngredients: {
         include: {
-          ingredient: true
-        }
+          ingredient: true,
+        },
       },
-      user: true
-    }
+      user: true,
+    },
   });
 }
 
@@ -57,11 +52,11 @@ async function getAllRecipes() {
     include: {
       recipeIngredients: {
         include: {
-          ingredient: true
-        }
+          ingredient: true,
+        },
       },
-      user: true
-    }
+      user: true,
+    },
   });
 }
 
@@ -71,26 +66,22 @@ async function updateRecipe(id, data) {
   return prisma.$transaction(async (tx) => {
     await tx.recipe.update({
       where: { id },
-      data: recipeData
+      data: recipeData,
     });
 
     if (ingredients) {
       await tx.recipeIngredient.deleteMany({
-        where: { recipeId: id }
+        where: { recipeId: id },
       });
 
       if (ingredients.length > 0) {
-        const recipeIngredients = ingredients.map(ing => ({
+        const recipeIngredients = ingredients.map((ing) => ({
           ingredientId: ing.ingredientId,
           amount: ing.amount,
-          recipeId: id
+          recipeId: id,
         }));
 
-        await Promise.all(
-          recipeIngredients.map(ri =>
-            tx.recipeIngredient.create({ data: ri })
-          )
-        );
+        await Promise.all(recipeIngredients.map((ri) => tx.recipeIngredient.create({ data: ri })));
       }
     }
 
@@ -99,18 +90,13 @@ async function updateRecipe(id, data) {
       include: {
         recipeIngredients: {
           include: {
-            ingredient: true
-          }
+            ingredient: true,
+          },
         },
-        user: true
-      }
+        user: true,
+      },
     });
   });
 }
 
-module.exports = {
-  createRecipe,
-  getRecipe,
-  getAllRecipes,
-  updateRecipe,
-};
+export { createRecipe, getRecipe, getAllRecipes, updateRecipe };

@@ -1,9 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 async function createIngredient(data) {
-  return prisma.ingredient.create({ data })
+  return prisma.ingredient.create({ data });
 }
 
 async function getIngredient(id) {
@@ -26,7 +25,7 @@ async function getIngredient(id) {
         },
       },
     },
-  })
+  });
 }
 
 async function getAllIngredients() {
@@ -48,7 +47,7 @@ async function getAllIngredients() {
         },
       },
     },
-  })
+  });
 }
 
 async function updateIngredient(id, data) {
@@ -72,12 +71,7 @@ async function updateIngredient(id, data) {
         },
       },
     },
-  })
+  });
 }
 
-module.exports = {
-  createIngredient,
-  getIngredient,
-  getAllIngredients,
-  updateIngredient,
-}
+export { createIngredient, getIngredient, getAllIngredients, updateIngredient };

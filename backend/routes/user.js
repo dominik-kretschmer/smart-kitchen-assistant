@@ -1,11 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-  createUser,
-  getUser,
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-} = require('../prisma/crud/user');
+import { createUser, getUser } from '../prisma/crud/user.js';
 
 router.post('/', async (req, res) => {
   try {
@@ -29,4 +24,4 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to get user' });
   }
 });
-module.exports = router;
+export default router;

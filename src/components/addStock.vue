@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 const props = defineProps<{
-  disabled?: boolean
-}>()
+  disabled?: boolean;
+}>();
 
-const newItem = ref('')
-const quantity = ref(1)
-const unit = ref('Stück')
-const units = ['Stück', 'g', 'kg', 'ml', 'l', 'EL', 'TL', 'Packung']
+const newItem = ref('');
+const quantity = ref(1);
+const unit = ref('Stück');
+const units = ['Stück', 'g', 'kg', 'ml', 'l', 'EL', 'TL', 'Packung'];
 
-const emit = defineEmits(['add-item'])
+const emit = defineEmits(['add-item']);
 
 function addItem() {
   if (newItem.value.trim() && !props.disabled) {
     emit('add-item', {
       name: newItem.value.trim(),
       quantity: quantity.value,
-      unit: unit.value
-    })
-    newItem.value = ''
-    quantity.value = 1
-    unit.value = 'Stück'
+      unit: unit.value,
+    });
+    newItem.value = '';
+    quantity.value = 1;
+    unit.value = 'Stück';
   }
 }
 </script>
@@ -39,8 +39,7 @@ function addItem() {
             variant="outlined"
             density="comfortable"
             required
-            :disabled="disabled"
-          ></v-text-field>
+            :disabled="disabled"></v-text-field>
         </v-col>
       </v-row>
       <v-row>
@@ -53,8 +52,7 @@ function addItem() {
             variant="outlined"
             density="comfortable"
             required
-            :disabled="disabled"
-          ></v-text-field>
+            :disabled="disabled"></v-text-field>
         </v-col>
         <v-col cols="6">
           <v-select
@@ -63,8 +61,7 @@ function addItem() {
             label="Einheit"
             variant="outlined"
             density="comfortable"
-            :disabled="disabled"
-          ></v-select>
+            :disabled="disabled"></v-select>
         </v-col>
       </v-row>
       <v-btn
@@ -73,8 +70,7 @@ function addItem() {
         block
         class="mt-2"
         :disabled="disabled"
-        :loading="disabled"
-      >
+        :loading="disabled">
         Hinzufügen
       </v-btn>
     </v-form>

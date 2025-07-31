@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function createStock(data) {
@@ -7,8 +6,8 @@ async function createStock(data) {
     data,
     include: {
       user: true,
-      ingredient: true
-    }
+      ingredient: true,
+    },
   });
 }
 
@@ -16,8 +15,8 @@ async function getStockByUser(userId) {
   return prisma.stock.findMany({
     where: { userId },
     include: {
-      ingredient: true
-    }
+      ingredient: true,
+    },
   });
 }
 
@@ -27,8 +26,8 @@ async function updateStock(id, data) {
     data,
     include: {
       user: true,
-      ingredient: true
-    }
+      ingredient: true,
+    },
   });
 }
 
@@ -36,9 +35,4 @@ async function deleteStock(id) {
   return prisma.stock.delete({ where: { id } });
 }
 
-module.exports = {
-  createStock,
-  getStockByUser,
-  updateStock,
-  deleteStock,
-};
+export { createStock, getStockByUser, updateStock, deleteStock };

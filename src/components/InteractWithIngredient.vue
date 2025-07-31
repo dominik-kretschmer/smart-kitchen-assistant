@@ -1,53 +1,53 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const recipeName = ref('')
-const description = ref('')
-const ingredients = ref([{ name: '', quantity: 1, unit: 'Stück' }])
-const steps = ref([''])
-const units = ['Stück', 'g', 'kg', 'ml', 'l', 'EL', 'TL', 'Packung']
+const recipeName = ref('');
+const description = ref('');
+const ingredients = ref([{ name: '', quantity: 1, unit: 'Stück' }]);
+const steps = ref(['']);
+const units = ['Stück', 'g', 'kg', 'ml', 'l', 'EL', 'TL', 'Packung'];
 
-const emit = defineEmits(['save-recipe'])
+const emit = defineEmits(['save-recipe']);
 
 function addIngredient() {
-  ingredients.value.push({ name: '', quantity: 1, unit: 'Stück' })
+  ingredients.value.push({ name: '', quantity: 1, unit: 'Stück' });
 }
 
 function removeIngredient(index: number) {
   if (ingredients.value.length > 1) {
-    ingredients.value.splice(index, 1)
+    ingredients.value.splice(index, 1);
   }
 }
 
 function addStep() {
-  steps.value.push('')
+  steps.value.push('');
 }
 
 function removeStep(index: number) {
   if (steps.value.length > 1) {
-    steps.value.splice(index, 1)
+    steps.value.splice(index, 1);
   }
 }
 
 function saveRecipe() {
-  if (recipeName.value.trim() &&
-      ingredients.value.every(ing => ing.name.trim()) &&
-      steps.value.every(step => step.trim())) {
-
+  if (
+    recipeName.value.trim() &&
+    ingredients.value.every((ing) => ing.name.trim()) &&
+    steps.value.every((step) => step.trim())
+  ) {
     const recipe = {
       name: recipeName.value,
       description: description.value,
       ingredients: ingredients.value,
-      steps: steps.value.filter(step => step.trim())
-    }
+      steps: steps.value.filter((step) => step.trim()),
+    };
 
-    emit('save-recipe', recipe)
+    emit('save-recipe', recipe);
 
-    // Reset form
-    recipeName.value = ''
-    description.value = ''
-    ingredients.value = [{ name: '', quantity: 1, unit: 'Stück' }]
-    steps.value = ['']
+    recipeName.value = '';
+    description.value = '';
+    ingredients.value = [{ name: '', quantity: 1, unit: 'Stück' }];
+    steps.value = [''];
   }
 }
 </script>
@@ -63,8 +63,7 @@ function saveRecipe() {
         variant="outlined"
         density="comfortable"
         class="mb-3"
-        required
-      ></v-text-field>
+        required></v-text-field>
 
       <v-textarea
         v-model="description"
@@ -73,8 +72,7 @@ function saveRecipe() {
         variant="outlined"
         density="comfortable"
         class="mb-3"
-        rows="2"
-      ></v-textarea>
+        rows="2"></v-textarea>
 
       <h3 class="text-lg font-medium mb-2">Zutaten</h3>
       <div v-for="(ingredient, index) in ingredients" :key="index" class="mb-2">
@@ -86,8 +84,7 @@ function saveRecipe() {
               placeholder="z.B. Tomaten"
               variant="outlined"
               density="comfortable"
-              required
-            ></v-text-field>
+              required></v-text-field>
           </v-col>
           <v-col cols="3">
             <v-text-field
@@ -97,8 +94,7 @@ function saveRecipe() {
               min="0"
               variant="outlined"
               density="comfortable"
-              required
-            ></v-text-field>
+              required></v-text-field>
           </v-col>
           <v-col cols="3">
             <v-select
@@ -106,8 +102,7 @@ function saveRecipe() {
               :items="units"
               label="Einheit"
               variant="outlined"
-              density="comfortable"
-            ></v-select>
+              density="comfortable"></v-select>
           </v-col>
           <v-col cols="1" class="d-flex align-center">
             <v-btn
@@ -116,20 +111,14 @@ function saveRecipe() {
               density="comfortable"
               color="error"
               @click="removeIngredient(index)"
-              :disabled="ingredients.length <= 1"
-            >
+              :disabled="ingredients.length <= 1">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-col>
         </v-row>
       </div>
 
-      <v-btn
-        prepend-icon="mdi-plus"
-        variant="text"
-        class="mb-4"
-        @click="addIngredient"
-      >
+      <v-btn prepend-icon="mdi-plus" variant="text" class="mb-4" @click="addIngredient">
         Zutat hinzufügen
       </v-btn>
 
@@ -143,8 +132,7 @@ function saveRecipe() {
               variant="outlined"
               density="comfortable"
               rows="2"
-              required
-            ></v-textarea>
+              required></v-textarea>
           </v-col>
           <v-col cols="1" class="d-flex align-center">
             <v-btn
@@ -153,31 +141,18 @@ function saveRecipe() {
               density="comfortable"
               color="error"
               @click="removeStep(index)"
-              :disabled="steps.length <= 1"
-            >
+              :disabled="steps.length <= 1">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-col>
         </v-row>
       </div>
 
-      <v-btn
-        prepend-icon="mdi-plus"
-        variant="text"
-        class="mb-4"
-        @click="addStep"
-      >
+      <v-btn prepend-icon="mdi-plus" variant="text" class="mb-4" @click="addStep">
         Schritt hinzufügen
       </v-btn>
 
-      <v-btn
-        color="primary"
-        type="submit"
-        block
-        class="mt-4"
-      >
-        Rezept speichern
-      </v-btn>
+      <v-btn color="primary" type="submit" block class="mt-4"> Rezept speichern </v-btn>
     </v-form>
   </div>
 </template>

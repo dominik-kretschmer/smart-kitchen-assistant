@@ -1,40 +1,67 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-const value = ref(1)
+const route = useRoute();
+const router = useRouter();
+
+const routes = ['/', '/recipe', '/shoppingList', '/stock', '/login', '/register'];
+
+const value = computed({
+  get: () => routes.indexOf(route.path),
+  set: (index: number) => {
+    if (routes[index]) {
+      router.replace(routes[index]);
+    }
+  },
+});
+
 const color = computed(() => {
-  switch (value.value) {
-    case 0:
-      return 'blue-grey'
-    case 1:
-      return 'teal'
-    case 2:
-      return 'brown'
-    case 3:
-      return 'indigo'
+  switch (route.path) {
+    case '/':
+      return 'blue-grey';
+    case '/recipe':
+      return 'teal';
+    case '/shoppingList':
+      return 'brown';
+    case '/stock':
+      return 'indigo';
+    case '/login':
+      return 'purple';
+    case '/register':
+      return 'deep-orange';
     default:
-      return 'blue-grey'
+      return 'blue-grey';
   }
-})
+});
 </script>
+
 <template>
   <v-layout class="overflow-visible" style="height: 56px">
     <v-bottom-navigation v-model="value" :bg-color="color" mode="shift">
-      <v-btn to="/" replace>
+      <v-btn>
         <v-icon>mdi-television-play</v-icon>
         <span>Home</span>
       </v-btn>
-      <v-btn to="/recipe" replace>
+      <v-btn>
         <v-icon>mdi-book</v-icon>
         <span>Recipe</span>
       </v-btn>
-      <v-btn to="/shoppingList" replace>
+      <v-btn>
         <v-icon>mdi-cart</v-icon>
-        <span>Shopping List</span>
+        <span>Shopping</span>
       </v-btn>
-      <v-btn to="/stock" replace>
+      <v-btn>
         <v-icon>mdi-warehouse</v-icon>
         <span>Stock</span>
+      </v-btn>
+      <v-btn>
+        <v-icon>mdi-login</v-icon>
+        <span>Login</span>
+      </v-btn>
+      <v-btn>
+        <v-icon>mdi-account-plus</v-icon>
+        <span>Register</span>
       </v-btn>
     </v-bottom-navigation>
   </v-layout>

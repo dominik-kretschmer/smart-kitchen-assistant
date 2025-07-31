@@ -4,4 +4,4 @@ export const vuetify = createVuetify({
   theme: {
     defaultTheme: 'dark',
   },
-})
+});

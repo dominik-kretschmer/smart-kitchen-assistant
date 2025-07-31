@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function createUser(data) {
@@ -12,62 +11,57 @@ async function getUser(id) {
     include: {
       stock: {
         include: {
-          ingredient: true
-        }
+          ingredient: true,
+        },
       },
       recipes: {
         include: {
           recipeIngredients: {
             include: {
-              ingredient: true
-            }
-          }
-        }
+              ingredient: true,
+            },
+          },
+        },
       },
       shoppingLists: {
         include: {
-          ingredient: true
-        }
-      }
-    }
+          ingredient: true,
+        },
+      },
+    },
   });
 }
-
 
 async function deleteUser(id) {
   return prisma.$transaction(async (tx) => {
     await tx.shoppingList.deleteMany({
-      where: { userId: id }
+      where: { userId: id },
     });
 
     await tx.stock.deleteMany({
-      where: { userId: id }
+      where: { userId: id },
     });
 
     const recipes = await tx.recipe.findMany({
       where: { userId: id },
-      select: { id: true }
+      select: { id: true },
     });
 
     if (recipes.length > 0) {
-      const recipeIds = recipes.map(recipe => recipe.id);
+      const recipeIds = recipes.map((recipe) => recipe.id);
       await tx.recipeIngredient.deleteMany({
-        where: { recipeId: { in: recipeIds } }
+        where: { recipeId: { in: recipeIds } },
       });
     }
 
     await tx.recipe.deleteMany({
-      where: { userId: id }
+      where: { userId: id },
     });
 
     return tx.user.delete({
-      where: { id }
+      where: { id },
     });
   });
 }
 
-module.exports = {
-  createUser,
-  getUser,
-  deleteUser,
-};
+export { createUser, getUser, deleteUser };
