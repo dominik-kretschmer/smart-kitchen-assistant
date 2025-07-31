@@ -6,10 +6,8 @@ const {
   getRecipe,
   getAllRecipes,
   updateRecipe,
-  deleteRecipe
 } = require('../prisma/crud/recipe');
 
-// Create a new recipe
 router.post('/', async (req, res) => {
   try {
     const recipe = await createRecipe(req.body);
@@ -20,7 +18,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get all recipes
 router.get('/', async (req, res) => {
   try {
     const recipes = await getAllRecipes();
@@ -31,7 +28,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get a specific recipe by ID
 router.get('/:id', async (req, res) => {
   try {
     const recipe = await getRecipe(parseInt(req.params.id));
@@ -45,7 +41,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Update a recipe
 router.put('/:id', async (req, res) => {
   try {
     const recipe = await updateRecipe(parseInt(req.params.id), req.body);
@@ -53,17 +48,6 @@ router.put('/:id', async (req, res) => {
   } catch (error) {
     console.error('Error updating recipe:', error);
     res.status(500).json({ error: 'Failed to update recipe' });
-  }
-});
-
-// Delete a recipe
-router.delete('/:id', async (req, res) => {
-  try {
-    await deleteRecipe(parseInt(req.params.id));
-    res.status(204).end();
-  } catch (error) {
-    console.error('Error deleting recipe:', error);
-    res.status(500).json({ error: 'Failed to delete recipe' });
   }
 });
 

@@ -6,10 +6,8 @@ const {
   getIngredient,
   getAllIngredients,
   updateIngredient,
-  deleteIngredient
 } = require('../prisma/crud/ingredient');
 
-// Create a new ingredient
 router.post('/', async (req, res) => {
   try {
     const ingredient = await createIngredient(req.body);
@@ -20,7 +18,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get all ingredients
 router.get('/', async (req, res) => {
   try {
     const ingredients = await getAllIngredients();
@@ -51,17 +48,6 @@ router.put('/:id', async (req, res) => {
   } catch (error) {
     console.error('Error updating ingredient:', error);
     res.status(500).json({ error: 'Failed to update ingredient' });
-  }
-});
-
-// Delete an ingredient
-router.delete('/:id', async (req, res) => {
-  try {
-    await deleteIngredient(parseInt(req.params.id));
-    res.status(204).end();
-  } catch (error) {
-    console.error('Error deleting ingredient:', error);
-    res.status(500).json({ error: 'Failed to delete ingredient' });
   }
 });
 

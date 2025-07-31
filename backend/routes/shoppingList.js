@@ -3,14 +3,11 @@ const express = require('express');
 const router = express.Router();
 const {
   createShoppingList,
-  getShoppingList,
   getShoppingListsByUser,
-  getAllShoppingLists,
   updateShoppingList,
   deleteShoppingList
 } = require('../prisma/crud/shoppingList');
 
-// Create a new shopping list item
 router.post('/', async (req, res) => {
   try {
     const shoppingListItem = await createShoppingList(req.body);
@@ -21,32 +18,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get all shopping list items
-router.get('/', async (req, res) => {
-  try {
-    const shoppingListItems = await getAllShoppingLists();
-    res.json(shoppingListItems);
-  } catch (error) {
-    console.error('Error getting shopping list items:', error);
-    res.status(500).json({ error: 'Failed to get shopping list items' });
-  }
-});
-
-// Get a specific shopping list item by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const shoppingListItem = await getShoppingList(parseInt(req.params.id));
-    if (!shoppingListItem) {
-      return res.status(404).json({ error: 'Shopping list item not found' });
-    }
-    res.json(shoppingListItem);
-  } catch (error) {
-    console.error('Error getting shopping list item:', error);
-    res.status(500).json({ error: 'Failed to get shopping list item' });
-  }
-});
-
-// Get shopping list items by user ID
 router.get('/user/:userId', async (req, res) => {
   try {
     const shoppingListItems = await getShoppingListsByUser(parseInt(req.params.userId));
@@ -57,7 +28,6 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
-// Update a shopping list item
 router.put('/:id', async (req, res) => {
   try {
     const shoppingListItem = await updateShoppingList(parseInt(req.params.id), req.body);
@@ -68,7 +38,6 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Delete a shopping list item
 router.delete('/:id', async (req, res) => {
   try {
     await deleteShoppingList(parseInt(req.params.id));

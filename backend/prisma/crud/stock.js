@@ -12,29 +12,10 @@ async function createStock(data) {
   });
 }
 
-async function getStock(id) {
-  return prisma.stock.findUnique({
-    where: { id },
-    include: {
-      user: true,
-      ingredient: true
-    }
-  });
-}
-
 async function getStockByUser(userId) {
   return prisma.stock.findMany({
     where: { userId },
     include: {
-      ingredient: true
-    }
-  });
-}
-
-async function getAllStock() {
-  return prisma.stock.findMany({
-    include: {
-      user: true,
       ingredient: true
     }
   });
@@ -57,9 +38,7 @@ async function deleteStock(id) {
 
 module.exports = {
   createStock,
-  getStock,
   getStockByUser,
-  getAllStock,
   updateStock,
   deleteStock,
 };

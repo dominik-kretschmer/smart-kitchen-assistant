@@ -34,27 +34,21 @@ async function getUser(id) {
 }
 
 
-// DELETE
 async function deleteUser(id) {
-  // Delete the user and all related data in a transaction
   return prisma.$transaction(async (tx) => {
-    // Delete all shopping lists for this user
     await tx.shoppingList.deleteMany({
       where: { userId: id }
     });
 
-    // Delete all stock entries for this user
     await tx.stock.deleteMany({
       where: { userId: id }
     });
 
-    // Get all recipes for this user
     const recipes = await tx.recipe.findMany({
       where: { userId: id },
       select: { id: true }
     });
 
-    // Delete all recipe ingredients for this user's recipes
     if (recipes.length > 0) {
       const recipeIds = recipes.map(recipe => recipe.id);
       await tx.recipeIngredient.deleteMany({
@@ -62,12 +56,10 @@ async function deleteUser(id) {
       });
     }
 
-    // Delete all recipes for this user
     await tx.recipe.deleteMany({
       where: { userId: id }
     });
 
-    // Finally, delete the user
     return tx.user.delete({
       where: { id }
     });
@@ -77,7 +69,5 @@ async function deleteUser(id) {
 module.exports = {
   createUser,
   getUser,
-  getAllUsers,
-  updateUser,
   deleteUser,
 };

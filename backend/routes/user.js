@@ -4,7 +4,6 @@ const router = express.Router();
 const {
   createUser,
   getUser,
-  deleteUser
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 } = require('../prisma/crud/user');
 

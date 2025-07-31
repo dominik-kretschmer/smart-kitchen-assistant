@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import ListItems from '../components/listItems.vue'
 
 interface ShoppingItem {
   id: number

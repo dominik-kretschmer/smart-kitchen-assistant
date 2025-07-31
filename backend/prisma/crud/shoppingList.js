@@ -12,29 +12,10 @@ async function createShoppingList(data) {
   });
 }
 
-async function getShoppingList(id) {
-  return prisma.shoppingList.findUnique({
-    where: { id },
-    include: {
-      user: true,
-      ingredient: true
-    }
-  });
-}
-
 async function getShoppingListsByUser(userId) {
   return prisma.shoppingList.findMany({
     where: { userId },
     include: {
-      ingredient: true
-    }
-  });
-}
-
-async function getAllShoppingLists() {
-  return prisma.shoppingList.findMany({
-    include: {
-      user: true,
       ingredient: true
     }
   });
@@ -57,9 +38,7 @@ async function deleteShoppingList(id) {
 
 module.exports = {
   createShoppingList,
-  getShoppingList,
   getShoppingListsByUser,
-  getAllShoppingLists,
   updateShoppingList,
   deleteShoppingList,
 };
