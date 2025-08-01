@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const username = ref('');
@@ -8,23 +8,43 @@ const error = ref('');
 const router = useRouter();
 const isLoggedIn = ref(false);
 
-// Check if user is already logged in
-const checkLoginStatus = async () => {
-  try {
-    const response = await fetch('http://localhost:3000/api/auth/me', {
-      credentials: 'include',
-    });
-
-    if (response.ok) {
-      isLoggedIn.value = true;
-    }
-  } catch (err) {
-    console.error('Error checking login status:', err);
+const getCookie = (name: string): string | null => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    const cookieValue = parts.pop()?.split(';').shift();
+    return cookieValue || null;
   }
+  return null;
 };
 
-// Check login status when component mounts
-onMounted(checkLoginStatus);
+const checkLoginStatus = () => {
+  try {
+    const authToken = getCookie('authToken') || getCookie('sessionId') || getCookie('jwt');
+
+    if (authToken) {
+      isLoggedIn.value = true;
+      const userData = getCookie('userData');
+      if (userData) {
+        try {
+          const parsedUserData = JSON.parse(decodeURIComponent(userData));
+          localStorage.setItem('user', JSON.stringify(parsedUserData));
+        } catch (e) {
+          console.error('Error parsing user data from cookie:', e);
+        }
+      }
+    } else {
+      isLoggedIn.value = false;
+      localStorage.removeItem('user');
+    }
+  } catch (err) {
+    console.error('Error checking login status from cookies:', err);
+    isLoggedIn.value = false;
+  }
+};
+onMounted(() => {
+  checkLoginStatus();
+});
 
 const login = async () => {
   try {
@@ -53,10 +73,10 @@ const login = async () => {
       throw new Error(data.error || 'Login failed');
     }
 
-    const userData = data;
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('user', JSON.stringify(data));
+    isLoggedIn.value = true;
 
-    router.push('/');
+    await router.push('/');
   } catch (err) {
     console.error('Login error:', err);
     error.value = err instanceof Error ? err.message : 'Login failed';
