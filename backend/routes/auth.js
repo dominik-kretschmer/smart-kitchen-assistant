@@ -1,7 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { getUser } from '../prisma/crud/user.js';
-import crypto from 'crypto';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -17,17 +16,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
-    // Set userId cookie
     res.cookie('userId', user.id, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: 'lax',
-      path: '/',
-    });
-
-    // Generate and set session token cookie
-    const sessionToken = crypto.randomBytes(32).toString('hex');
-    res.cookie('sessionToken', sessionToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
       sameSite: 'lax',
@@ -52,12 +41,9 @@ router.post('/logout', (req, res) => {
 router.get('/me', async (req, res) => {
   try {
     const userId = req.cookies.userId;
-    const sessionToken = req.cookies.sessionToken;
-
-    if (!userId || !sessionToken) {
+    if (!userId) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
-
     const user = await getUser(parseInt(userId));
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
