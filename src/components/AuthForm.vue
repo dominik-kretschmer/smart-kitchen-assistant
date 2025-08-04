@@ -1,47 +1,46 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-defineProps({
-  formType: {
-    type: String,
-    required: true,
-    validator: (value) => ['login', 'register'].includes(value)
-  },
-  isLoggedIn: {
-    type: Boolean,
-    default: false
-  },
-  isLoading: {
-    type: Boolean,
-    default: false
-  },
-  error: {
-    type: String,
-    default: ''
-  }
-});
-
 const emit = defineEmits(['submit']);
 const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 
+defineProps({
+  formType: {
+    type: String,
+    required: true,
+    validator: (value) => ['login', 'register'].includes(value),
+  },
+  isLoggedIn: {
+    type: Boolean,
+    default: false,
+  },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
+  error: {
+    type: String,
+    default: '',
+  },
+});
+
 const handleSubmit = () => {
   emit('submit', {
     username: username.value,
     password: password.value,
-    confirmPassword: confirmPassword.value
+    confirmPassword: confirmPassword.value,
   });
 };
 </script>
-
 <template>
-  <div class="auth-container">
-    <div v-if="isLoggedIn && !isLoading" class="already-logged-in">
+  <div class="auth-container" v-if="!isLoading">
+    <div v-if="isLoggedIn" class="already-logged-in">
       <h1>You are already logged in</h1>
       <router-link to="/" class="home-link">Go to Home</router-link>
     </div>
-    <div v-else-if=" !isLoading">
+    <div v-else>
       <h1>{{ formType === 'login' ? 'Login' : 'Register' }}</h1>
       <form @submit.prevent="handleSubmit" class="auth-form">
         <div class="form-group">
@@ -62,7 +61,7 @@ const handleSubmit = () => {
             :placeholder="formType === 'login' ? 'Enter your password' : 'Choose a password'"
             required />
         </div>
-        <div v-if="formType === 'register' && !isLoading" class="form-group">
+        <div v-if="formType === 'register'" class="form-group">
           <label for="confirm-password">Confirm Password</label>
           <input
             id="confirm-password"

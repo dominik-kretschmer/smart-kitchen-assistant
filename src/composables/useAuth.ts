@@ -35,9 +35,7 @@ export function useAuth() {
         return false;
       }
 
-      const response = await authService.login(
-        credentials.username,
-        credentials.password);
+      const response = await authService.login(credentials.username, credentials.password);
 
       const data = await response.json();
       if (!response.ok) {

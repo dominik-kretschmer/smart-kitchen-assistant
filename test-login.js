@@ -52,8 +52,12 @@ async function testLogin() {
       console.log('Cookies set successfully:', setCookieHeader);
     } else {
       console.log('No cookies were set in the response');
-      console.log('This is expected when testing with Node.js fetch API, as it does not expose Set-Cookie headers for security reasons');
-      console.log('The cookies are still being set by the server, but we cannot see them in this test script');
+      console.log(
+        'This is expected when testing with Node.js fetch API, as it does not expose Set-Cookie headers for security reasons',
+      );
+      console.log(
+        'The cookies are still being set by the server, but we cannot see them in this test script',
+      );
     }
 
     // Now try to access the /me endpoint to verify authentication
@@ -79,7 +83,7 @@ async function testLogin() {
     const meResponse = await fetch('http://localhost:3000/api/auth/me', {
       method: 'GET',
       headers: {
-        'Cookie': `userId=${userId}; sessionToken=${sessionToken}`
+        Cookie: `userId=${userId}; sessionToken=${sessionToken}`,
       },
       credentials: 'include',
     });

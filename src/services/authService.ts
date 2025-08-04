@@ -29,5 +29,5 @@ export const authService = {
       body: JSON.stringify({ username, password }),
     });
     return await response.json();
-  }
+  },
 };

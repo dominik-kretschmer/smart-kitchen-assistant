@@ -19,6 +19,5 @@ const handleSubmit = async (credentials) => {
     :isLoggedIn="isLoggedIn"
     :isLoading="isLoading"
     :error="error"
-    @submit="handleSubmit"
-  />
+    @submit="handleSubmit" />
 </template>

@@ -14,10 +14,5 @@ const handleSubmit = async (credentials) => {
 };
 </script>
 <template>
-  <AuthForm
-    formType="register"
-    :isLoggedIn="isLoggedIn"
-    :error="error"
-    @submit="handleSubmit"
-  />
+  <AuthForm formType="register" :isLoggedIn="isLoggedIn" :error="error" @submit="handleSubmit" />
 </template>
