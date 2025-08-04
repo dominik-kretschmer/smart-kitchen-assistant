@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { authService } from '@/services/authService';
+import { useValidation } from './useValidation';
 
 export function useAuth() {
   const username = ref('');
@@ -10,6 +11,7 @@ export function useAuth() {
   const isLoggedIn = ref(false);
   const isLoading = ref(false);
   const router = useRouter();
+  const { validateLoginForm, validateRegisterForm } = useValidation();
 
   const checkLoginStatus = async () => {
     try {
@@ -30,22 +32,21 @@ export function useAuth() {
     try {
       error.value = '';
 
-      if (!credentials.username || !credentials.password) {
-        error.value = 'Please enter both username and password';
+      const validationResult = validateLoginForm(credentials);
+      if (!validationResult.isValid) {
+        error.value = validationResult.errorMessage;
         return false;
       }
 
       const response = await authService.login(credentials.username, credentials.password);
 
-      const data = await response.json();
-      if (!response.ok) {
-        error.value = data.error || 'Login failed';
+      if (typeof response.id !== 'number') {
+        error.value = response.error || 'Login failed';
         return false;
       }
 
-      localStorage.setItem('user', JSON.stringify(data));
+      localStorage.setItem('user', JSON.stringify(response));
       isLoggedIn.value = true;
-
       await router.push('/');
       return true;
     } catch (err) {
@@ -62,25 +63,20 @@ export function useAuth() {
     try {
       error.value = '';
 
-      if (!credentials.username || !credentials.password || !credentials.confirmPassword) {
-        error.value = 'Please fill in all fields';
-        return false;
-      }
-
-      if (credentials.password !== credentials.confirmPassword) {
-        error.value = 'Passwords do not match';
+      const validationResult = validateRegisterForm(credentials);
+      if (!validationResult.isValid) {
+        error.value = validationResult.errorMessage;
         return false;
       }
 
       const response = await authService.register(credentials.username, credentials.password);
 
-      const data = await response.json();
-      if (!response.ok) {
-        error.value = data.error || 'Registration failed';
+      if (typeof response.id !== 'number') {
+        error.value = response.error || 'Registration failed';
         return false;
       }
 
-      localStorage.setItem('user', JSON.stringify(data));
+      localStorage.setItem('user', JSON.stringify(response));
       isLoggedIn.value = true;
 
       await router.push('/login');

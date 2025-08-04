@@ -15,6 +15,7 @@ router.post('/', async (req, res) => {
 router.get('/user/:userId', async (req, res) => {
   try {
     const stockItems = await getStockByUser(parseInt(req.params.userId));
+    console.log(stockItems);
     res.json(stockItems);
   } catch (error) {
     console.error('Error getting stock items by user:', error);

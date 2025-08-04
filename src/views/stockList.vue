@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import AddStock from '../components/addStock.vue';
+import { stockService } from '../services/stockService';
+import { useValidation } from '../composables/useValidation';
 
 interface StockItem {
   id: number;
@@ -12,18 +14,35 @@ interface StockItem {
 const stockItems = ref<StockItem[]>([]);
 const loading = ref(false);
 const error = ref('');
+const userId = ref<number | null>(null);
+const { validateStockItem } = useValidation();
+
+// Get user ID from localStorage and fetch stock items
+onMounted(() => {
+  const userStr = localStorage.getItem('user');
+  if (userStr) {
+    try {
+      const user = JSON.parse(userStr);
+      userId.value = user.id;
+      fetchStockItems();
+    } catch (err) {
+      console.error('Error parsing user data:', err);
+    }
+  }
+});
 
 async function fetchStockItems() {
+  if (!userId.value) {
+    error.value = 'User not logged in';
+    return;
+  }
+
   loading.value = true;
   error.value = '';
 
   try {
-    const response = await fetch('/api/stock');
-    if (!response.ok) {
-      throw new Error(`Error fetching stock items: ${response.statusText}`);
-    }
-
-    stockItems.value = await response.json();
+    const items = await stockService.getStockByUser(userId.value);
+    stockItems.value = items;
   } catch (err) {
     console.error('Failed to fetch stock items:', err);
     error.value = 'Failed to load stock items. Please try again later.';
@@ -33,23 +52,28 @@ async function fetchStockItems() {
 }
 
 async function addStockItem(item: Omit<StockItem, 'id'>) {
+  if (!userId.value) {
+    error.value = 'User not logged in';
+    return;
+  }
+
+  // Validate the stock item
+  const validationResult = validateStockItem(item);
+  if (!validationResult.isValid) {
+    error.value = validationResult.errorMessage;
+    return;
+  }
+
   loading.value = true;
   error.value = '';
 
   try {
-    const response = await fetch('/api/stock', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(item),
-    });
+    const stockData = {
+      ...item,
+      userId: userId.value
+    };
 
-    if (!response.ok) {
-      throw new Error(`Error creating stock item: ${response.statusText}`);
-    }
-
-    const newStockItem = await response.json();
+    const newStockItem = await stockService.createStock(stockData);
     stockItems.value.push(newStockItem);
   } catch (err) {
     console.error('Failed to create stock item:', err);
@@ -58,10 +82,6 @@ async function addStockItem(item: Omit<StockItem, 'id'>) {
     loading.value = false;
   }
 }
-
-onMounted(() => {
-  fetchStockItems();
-});
 </script>
 
 <template>
