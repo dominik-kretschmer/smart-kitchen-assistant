@@ -10,7 +10,7 @@ import type { StockItem } from '../types/stockTypes';
 
 const stockItems = ref<StockItem[]>([]);
 const loading = ref(false);
-const error = ref('');
+const error = ref<string>('');
 const userId = ref<number | null>(null);
 const { validateStockItem } = useValidation();
 const { checkLoginStatus } = useAuth();
@@ -31,10 +31,10 @@ onMounted(async () => {
     const userData = await checkLoginStatus();
     if (userData) {
       userId.value = userData.id;
-      handleStockItems();
+      await handleStockItems();
     }
   } catch (err) {
-    console.error('Error checking login status:', err);
+    error.value = "failed" + err;
   }
 });
 
@@ -55,6 +55,10 @@ function validateUserInput(item: Omit<StockItem, 'id'> | undefined = undefined) 
 }
 
 async function useCreateStock(item: Omit<StockItem, 'id'>) {
+  if (!userId.value) {
+    error.value = 'User not logged in';
+    return;
+  }
   const stockData = {
     userId: userId.value,
     ...item,

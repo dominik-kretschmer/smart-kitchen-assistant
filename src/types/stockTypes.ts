@@ -10,7 +10,7 @@ export interface UpdatedStockItem {
   name: string;
   quantity: number;
   unit: string;
-  userId: number;
+  userId:  number | null;
 }
 
 
