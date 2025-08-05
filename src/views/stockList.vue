@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import AddStock from '../components/addStock.vue';
+import EditStockItemDialog from '../components/EditStockItemDialog.vue';
+import DeleteStockItemDialog from '../components/DeleteStockItemDialog.vue';
 import { stockService } from '../services/stockService';
 import { useValidation } from '../composables/useValidation';
+import { useAuth } from '../composables/useAuth';
 
 interface StockItem {
   id: number;
@@ -16,21 +19,32 @@ const loading = ref(false);
 const error = ref('');
 const userId = ref<number | null>(null);
 const { validateStockItem } = useValidation();
+const { checkLoginStatus } = useAuth();
 
-onMounted(() => {
-  const userStr = localStorage.getItem('user');
-  if (userStr) {
-    try {
-      const user = JSON.parse(userStr);
-      userId.value = user.id;
+const editDialog = ref(false);
+const editedItem = ref<StockItem>({
+  id: 0,
+  name: '',
+  quantity: 0,
+  unit: '',
+});
+
+const deleteDialog = ref(false);
+const itemToDelete = ref<StockItem | null>(null);
+
+onMounted(async () => {
+  try {
+    const userData = await checkLoginStatus();
+    if (userData) {
+      userId.value = userData.id;
       handleStockItems();
-    } catch (err) {
-      console.error('Error parsing user data:', err);
     }
+  } catch (err) {
+    console.error('Error checking login status:', err);
   }
 });
 
-async function handleStockItems(item: Omit<StockItem, 'id'> | undefined = undefined) {
+function validateUserInput(item: Omit<StockItem, 'id'> | undefined = undefined) {
   if (!userId.value) {
     error.value = 'User not logged in';
     return;
@@ -42,20 +56,27 @@ async function handleStockItems(item: Omit<StockItem, 'id'> | undefined = undefi
       return;
     }
   }
-
   loading.value = true;
   error.value = '';
+}
+
+async function useCreateStock(item: Omit<StockItem, 'id'>) {
+  const stockData = {
+    userId: userId.value,
+    ...item,
+  };
+
+  const newStockItem = await stockService.createStock(stockData);
+  stockItems.value.push(newStockItem);
+}
+
+async function handleStockItems(item: Omit<StockItem, 'id'> | undefined = undefined) {
+  validateUserInput(item);
   try {
     if (item === undefined) {
       stockItems.value = await stockService.getStockByUser(userId.value);
     } else {
-      const stockData = {
-        ...item,
-        userId: userId.value,
-      };
-
-      const newStockItem = await stockService.createStock(stockData);
-      stockItems.value.push(newStockItem);
+      await useCreateStock(item);
     }
   } catch (err) {
     error.value = 'Failed to load stock items. Please try again later.' + err;
@@ -63,12 +84,56 @@ async function handleStockItems(item: Omit<StockItem, 'id'> | undefined = undefi
     loading.value = false;
   }
 }
+
+function openEditDialog(item: StockItem) {
+  editedItem.value = { ...item };
+  editDialog.value = true;
+}
+
+async function updateStockItem(item: StockItem) {
+  validateUserInput(item);
+  try {
+    const stockData = {
+      name: item.name,
+      quantity: item.quantity,
+      unit: item.unit,
+      userId: userId.value,
+    };
+
+    const updatedItem = await stockService.updateStock(item.id, stockData);
+    const index = stockItems.value.findIndex((stockItem) => stockItem.id === item.id);
+
+    if (index !== -1) {
+      stockItems.value[index] = updatedItem;
+    }
+
+    editDialog.value = false;
+  } catch (err) {
+    error.value = 'Failed to update stock item. Please try again later.' + err;
+  }
+}
+
+function openDeleteDialog(item: StockItem) {
+  itemToDelete.value = item;
+  deleteDialog.value = true;
+}
+
+async function deleteStockItem(itemId: number) {
+  try {
+    await stockService.deleteStock(itemId);
+    stockItems.value = stockItems.value.filter((item) => item.id !== itemId);
+    deleteDialog.value = false;
+    itemToDelete.value = null;
+  } catch (err) {
+    error.value = 'Failed to delete stock item. Please try again later.' + err;
+  }
+}
 </script>
 
 <template>
-  <div class="p-4">
+  {{userId}}
+  <div class="p-4" v-if="userId !== null ">
     <h1 class="text-2xl font-bold mb-4">Vorrat</h1>
-    <p class="mb-4">Hier siehst du alle aktuell verfügbaren Zutaten in deinem Vorrat.</p>
     <v-alert
       v-if="error"
       type="error"
@@ -90,11 +155,20 @@ async function handleStockItems(item: Omit<StockItem, 'id'> | undefined = undefi
         <v-list v-if="stockItems.length > 0" class="bg-transparent">
           <v-list-item v-for="item in stockItems" :key="item.id">
             <v-list-item-title>{{ item.name }}</v-list-item-title>
-            <v-list-item-subtitle> {{ item.quantity }} {{ item.unit }} </v-list-item-subtitle>
+            <v-list-item-subtitle> {{ item.quantity }} {{ item.unit }}</v-list-item-subtitle>
+            <div class="d-flex">
+              <v-btn variant="text" color="white" @click="openEditDialog(item)"> Edit </v-btn>
+              <v-btn variant="text" color="white" @click="openDeleteDialog(item)"> Delete </v-btn>
+            </div>
           </v-list-item>
         </v-list>
         <p v-else class="text-center py-4 text-gray-500">Keine Vorräte vorhanden</p>
       </div>
     </div>
+    <EditStockItemDialog v-model="editDialog" :item="editedItem" @save="updateStockItem" />
+    <DeleteStockItemDialog v-model="deleteDialog" :item="itemToDelete" @delete="deleteStockItem" />
+  </div>
+  <div v-else>
+    <h1>please login</h1>
   </div>
 </template>

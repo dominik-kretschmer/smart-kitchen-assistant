@@ -5,7 +5,12 @@ export const authService = {
     const response = await fetch(`${API_URL}/api/auth/me`, {
       credentials: 'include',
     });
-    return response.ok;
+
+    if (!response.ok) {
+      return null;
+    }
+
+    return await response.json();
   },
 
   async login(username: string, password: string) {

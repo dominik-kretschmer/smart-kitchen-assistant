@@ -13,16 +13,27 @@ export function useAuth() {
   const router = useRouter();
   const { validateLoginForm, validateRegisterForm } = useValidation();
 
+  const user = ref(null);
+
   const checkLoginStatus = async () => {
     try {
       isLoading.value = true;
-      const response = await authService.checkLoginStatus();
+      const userData = await authService.checkLoginStatus();
 
-      if (response) {
+      if (userData) {
         isLoggedIn.value = true;
+        user.value = userData;
+      } else {
+        isLoggedIn.value = false;
+        user.value = null;
       }
+
+      return userData;
     } catch (err) {
       console.error('Error checking login status:', err);
+      isLoggedIn.value = false;
+      user.value = null;
+      return null;
     } finally {
       isLoading.value = false;
     }
@@ -45,7 +56,8 @@ export function useAuth() {
         return false;
       }
 
-      localStorage.setItem('user', JSON.stringify(response));
+      // The cookie is set by the server, no need to store in localStorage
+      user.value = response;
       isLoggedIn.value = true;
       await router.push('/');
       return true;
@@ -76,9 +88,7 @@ export function useAuth() {
         return false;
       }
 
-      localStorage.setItem('user', JSON.stringify(response));
-      isLoggedIn.value = true;
-
+      // After registration, user needs to login to set the cookie
       await router.push('/login');
       return true;
     } catch (err) {
@@ -94,6 +104,7 @@ export function useAuth() {
     error,
     isLoggedIn,
     isLoading,
+    user,
     checkLoginStatus,
     login,
     register,

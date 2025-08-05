@@ -59,14 +59,67 @@ async function getStockByUser(userId) {
 }
 
 async function updateStock(id, data) {
-  return prisma.stock.update({
+  const { name, quantity, unit, userId } = data;
+
+  // Get the current stock item to access its relations
+  const currentStock = await prisma.stock.findUnique({
     where: { id },
-    data,
+    include: { ingredient: true }
+  });
+
+  if (!currentStock) {
+    throw new Error('Stock item not found');
+  }
+
+  let ingredientId = currentStock.ingredient.id;
+
+  // If name is provided and different from current ingredient name,
+  // find or create the ingredient
+  if (name && name !== currentStock.ingredient.name) {
+    let ingredient = await prisma.ingredient.findFirst({
+      where: { name },
+    });
+
+    if (!ingredient) {
+      ingredient = await prisma.ingredient.create({
+        data: {
+          name,
+          calories: 0,
+          carbs: 0,
+          fat: 0,
+          protein: 0,
+        },
+      });
+    }
+
+    ingredientId = ingredient.id;
+  }
+
+  // Update the stock with the correct data structure
+  const updatedStock = await prisma.stock.update({
+    where: { id },
+    data: {
+      quantity: quantity ? quantity.toString() : undefined,
+      user: userId ? {
+        connect: { id: userId },
+      } : undefined,
+      ingredient: {
+        connect: { id: ingredientId },
+      },
+    },
     include: {
       user: true,
       ingredient: true,
     },
   });
+
+  // Return the data in the same format as getStockByUser
+  return {
+    id: updatedStock.id,
+    name: updatedStock.ingredient.name,
+    quantity: parseInt(updatedStock.quantity) || 0,
+    unit: unit || 'Stück',
+  };
 }
 
 async function deleteStock(id) {
