@@ -17,7 +17,6 @@ const error = ref('');
 const userId = ref<number | null>(null);
 const { validateStockItem } = useValidation();
 
-// Get user ID from localStorage and fetch stock items
 onMounted(() => {
   const userStr = localStorage.getItem('user');
   if (userStr) {
@@ -31,64 +30,52 @@ onMounted(() => {
   }
 });
 
-async function fetchStockItems() {
+async function handleStockItems(item: Omit<StockItem, 'id'> , mode :string ) {
   if (!userId.value) {
     error.value = 'User not logged in';
     return;
   }
+  if (mode === "add"){
+    const validationResult = validateStockItem(item);
+    if (!validationResult.isValid) {
+      error.value = validationResult.errorMessage;
+      return;
+    }
+  }
 
   loading.value = true;
   error.value = '';
-
   try {
-    const items = await stockService.getStockByUser(userId.value);
-    stockItems.value = items;
+    if (mode === "fetch"){
+      stockItems.value = await stockService.getStockByUser(userId.value);
+    }else{
+      const stockData = {
+        ...item,
+        userId: userId.value,
+      };
+
+      const newStockItem = await stockService.createStock(stockData);
+      stockItems.value.push(newStockItem);
+    }
   } catch (err) {
-    console.error('Failed to fetch stock items:', err);
-    error.value = 'Failed to load stock items. Please try again later.';
-  } finally {
+    error.value = 'Failed to load stock items. Please try again later.' + err;
+  }
+  finally {
     loading.value = false;
   }
 }
 
-async function addStockItem(item: Omit<StockItem, 'id'>) {
-  if (!userId.value) {
-    error.value = 'User not logged in';
-    return;
-  }
+async function addStockItem() {
 
-  // Validate the stock item
-  const validationResult = validateStockItem(item);
-  if (!validationResult.isValid) {
-    error.value = validationResult.errorMessage;
-    return;
-  }
-
-  loading.value = true;
-  error.value = '';
-
-  try {
-    const stockData = {
-      ...item,
-      userId: userId.value
-    };
-
-    const newStockItem = await stockService.createStock(stockData);
-    stockItems.value.push(newStockItem);
-  } catch (err) {
-    console.error('Failed to create stock item:', err);
-    error.value = 'Failed to add stock item. Please try again later.';
-  } finally {
-    loading.value = false;
-  }
 }
 </script>
 
 <template>
   <div class="p-4">
     <h1 class="text-2xl font-bold mb-4">Vorrat</h1>
-    <p class="mb-4">Hier siehst du alle aktuell verfügbaren Zutaten in deinem Vorrat.</p>
-
+    <p class="mb-4">
+      Hier siehst du alle aktuell verfügbaren Zutaten in deinem Vorrat.
+    </p>
     <v-alert
       v-if="error"
       type="error"
@@ -98,23 +85,21 @@ async function addStockItem(item: Omit<StockItem, 'id'>) {
       @click:close="error = ''">
       {{ error }}
     </v-alert>
-
-    <AddStock @add-item="addStockItem" :disabled="loading" />
-
+    <AddStock @add-item="handleStockItems" :disabled="loading" />
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">Aktuelle Vorräte</h2>
-
       <v-progress-circular
         v-if="loading"
         indeterminate
         color="primary"
         class="d-block mx-auto my-8"></v-progress-circular>
-
       <div v-else>
         <v-list v-if="stockItems.length > 0" class="bg-transparent">
           <v-list-item v-for="item in stockItems" :key="item.id">
             <v-list-item-title>{{ item.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ item.quantity }} {{ item.unit }}</v-list-item-subtitle>
+            <v-list-item-subtitle>
+              {{ item.quantity }} {{ item.unit }}
+            </v-list-item-subtitle>
           </v-list-item>
         </v-list>
         <p v-else class="text-center py-4 text-gray-500">Keine Vorräte vorhanden</p>

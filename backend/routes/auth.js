@@ -25,8 +25,8 @@ router.post('/login', async (req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userData } = user;
     res.status(200).json(userData);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.error('Login error:', error);
     res.status(500).json({ error: 'Failed to login' });
   }
 });
@@ -51,8 +51,8 @@ router.get('/me', async (req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userData } = user;
     res.status(200).json(userData);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.error('Get current user error:', error);
     res.status(500).json({ error: 'Failed to get current user' + error });
   }
 });
