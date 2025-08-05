@@ -1,5 +1,4 @@
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { authService } from '@/services/authService';
 import { useValidation } from './useValidation';
 
@@ -11,7 +10,6 @@ export function useAuth() {
   const isLoggedIn = ref(false);
   const isLoading = ref(false);
   const { validateLoginForm, validateRegisterForm } = useValidation();
-
   const user = ref(null);
 
   const checkLoginStatus = async () => {

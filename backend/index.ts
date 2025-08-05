@@ -11,7 +11,6 @@ import authRoutes from './routes/auth.ts';
 
 const app = express();
 const PORT = 3000;
-
 app.use(
   cors({
     credentials: true,

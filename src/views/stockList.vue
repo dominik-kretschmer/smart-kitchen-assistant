@@ -6,7 +6,7 @@ import DeleteStockItemDialog from '../components/DeleteStockItemDialog.vue';
 import { stockService } from '../services/stockService';
 import { useValidation } from '../composables/useValidation';
 import { useAuth } from '../composables/useAuth';
-import { StockItem } from '../types/stockTypes';
+import type { StockItem } from '../types/stockTypes';
 
 const stockItems = ref<StockItem[]>([]);
 const loading = ref(false);
@@ -93,14 +93,16 @@ async function updateStockItem(item: StockItem) {
       unit: item.unit,
       userId: userId.value,
     };
-
+    if( typeof item.id !== "number"){
+      return
+    }
     const updatedItem = await stockService.updateStock(item.id, stockData);
     const index = stockItems.value.findIndex((stockItem) => stockItem.id === item.id);
 
     if (index !== -1) {
       stockItems.value[index] = updatedItem;
     }
-
+    loading.value = false
     editDialog.value = false;
   } catch (err) {
     error.value = 'Failed to update stock item. Please try again later.' + err;
@@ -125,7 +127,6 @@ async function deleteStockItem(itemId: number) {
 </script>
 
 <template>
-  {{ userId }}
   <div class="p-4" v-if="userId !== null">
     <h1 class="text-2xl font-bold mb-4">Vorrat</h1>
     <v-alert

@@ -6,3 +6,11 @@ export interface StockItem {
   expiryDate?: string;
   userId?: number;
 }
+export interface UpdatedStockItem {
+  name: string;
+  quantity: number;
+  unit: string;
+  userId: number;
+}
+
+

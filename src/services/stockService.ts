@@ -1,5 +1,4 @@
-import type { StockItem } from '../types/stockTypes';
-
+import type { StockItem ,UpdatedStockItem} from '../types/stockTypes';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const endPoints = {
@@ -27,7 +26,7 @@ export const stockService = {
     return await response.json();
   },
 
-  async updateStock(id: number, stockData: Partial<StockItem>) {
+  async updateStock(id: number, stockData : UpdatedStockItem ) {
     const response = await fetch(`${API_URL}${endPoints.stock}/${id}`, {
       method: 'PUT',
       headers: {
