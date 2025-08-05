@@ -1,26 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import type { Recipe } from '../types/recipeTypes';
 
-// Interfaces based on Prisma schema
-interface Ingredient {
-  id: number;
-  name: string;
-}
-
-interface RecipeIngredient {
-  ingredientId: number;
-  amount: string;
-  ingredient: Ingredient;
-}
-
-interface Recipe {
-  id: number;
-  name: string;
-  steps: string;
-  recipeIngredients: RecipeIngredient[];
-}
-
-// Demo data following Prisma schema
 const recipes = ref<Recipe[]>([
   {
     id: 1,
@@ -30,89 +11,90 @@ const recipes = ref<Recipe[]>([
       {
         ingredientId: 1,
         amount: '200g',
-        ingredient: { id: 1, name: 'Spaghetti' }
+        ingredient: { id: 1, name: 'Spaghetti' },
       },
       {
         ingredientId: 2,
         amount: '100g',
-        ingredient: { id: 2, name: 'Bacon' }
+        ingredient: { id: 2, name: 'Bacon' },
       },
       {
         ingredientId: 3,
         amount: '2',
-        ingredient: { id: 3, name: 'Eggs' }
+        ingredient: { id: 3, name: 'Eggs' },
       },
       {
         ingredientId: 4,
         amount: '50g',
-        ingredient: { id: 4, name: 'Parmesan' }
-      }
-    ]
+        ingredient: { id: 4, name: 'Parmesan' },
+      },
+    ],
   },
   {
     id: 2,
     name: 'Chicken Curry',
-    steps: '1. Dice chicken\n2. Sauté onions and garlic\n3. Add curry paste\n4. Add chicken and coconut milk\n5. Simmer until cooked',
+    steps:
+      '1. Dice chicken\n2. Sauté onions and garlic\n3. Add curry paste\n4. Add chicken and coconut milk\n5. Simmer until cooked',
     recipeIngredients: [
       {
         ingredientId: 5,
         amount: '300g',
-        ingredient: { id: 5, name: 'Chicken Breast' }
+        ingredient: { id: 5, name: 'Chicken Breast' },
       },
       {
         ingredientId: 6,
         amount: '1',
-        ingredient: { id: 6, name: 'Onion' }
+        ingredient: { id: 6, name: 'Onion' },
       },
       {
         ingredientId: 7,
         amount: '2 cloves',
-        ingredient: { id: 7, name: 'Garlic' }
+        ingredient: { id: 7, name: 'Garlic' },
       },
       {
         ingredientId: 8,
         amount: '2 tbsp',
-        ingredient: { id: 8, name: 'Curry Paste' }
+        ingredient: { id: 8, name: 'Curry Paste' },
       },
       {
         ingredientId: 9,
         amount: '400ml',
-        ingredient: { id: 9, name: 'Coconut Milk' }
-      }
-    ]
+        ingredient: { id: 9, name: 'Coconut Milk' },
+      },
+    ],
   },
   {
     id: 3,
     name: 'Vegetable Stir Fry',
-    steps: '1. Chop vegetables\n2. Heat oil in wok\n3. Stir fry vegetables\n4. Add sauce\n5. Serve with rice',
+    steps:
+      '1. Chop vegetables\n2. Heat oil in wok\n3. Stir fry vegetables\n4. Add sauce\n5. Serve with rice',
     recipeIngredients: [
       {
         ingredientId: 10,
         amount: '1',
-        ingredient: { id: 10, name: 'Bell Pepper' }
+        ingredient: { id: 10, name: 'Bell Pepper' },
       },
       {
         ingredientId: 11,
         amount: '1',
-        ingredient: { id: 11, name: 'Carrot' }
+        ingredient: { id: 11, name: 'Carrot' },
       },
       {
         ingredientId: 12,
         amount: '100g',
-        ingredient: { id: 12, name: 'Broccoli' }
+        ingredient: { id: 12, name: 'Broccoli' },
       },
       {
         ingredientId: 13,
         amount: '2 tbsp',
-        ingredient: { id: 13, name: 'Soy Sauce' }
-      }
-    ]
-  }
+        ingredient: { id: 13, name: 'Soy Sauce' },
+      },
+    ],
+  },
 ]);
 
 const loading = ref(false);
 const error = ref('');
-
 </script>
 
 <template>

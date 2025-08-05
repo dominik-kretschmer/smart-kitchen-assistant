@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
-interface StockItem {
-  id: number;
-  name: string;
-  quantity: number;
-  unit: string;
-}
+import { StockItem } from '../types/stockTypes';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -15,13 +9,13 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];
-  'delete': [id: number];
+  delete: [id: number];
 }>();
 
 // Computed property for v-model binding
 const dialog = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  set: (value) => emit('update:modelValue', value),
 });
 
 function closeDialog() {
@@ -44,19 +38,8 @@ function deleteItem() {
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="blue-darken-1"
-          variant="text"
-          @click="closeDialog"
-        >
-          Abbrechen
-        </v-btn>
-        <v-btn
-          color="error"
-          variant="text"
-          @click="deleteItem">
-          Löschen
-        </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="closeDialog"> Abbrechen </v-btn>
+        <v-btn color="error" variant="text" @click="deleteItem"> Löschen </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

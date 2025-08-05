@@ -2,12 +2,12 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import recipeRoutes from './routes/recipe.js';
-import ingredientRoutes from './routes/ingredient.js';
-import userRoutes from './routes/user.js';
-import shoppingListRoutes from './routes/shoppingList.js';
-import stockRoutes from './routes/stock.js';
-import authRoutes from './routes/auth.js';
+import recipeRoutes from './routes/recipe.ts';
+import ingredientRoutes from './routes/ingredient.ts';
+import userRoutes from './routes/user.ts';
+import shoppingListRoutes from './routes/shoppingList.ts';
+import stockRoutes from './routes/stock.ts';
+import authRoutes from './routes/auth.ts';
 
 const app = express();
 const PORT = 3000;

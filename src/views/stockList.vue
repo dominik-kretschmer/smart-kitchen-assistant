@@ -6,13 +6,7 @@ import DeleteStockItemDialog from '../components/DeleteStockItemDialog.vue';
 import { stockService } from '../services/stockService';
 import { useValidation } from '../composables/useValidation';
 import { useAuth } from '../composables/useAuth';
-
-interface StockItem {
-  id: number;
-  name: string;
-  quantity: number;
-  unit: string;
-}
+import { StockItem } from '../types/stockTypes';
 
 const stockItems = ref<StockItem[]>([]);
 const loading = ref(false);
@@ -131,8 +125,8 @@ async function deleteStockItem(itemId: number) {
 </script>
 
 <template>
-  {{userId}}
-  <div class="p-4" v-if="userId !== null ">
+  {{ userId }}
+  <div class="p-4" v-if="userId !== null">
     <h1 class="text-2xl font-bold mb-4">Vorrat</h1>
     <v-alert
       v-if="error"

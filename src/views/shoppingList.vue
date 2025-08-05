@@ -1,57 +1,44 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import type { ShoppingListItem } from '../types/shoppingListTypes';
 
-// Interfaces based on Prisma schema
-interface Ingredient {
-  id: number;
-  name: string;
-}
-
-interface ShoppingListItem {
-  id: number;
-  amount: number;
-  unit: string;
-  ingredient: Ingredient;
-}
-
-// Demo data following Prisma schema
 const shoppingItems = ref<ShoppingListItem[]>([
   {
     id: 1,
     amount: 500,
     unit: 'g',
-    ingredient: { id: 1, name: 'Ground Beef' }
+    ingredient: { id: 1, name: 'Ground Beef' },
   },
   {
     id: 2,
     amount: 1,
     unit: 'kg',
-    ingredient: { id: 2, name: 'Potatoes' }
+    ingredient: { id: 2, name: 'Potatoes' },
   },
   {
     id: 3,
     amount: 250,
     unit: 'g',
-    ingredient: { id: 3, name: 'Mushrooms' }
+    ingredient: { id: 3, name: 'Mushrooms' },
   },
   {
     id: 4,
     amount: 2,
     unit: 'Stück',
-    ingredient: { id: 4, name: 'Onions' }
+    ingredient: { id: 4, name: 'Onions' },
   },
   {
     id: 5,
     amount: 1,
     unit: 'Liter',
-    ingredient: { id: 5, name: 'Milk' }
+    ingredient: { id: 5, name: 'Milk' },
   },
   {
     id: 6,
     amount: 6,
     unit: 'Stück',
-    ingredient: { id: 6, name: 'Eggs' }
-  }
+    ingredient: { id: 6, name: 'Eggs' },
+  },
 ]);
 
 const loading = ref(false);

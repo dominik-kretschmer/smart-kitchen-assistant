@@ -64,7 +64,7 @@ async function updateStock(id, data) {
   // Get the current stock item to access its relations
   const currentStock = await prisma.stock.findUnique({
     where: { id },
-    include: { ingredient: true }
+    include: { ingredient: true },
   });
 
   if (!currentStock) {
@@ -100,9 +100,11 @@ async function updateStock(id, data) {
     where: { id },
     data: {
       quantity: quantity ? quantity.toString() : undefined,
-      user: userId ? {
-        connect: { id: userId },
-      } : undefined,
+      user: userId
+        ? {
+            connect: { id: userId },
+          }
+        : undefined,
       ingredient: {
         connect: { id: ingredientId },
       },

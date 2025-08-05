@@ -1,12 +1,6 @@
-const API_URL = 'http://localhost:3000';
+import { StockItem } from '../types/stockTypes';
 
-interface StockItem {
-  name: string;
-  quantity: number;
-  unit: string;
-  expiryDate?: string;
-  userId: number;
-}
+const API_URL = 'http://localhost:3000';
 
 export const stockService = {
   async createStock(stockData: StockItem) {

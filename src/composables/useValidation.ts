@@ -1,9 +1,5 @@
 import { ref } from 'vue';
-
-export interface ValidationResult {
-  isValid: boolean;
-  errorMessage: string;
-}
+import { ValidationResult } from '../types/validationTypes';
 
 export function useValidation() {
   const error = ref('');
