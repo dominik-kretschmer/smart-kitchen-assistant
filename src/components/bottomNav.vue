@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
-const routes = ['/', '/recipe', '/shoppingList', '/stock', '/login', '/register'];
+const routes = ['/', '/recipe', '/shoppingList', '/stock', '/ingredients', '/login', '/register'];
 
 const value = computed({
   get: () => routes.indexOf(route.path),
@@ -26,6 +26,8 @@ const color = computed(() => {
       return 'brown';
     case '/stock':
       return 'indigo';
+    case '/ingredients':
+      return 'green';
     case '/login':
       return 'purple';
     case '/register':
@@ -54,6 +56,10 @@ const color = computed(() => {
       <v-btn>
         <v-icon>mdi-warehouse</v-icon>
         <span>Stock</span>
+      </v-btn>
+      <v-btn>
+        <v-icon>mdi-food-apple</v-icon>
+        <span>Ingredients</span>
       </v-btn>
       <v-btn>
         <v-icon>mdi-login</v-icon>

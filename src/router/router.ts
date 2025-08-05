@@ -5,6 +5,7 @@ import RecipeList from '../views/recipeList.vue';
 import shoppingList from '../views/shoppingList.vue';
 import LoginPage from '../views/LoginPage.vue';
 import RegisterPage from '../views/RegisterPage.vue';
+import IngredientList from '../views/ingredientList.vue';
 
 const routes = [
   { path: '/', component: homePage },
@@ -13,6 +14,7 @@ const routes = [
   { path: '/shoppingList', component: shoppingList },
   { path: '/login', component: LoginPage },
   { path: '/register', component: RegisterPage },
+  { path: '/ingredients', component: IngredientList },
 ];
 
 export const router = createRouter({
