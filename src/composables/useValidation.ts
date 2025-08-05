@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { ValidationResult } from '../types/validationTypes';
+import type { ValidationResult } from '../types/validationTypes';
 
 export function useValidation() {
   const error = ref('');

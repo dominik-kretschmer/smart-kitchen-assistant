@@ -10,7 +10,6 @@ export function useAuth() {
   const error = ref('');
   const isLoggedIn = ref(false);
   const isLoading = ref(false);
-  const router = useRouter();
   const { validateLoginForm, validateRegisterForm } = useValidation();
 
   const user = ref(null);
@@ -19,8 +18,7 @@ export function useAuth() {
     try {
       isLoading.value = true;
       const userData = await authService.checkLoginStatus();
-
-      if (userData) {
+      if (!userData.error) {
         isLoggedIn.value = true;
         user.value = userData;
       } else {
@@ -30,7 +28,7 @@ export function useAuth() {
 
       return userData;
     } catch (err) {
-      console.error('Error checking login status:', err);
+      error.value = err instanceof Error ? err.message : 'Login failed';
       isLoggedIn.value = false;
       user.value = null;
       return null;
@@ -49,17 +47,14 @@ export function useAuth() {
         return false;
       }
 
-      const response = await authService.login(credentials.username, credentials.password);
-
+      const response = await authService.auth(credentials.username, credentials.password, 'login');
       if (typeof response.id !== 'number') {
         error.value = response.error || 'Login failed';
         return false;
       }
 
-      // The cookie is set by the server, no need to store in localStorage
       user.value = response;
       isLoggedIn.value = true;
-      await router.push('/');
       return true;
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Login failed';
@@ -81,15 +76,17 @@ export function useAuth() {
         return false;
       }
 
-      const response = await authService.register(credentials.username, credentials.password);
+      const response = await authService.auth(
+        credentials.username,
+        credentials.password,
+        'register',
+      );
 
       if (typeof response.id !== 'number') {
         error.value = response.error || 'Registration failed';
         return false;
       }
 
-      // After registration, user needs to login to set the cookie
-      await router.push('/login');
       return true;
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Registration failed';

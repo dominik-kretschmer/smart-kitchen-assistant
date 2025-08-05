@@ -1,10 +1,15 @@
-import { StockItem } from '../types/stockTypes';
+import type { StockItem } from '../types/stockTypes';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL;
+
+const endPoints = {
+  stock: import.meta.env.VITE_API_ENDPOINT_STOCK,
+  stockUser: import.meta.env.VITE_API_ENDPOINT_STOCK_USER,
+};
 
 export const stockService = {
   async createStock(stockData: StockItem) {
-    const response = await fetch(`${API_URL}/api/stock`, {
+    const response = await fetch(`${API_URL}${endPoints.stock}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -16,14 +21,14 @@ export const stockService = {
   },
 
   async getStockByUser(userId: number) {
-    const response = await fetch(`${API_URL}/api/stock/user/${userId}`, {
+    const response = await fetch(`${API_URL}${endPoints.stockUser}/${userId}`, {
       credentials: 'include',
     });
     return await response.json();
   },
 
   async updateStock(id: number, stockData: Partial<StockItem>) {
-    const response = await fetch(`${API_URL}/api/stock/${id}`, {
+    const response = await fetch(`${API_URL}${endPoints.stock}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -35,7 +40,7 @@ export const stockService = {
   },
 
   async deleteStock(id: number) {
-    const response = await fetch(`${API_URL}/api/stock/${id}`, {
+    const response = await fetch(`${API_URL}${endPoints.stock}/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     });
