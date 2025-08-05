@@ -46,5 +46,5 @@ export const stockService = {
       credentials: 'include',
     });
     return response.status === 204;
-  }
+  },
 };

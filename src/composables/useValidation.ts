@@ -12,27 +12,35 @@ export function useValidation() {
     if (!value || (typeof value === 'string' && value.trim() === '')) {
       return {
         isValid: false,
-        errorMessage: `${fieldName} is required`
+        errorMessage: `${fieldName} is required`,
       };
     }
     return { isValid: true, errorMessage: '' };
   };
 
-  const validateMinLength = (value: string, minLength: number, fieldName: string): ValidationResult => {
+  const validateMinLength = (
+    value: string,
+    minLength: number,
+    fieldName: string,
+  ): ValidationResult => {
     if (value.length < minLength) {
       return {
         isValid: false,
-        errorMessage: `${fieldName} must be at least ${minLength} characters long`
+        errorMessage: `${fieldName} must be at least ${minLength} characters long`,
       };
     }
     return { isValid: true, errorMessage: '' };
   };
 
-  const validateMaxLength = (value: string, maxLength: number, fieldName: string): ValidationResult => {
+  const validateMaxLength = (
+    value: string,
+    maxLength: number,
+    fieldName: string,
+  ): ValidationResult => {
     if (value.length > maxLength) {
       return {
         isValid: false,
-        errorMessage: `${fieldName} must not exceed ${maxLength} characters`
+        errorMessage: `${fieldName} must not exceed ${maxLength} characters`,
       };
     }
     return { isValid: true, errorMessage: '' };
@@ -43,7 +51,7 @@ export function useValidation() {
     if (!emailRegex.test(email)) {
       return {
         isValid: false,
-        errorMessage: 'Please enter a valid email address'
+        errorMessage: 'Please enter a valid email address',
       };
     }
     return { isValid: true, errorMessage: '' };
@@ -53,7 +61,7 @@ export function useValidation() {
     if (typeof value !== 'number' && isNaN(Number(value))) {
       return {
         isValid: false,
-        errorMessage: 'Please enter a valid number'
+        errorMessage: 'Please enter a valid number',
       };
     }
     return { isValid: true, errorMessage: '' };
@@ -63,7 +71,7 @@ export function useValidation() {
     if (value <= 0) {
       return {
         isValid: false,
-        errorMessage: 'Please enter a positive number'
+        errorMessage: 'Please enter a positive number',
       };
     }
     return { isValid: true, errorMessage: '' };
@@ -96,13 +104,16 @@ export function useValidation() {
     if (password !== confirmPassword) {
       return {
         isValid: false,
-        errorMessage: 'Passwords do not match'
+        errorMessage: 'Passwords do not match',
       };
     }
     return { isValid: true, errorMessage: '' };
   };
 
-  const validateLoginForm = (credentials: { username: string; password: string }): ValidationResult => {
+  const validateLoginForm = (credentials: {
+    username: string;
+    password: string;
+  }): ValidationResult => {
     const usernameCheck = validateUsername(credentials.username);
     if (!usernameCheck.isValid) return usernameCheck;
 
@@ -115,7 +126,7 @@ export function useValidation() {
   const validateRegisterForm = (credentials: {
     username: string;
     password: string;
-    confirmPassword: string
+    confirmPassword: string;
   }): ValidationResult => {
     const usernameCheck = validateUsername(credentials.username);
     if (!usernameCheck.isValid) return usernameCheck;
@@ -126,7 +137,10 @@ export function useValidation() {
     const confirmPasswordCheck = validateRequired(credentials.confirmPassword, 'Confirm Password');
     if (!confirmPasswordCheck.isValid) return confirmPasswordCheck;
 
-    const passwordsMatchCheck = validatePasswordsMatch(credentials.password, credentials.confirmPassword);
+    const passwordsMatchCheck = validatePasswordsMatch(
+      credentials.password,
+      credentials.confirmPassword,
+    );
     if (!passwordsMatchCheck.isValid) return passwordsMatchCheck;
 
     return { isValid: true, errorMessage: '' };
@@ -135,7 +149,7 @@ export function useValidation() {
   const validateStockItem = (item: {
     name: string;
     quantity: number;
-    unit: string
+    unit: string;
   }): ValidationResult => {
     const nameCheck = validateRequired(item.name, 'Item name');
     if (!nameCheck.isValid) return nameCheck;
@@ -165,6 +179,6 @@ export function useValidation() {
     validatePasswordsMatch,
     validateLoginForm,
     validateRegisterForm,
-    validateStockItem
+    validateStockItem,
   };
 }

@@ -50,7 +50,7 @@ async function getStockByUser(userId) {
     },
   });
 
-  return stockItems.map(item => ({
+  return stockItems.map((item) => ({
     id: item.id,
     name: item.ingredient.name,
     quantity: parseInt(item.quantity) || 0,

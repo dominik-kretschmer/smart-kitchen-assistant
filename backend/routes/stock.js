@@ -19,7 +19,7 @@ router.get('/user/:userId', async (req, res) => {
     const stockItems = await getStockByUser(parseInt(req.params.userId));
     res.json(stockItems);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to get stock items by user' });
+    res.status(500).json({ error: 'Failed to get stock items by user' + error });
   }
 });
 
@@ -28,7 +28,7 @@ router.put('/:id', async (req, res) => {
     const stockItem = await updateStock(parseInt(req.params.id), req.body);
     res.json(stockItem);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update stock item' });
+    res.status(500).json({ error: 'Failed to update stock item' + error });
   }
 });
 
@@ -37,7 +37,7 @@ router.delete('/:id', async (req, res) => {
     await deleteStock(parseInt(req.params.id));
     res.status(204).end();
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete stock item' });
+    res.status(500).json({ error: 'Failed to delete stock item' + error });
   }
 });
 

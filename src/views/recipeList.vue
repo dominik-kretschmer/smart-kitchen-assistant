@@ -1,2 +1,4 @@
 <script setup lang="ts"></script>
-<template></template>
+<template>
+  <v-progress-circular indeterminate/>
+</template>

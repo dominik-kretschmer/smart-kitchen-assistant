@@ -23,19 +23,19 @@ onMounted(() => {
     try {
       const user = JSON.parse(userStr);
       userId.value = user.id;
-      fetchStockItems();
+      handleStockItems();
     } catch (err) {
       console.error('Error parsing user data:', err);
     }
   }
 });
 
-async function handleStockItems(item: Omit<StockItem, 'id'> , mode :string ) {
+async function handleStockItems(item: Omit<StockItem, 'id'> | undefined = undefined) {
   if (!userId.value) {
     error.value = 'User not logged in';
     return;
   }
-  if (mode === "add"){
+  if (item !== undefined) {
     const validationResult = validateStockItem(item);
     if (!validationResult.isValid) {
       error.value = validationResult.errorMessage;
@@ -46,9 +46,9 @@ async function handleStockItems(item: Omit<StockItem, 'id'> , mode :string ) {
   loading.value = true;
   error.value = '';
   try {
-    if (mode === "fetch"){
+    if (item === undefined) {
       stockItems.value = await stockService.getStockByUser(userId.value);
-    }else{
+    } else {
       const stockData = {
         ...item,
         userId: userId.value,
@@ -59,23 +59,16 @@ async function handleStockItems(item: Omit<StockItem, 'id'> , mode :string ) {
     }
   } catch (err) {
     error.value = 'Failed to load stock items. Please try again later.' + err;
-  }
-  finally {
+  } finally {
     loading.value = false;
   }
-}
-
-async function addStockItem() {
-
 }
 </script>
 
 <template>
   <div class="p-4">
     <h1 class="text-2xl font-bold mb-4">Vorrat</h1>
-    <p class="mb-4">
-      Hier siehst du alle aktuell verfügbaren Zutaten in deinem Vorrat.
-    </p>
+    <p class="mb-4">Hier siehst du alle aktuell verfügbaren Zutaten in deinem Vorrat.</p>
     <v-alert
       v-if="error"
       type="error"
@@ -97,9 +90,7 @@ async function addStockItem() {
         <v-list v-if="stockItems.length > 0" class="bg-transparent">
           <v-list-item v-for="item in stockItems" :key="item.id">
             <v-list-item-title>{{ item.name }}</v-list-item-title>
-            <v-list-item-subtitle>
-              {{ item.quantity }} {{ item.unit }}
-            </v-list-item-subtitle>
+            <v-list-item-subtitle> {{ item.quantity }} {{ item.unit }} </v-list-item-subtitle>
           </v-list-item>
         </v-list>
         <p v-else class="text-center py-4 text-gray-500">Keine Vorräte vorhanden</p>
