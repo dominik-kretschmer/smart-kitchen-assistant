@@ -19,7 +19,10 @@ export const stockService = {
     return await response.json();
   },
 
-  async getStockByUser(userId: number) {
+  async getStockByUser(userId: number| null) {
+    if(userId === null){
+      throw Error("userId is null ")
+    }
     const response = await fetch(`${API_URL}${endPoints.stockUser}/${userId}`, {
       credentials: 'include',
     });

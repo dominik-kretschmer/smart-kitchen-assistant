@@ -12,5 +12,3 @@ export interface UpdatedStockItem {
   unit: string;
   userId:  number | null;
 }
-
-

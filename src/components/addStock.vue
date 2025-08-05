@@ -1,14 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from '../i18n';
 
 const props = defineProps<{
   disabled?: boolean;
 }>();
 
+const { t } = useI18n();
+
 const newItem = ref('');
 const quantity = ref(1);
-const unit = ref('Stück');
-const units = ['Stück', 'g', 'kg', 'ml', 'l', 'EL', 'TL', 'Packung'];
+const unit = ref(t('units.piece'));
+const units = [
+  t('units.piece'),
+  t('units.g'),
+  t('units.kg'),
+  t('units.ml'),
+  t('units.l'),
+  t('units.tbsp'),
+  t('units.tsp'),
+  t('units.package')
+];
 
 const emit = defineEmits(['add-item']);
 
@@ -21,21 +33,21 @@ function addItem() {
     });
     newItem.value = '';
     quantity.value = 1;
-    unit.value = 'Stück';
+    unit.value = t('units.piece');
   }
 }
 </script>
 
 <template>
   <div class="add-stock-form mb-6 p-4 bg-gray-100 rounded-lg">
-    <h2 class="text-xl font-semibold mb-3">Vorrat hinzufügen</h2>
+    <h2 class="text-xl font-semibold mb-3">{{ t('addStock.title') }}</h2>
     <v-form @submit.prevent="addItem">
       <v-row>
         <v-col cols="12">
           <v-text-field
             v-model="newItem"
-            label="Zutat"
-            placeholder="z.B. Tomaten"
+            :label="t('addStock.ingredient')"
+            :placeholder="t('addStock.ingredientPlaceholder')"
             variant="outlined"
             density="comfortable"
             required
@@ -46,7 +58,7 @@ function addItem() {
         <v-col cols="6">
           <v-text-field
             v-model.number="quantity"
-            label="Menge"
+            :label="t('addStock.quantity')"
             type="number"
             min="0"
             variant="outlined"
@@ -58,7 +70,7 @@ function addItem() {
           <v-select
             v-model="unit"
             :items="units"
-            label="Einheit"
+            :label="t('addStock.unit')"
             variant="outlined"
             density="comfortable"
             :disabled="disabled"></v-select>
@@ -71,7 +83,7 @@ function addItem() {
         class="mt-2"
         :disabled="disabled"
         :loading="disabled">
-        Hinzufügen
+        {{ t('addStock.add') }}
       </v-btn>
     </v-form>
   </div>

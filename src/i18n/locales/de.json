@@ -1,0 +1,131 @@
+{
+  "navigation": {
+    "home": "Startseite",
+    "recipe": "Rezept",
+    "shopping": "Einkaufen",
+    "stock": "Vorrat",
+    "ingredients": "Zutaten",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "language": "Sprache"
+  },
+  "stock": {
+    "title": "Vorrat",
+    "currentStock": "Aktuelle Vorräte",
+    "noItems": "Keine Vorräte vorhanden",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "pleaseLogin": "Bitte anmelden"
+  },
+  "errors": {
+    "userNotLoggedIn": "Benutzer nicht angemeldet",
+    "failedToLoadStock": "Fehler beim Laden der Vorräte. Bitte versuchen Sie es später erneut.",
+    "failedToUpdateStock": "Fehler beim Aktualisieren des Vorrats. Bitte versuchen Sie es später erneut.",
+    "failedToDeleteStock": "Fehler beim Löschen des Vorrats. Bitte versuchen Sie es später erneut.",
+    "nameRequired": "Name ist erforderlich",
+    "failedToLoadIngredients": "Fehler beim Laden der Zutaten. Bitte versuchen Sie es später erneut.",
+    "failedToCreateIngredient": "Fehler beim Erstellen der Zutat. Bitte versuchen Sie es später erneut.",
+    "failedToUpdateIngredient": "Fehler beim Aktualisieren der Zutat. Bitte versuchen Sie es später erneut.",
+    "httpError": "HTTP-Fehler"
+  },
+  "deleteStockDialog": {
+    "title": "Vorrat löschen",
+    "confirmMessage": "Möchtest du wirklich \"{{name}}\" aus deinem Vorrat löschen?",
+    "cancel": "Abbrechen",
+    "delete": "Löschen"
+  },
+  "editStockDialog": {
+    "title": "Vorrat bearbeiten",
+    "name": "Name",
+    "quantity": "Menge",
+    "unit": "Einheit",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
+  },
+  "addStock": {
+    "title": "Vorrat hinzufügen",
+    "ingredient": "Zutat",
+    "ingredientPlaceholder": "z.B. Tomaten",
+    "quantity": "Menge",
+    "unit": "Einheit",
+    "add": "Hinzufügen"
+  },
+  "auth": {
+    "alreadyLoggedIn": "Du bist bereits angemeldet",
+    "goToHome": "Zur Startseite",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "enterUsername": "Gib deinen Benutzernamen ein",
+    "chooseUsername": "Wähle einen Benutzernamen",
+    "enterPassword": "Gib dein Passwort ein",
+    "choosePassword": "Wähle ein Passwort",
+    "confirmYourPassword": "Bestätige dein Passwort",
+    "noAccount": "Noch kein Konto?",
+    "haveAccount": "Bereits ein Konto?"
+  },
+  "recipe": {
+    "title": "Rezepte",
+    "myRecipes": "Meine Rezepte",
+    "ingredients": "Zutaten:",
+    "preparation": "Zubereitung:",
+    "noRecipes": "Keine Rezepte vorhanden",
+    "createNew": "Neues Rezept erstellen",
+    "recipeName": "Rezeptname",
+    "recipeNamePlaceholder": "z.B. Spaghetti Bolognese",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Kurze Beschreibung des Rezepts",
+    "ingredientsSection": "Zutaten",
+    "ingredient": "Zutat",
+    "ingredientPlaceholder": "z.B. Tomaten",
+    "quantity": "Menge",
+    "unit": "Einheit",
+    "addIngredient": "Zutat hinzufügen",
+    "steps": "Zubereitungsschritte",
+    "step": "Schritt {{number}}",
+    "addStep": "Schritt hinzufügen",
+    "saveRecipe": "Rezept speichern"
+  },
+  "ingredients": {
+    "title": "Zutaten",
+    "addNew": "Neue Zutat hinzufügen",
+    "allIngredients": "Alle Zutaten",
+    "noIngredients": "Keine Zutaten vorhanden",
+    "edit": "Bearbeiten",
+    "calories": "Kalorien",
+    "carbs": "Kohlenhydrate",
+    "fat": "Fett",
+    "protein": "Protein",
+    "addIngredient": "Neue Zutat hinzufügen",
+    "editIngredient": "Zutat bearbeiten",
+    "name": "Name",
+    "caloriesLabel": "Kalorien",
+    "carbsLabel": "Kohlenhydrate (g)",
+    "fatLabel": "Fett (g)",
+    "proteinLabel": "Protein (g)",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
+  },
+  "home": {
+    "title": "Startseite",
+    "welcome": "Willkommen in deiner Koch-App!"
+  },
+  "shoppingList": {
+    "title": "Einkaufsliste",
+    "myList": "Meine Einkaufsliste",
+    "purchased": "Gekauft",
+    "noItems": "Keine Einkäufe vorhanden"
+  },
+  "units": {
+    "piece": "Stück",
+    "g": "g",
+    "kg": "kg",
+    "ml": "ml",
+    "l": "l",
+    "tbsp": "EL",
+    "tsp": "TL",
+    "package": "Packung"
+  }
+}

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { ShoppingListItem } from '../types/shoppingListTypes';
+import { useI18n } from '../i18n';
+
+const { t } = useI18n();
 
 const shoppingItems = ref<ShoppingListItem[]>([
   {
@@ -24,19 +27,19 @@ const shoppingItems = ref<ShoppingListItem[]>([
   {
     id: 4,
     amount: 2,
-    unit: 'Stück',
+    unit: t('units.piece'),
     ingredient: { id: 4, name: 'Onions' },
   },
   {
     id: 5,
     amount: 1,
-    unit: 'Liter',
+    unit: 'l',
     ingredient: { id: 5, name: 'Milk' },
   },
   {
     id: 6,
     amount: 6,
-    unit: 'Stück',
+    unit: t('units.piece'),
     ingredient: { id: 6, name: 'Eggs' },
   },
 ]);
@@ -50,7 +53,7 @@ const error = ref('');
 
 <template>
   <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">Einkaufsliste</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ t('shoppingList.title') }}</h1>
     <v-alert
       v-if="error"
       type="error"
@@ -62,7 +65,7 @@ const error = ref('');
     </v-alert>
 
     <div class="mt-6">
-      <h2 class="text-xl font-semibold mb-3">Meine Einkaufsliste</h2>
+      <h2 class="text-xl font-semibold mb-3">{{ t('shoppingList.myList') }}</h2>
       <v-progress-circular
         v-if="loading"
         indeterminate
@@ -74,11 +77,11 @@ const error = ref('');
             <v-list-item-title>{{ item.ingredient.name }}</v-list-item-title>
             <v-list-item-subtitle>{{ item.amount }} {{ item.unit }}</v-list-item-subtitle>
             <div class="d-flex">
-              <v-checkbox label="Gekauft" hide-details></v-checkbox>
+              <v-checkbox :label="t('shoppingList.purchased')" hide-details></v-checkbox>
             </div>
           </v-list-item>
         </v-list>
-        <p v-else class="text-center py-4 text-gray-500">Keine Einkäufe vorhanden</p>
+        <p v-else class="text-center py-4 text-gray-500">{{ t('shoppingList.noItems') }}</p>
       </div>
     </div>
   </div>

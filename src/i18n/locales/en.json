@@ -1,0 +1,131 @@
+{
+  "navigation": {
+    "home": "Home",
+    "recipe": "Recipe",
+    "shopping": "Shopping",
+    "stock": "Stock",
+    "ingredients": "Ingredients",
+    "login": "Login",
+    "register": "Register",
+    "language": "Language"
+  },
+  "stock": {
+    "title": "Stock",
+    "currentStock": "Current Stock",
+    "noItems": "No stock items available",
+    "edit": "Edit",
+    "delete": "Delete",
+    "pleaseLogin": "Please login"
+  },
+  "errors": {
+    "userNotLoggedIn": "User not logged in",
+    "failedToLoadStock": "Failed to load stock items. Please try again later.",
+    "failedToUpdateStock": "Failed to update stock item. Please try again later.",
+    "failedToDeleteStock": "Failed to delete stock item. Please try again later.",
+    "nameRequired": "Name is required",
+    "failedToLoadIngredients": "Failed to load ingredients. Please try again later.",
+    "failedToCreateIngredient": "Failed to create ingredient. Please try again later.",
+    "failedToUpdateIngredient": "Failed to update ingredient. Please try again later.",
+    "httpError": "HTTP Error"
+  },
+  "deleteStockDialog": {
+    "title": "Delete Stock Item",
+    "confirmMessage": "Are you sure you want to delete \"{{name}}\" from your stock?",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "editStockDialog": {
+    "title": "Edit Stock Item",
+    "name": "Name",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "addStock": {
+    "title": "Add Stock Item",
+    "ingredient": "Ingredient",
+    "ingredientPlaceholder": "e.g. Tomatoes",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "add": "Add"
+  },
+  "auth": {
+    "alreadyLoggedIn": "You are already logged in",
+    "goToHome": "Go to Home",
+    "login": "Login",
+    "register": "Register",
+    "username": "Username",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "enterUsername": "Enter your username",
+    "chooseUsername": "Choose a username",
+    "enterPassword": "Enter your password",
+    "choosePassword": "Choose a password",
+    "confirmYourPassword": "Confirm your password",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?"
+  },
+  "recipe": {
+    "title": "Recipes",
+    "myRecipes": "My Recipes",
+    "ingredients": "Ingredients:",
+    "preparation": "Preparation:",
+    "noRecipes": "No recipes available",
+    "createNew": "Create New Recipe",
+    "recipeName": "Recipe Name",
+    "recipeNamePlaceholder": "e.g. Spaghetti Bolognese",
+    "description": "Description",
+    "descriptionPlaceholder": "Brief description of the recipe",
+    "ingredientsSection": "Ingredients",
+    "ingredient": "Ingredient",
+    "ingredientPlaceholder": "e.g. Tomatoes",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "addIngredient": "Add Ingredient",
+    "steps": "Preparation Steps",
+    "step": "Step {{number}}",
+    "addStep": "Add Step",
+    "saveRecipe": "Save Recipe"
+  },
+  "ingredients": {
+    "title": "Ingredients",
+    "addNew": "Add New Ingredient",
+    "allIngredients": "All Ingredients",
+    "noIngredients": "No ingredients available",
+    "edit": "Edit",
+    "calories": "Calories",
+    "carbs": "Carbohydrates",
+    "fat": "Fat",
+    "protein": "Protein",
+    "addIngredient": "Add New Ingredient",
+    "editIngredient": "Edit Ingredient",
+    "name": "Name",
+    "caloriesLabel": "Calories",
+    "carbsLabel": "Carbohydrates (g)",
+    "fatLabel": "Fat (g)",
+    "proteinLabel": "Protein (g)",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "home": {
+    "title": "Home",
+    "welcome": "Welcome to your cooking app!"
+  },
+  "shoppingList": {
+    "title": "Shopping List",
+    "myList": "My Shopping List",
+    "purchased": "Purchased",
+    "noItems": "No shopping items available"
+  },
+  "units": {
+    "piece": "piece",
+    "g": "g",
+    "kg": "kg",
+    "ml": "ml",
+    "l": "l",
+    "tbsp": "tbsp",
+    "tsp": "tsp",
+    "package": "package"
+  }
+}

@@ -7,6 +7,7 @@ import { stockService } from '../services/stockService';
 import { useValidation } from '../composables/useValidation';
 import { useAuth } from '../composables/useAuth';
 import type { StockItem } from '../types/stockTypes';
+import { useI18n } from '../i18n';
 
 const stockItems = ref<StockItem[]>([]);
 const loading = ref(false);
@@ -14,6 +15,7 @@ const error = ref<string>('');
 const userId = ref<number | null>(null);
 const { validateStockItem } = useValidation();
 const { checkLoginStatus } = useAuth();
+const { t } = useI18n();
 
 const editDialog = ref(false);
 const editedItem = ref<StockItem>({
@@ -40,7 +42,7 @@ onMounted(async () => {
 
 function validateUserInput(item: Omit<StockItem, 'id'> | undefined = undefined) {
   if (!userId.value) {
-    error.value = 'User not logged in';
+    error.value = t('errors.userNotLoggedIn');
     return;
   }
   if (item !== undefined) {
@@ -56,7 +58,7 @@ function validateUserInput(item: Omit<StockItem, 'id'> | undefined = undefined) 
 
 async function useCreateStock(item: Omit<StockItem, 'id'>) {
   if (!userId.value) {
-    error.value = 'User not logged in';
+    error.value = t('errors.userNotLoggedIn');
     return;
   }
   const stockData = {
@@ -77,7 +79,7 @@ async function handleStockItems(item: Omit<StockItem, 'id'> | undefined = undefi
       await useCreateStock(item);
     }
   } catch (err) {
-    error.value = 'Failed to load stock items. Please try again later.' + err;
+    error.value = t('errors.failedToLoadStock') + err;
   } finally {
     loading.value = false;
   }
@@ -109,7 +111,7 @@ async function updateStockItem(item: StockItem) {
     loading.value = false
     editDialog.value = false;
   } catch (err) {
-    error.value = 'Failed to update stock item. Please try again later.' + err;
+    error.value = t('errors.failedToUpdateStock') + err;
   }
 }
 
@@ -125,14 +127,14 @@ async function deleteStockItem(itemId: number) {
     deleteDialog.value = false;
     itemToDelete.value = null;
   } catch (err) {
-    error.value = 'Failed to delete stock item. Please try again later.' + err;
+    error.value = t('errors.failedToDeleteStock') + err;
   }
 }
 </script>
 
 <template>
   <div class="p-4" v-if="userId !== null">
-    <h1 class="text-2xl font-bold mb-4">Vorrat</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ t('stock.title') }}</h1>
     <v-alert
       v-if="error"
       type="error"
@@ -144,7 +146,7 @@ async function deleteStockItem(itemId: number) {
     </v-alert>
     <AddStock @add-item="handleStockItems" :disabled="loading" />
     <div class="mt-6">
-      <h2 class="text-xl font-semibold mb-3">Aktuelle Vorräte</h2>
+      <h2 class="text-xl font-semibold mb-3">{{ t('stock.currentStock') }}</h2>
       <v-progress-circular
         v-if="loading"
         indeterminate
@@ -156,18 +158,18 @@ async function deleteStockItem(itemId: number) {
             <v-list-item-title>{{ item.name }}</v-list-item-title>
             <v-list-item-subtitle> {{ item.quantity }} {{ item.unit }}</v-list-item-subtitle>
             <div class="d-flex">
-              <v-btn variant="text" color="white" @click="openEditDialog(item)"> Edit </v-btn>
-              <v-btn variant="text" color="white" @click="openDeleteDialog(item)"> Delete </v-btn>
+              <v-btn variant="text" color="white" @click="openEditDialog(item)"> {{ t('stock.edit') }} </v-btn>
+              <v-btn variant="text" color="white" @click="openDeleteDialog(item)"> {{ t('stock.delete') }} </v-btn>
             </div>
           </v-list-item>
         </v-list>
-        <p v-else class="text-center py-4 text-gray-500">Keine Vorräte vorhanden</p>
+        <p v-else class="text-center py-4 text-gray-500">{{ t('stock.noItems') }}</p>
       </div>
     </div>
     <EditStockItemDialog v-model="editDialog" :item="editedItem" @save="updateStockItem" />
     <DeleteStockItemDialog v-model="deleteDialog" :item="itemToDelete" @delete="deleteStockItem" />
   </div>
   <div v-else>
-    <h1>please login</h1>
+    <h1>{{ t('stock.pleaseLogin') }}</h1>
   </div>
 </template>

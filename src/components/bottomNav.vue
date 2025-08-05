@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useLanguageStore } from '../stores/languageStore';
+import { useI18n } from '../i18n';
 
 const route = useRoute();
 const router = useRouter();
-
+const languageStore = useLanguageStore();
+const { t } = useI18n();
 const routes = ['/', '/recipe', '/shoppingList', '/stock', '/ingredients', '/login', '/register'];
 
 const value = computed({
@@ -36,6 +39,10 @@ const color = computed(() => {
       return 'blue-grey';
   }
 });
+
+const toggleLanguage = () => {
+  languageStore.toggleLanguage();
+};
 </script>
 
 <template>
@@ -43,31 +50,35 @@ const color = computed(() => {
     <v-bottom-navigation v-model="value" :bg-color="color" mode="shift">
       <v-btn>
         <v-icon>mdi-television-play</v-icon>
-        <span>Home</span>
+        <span>{{ t('navigation.home') }}</span>
       </v-btn>
       <v-btn>
         <v-icon>mdi-book</v-icon>
-        <span>Recipe</span>
+        <span>{{ t('navigation.recipe') }}</span>
       </v-btn>
       <v-btn>
         <v-icon>mdi-cart</v-icon>
-        <span>Shopping</span>
+        <span>{{ t('navigation.shopping') }}</span>
       </v-btn>
       <v-btn>
         <v-icon>mdi-warehouse</v-icon>
-        <span>Stock</span>
+        <span>{{ t('navigation.stock') }}</span>
       </v-btn>
       <v-btn>
         <v-icon>mdi-food-apple</v-icon>
-        <span>Ingredients</span>
+        <span>{{ t('navigation.ingredients') }}</span>
       </v-btn>
       <v-btn>
         <v-icon>mdi-login</v-icon>
-        <span>Login</span>
+        <span>{{ t('navigation.login') }}</span>
       </v-btn>
       <v-btn>
         <v-icon>mdi-account-plus</v-icon>
-        <span>Register</span>
+        <span>{{ t('navigation.register') }}</span>
+      </v-btn>
+      <v-btn @click="toggleLanguage">
+        <v-icon>mdi-translate</v-icon>
+        <span>{{ languageStore.isGerman ? 'EN' : 'DE' }}</span>
       </v-btn>
     </v-bottom-navigation>
   </v-layout>

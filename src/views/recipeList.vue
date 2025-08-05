@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { Recipe } from '../types/recipeTypes';
+import { useI18n } from '../i18n';
+
+const { t } = useI18n();
 
 const recipes = ref<Recipe[]>([
   {
@@ -99,7 +102,7 @@ const error = ref('');
 
 <template>
   <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">Rezepte</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ t('recipe.title') }}</h1>
     <v-alert
       v-if="error"
       type="error"
@@ -111,7 +114,7 @@ const error = ref('');
     </v-alert>
 
     <div class="mt-6">
-      <h2 class="text-xl font-semibold mb-3">Meine Rezepte</h2>
+      <h2 class="text-xl font-semibold mb-3">{{ t('recipe.myRecipes') }}</h2>
       <v-progress-circular
         v-if="loading"
         indeterminate
@@ -122,7 +125,7 @@ const error = ref('');
           <v-list-item v-for="recipe in recipes" :key="recipe.id" class="mb-4">
             <v-card width="100%">
               <v-card-title>{{ recipe.name }}</v-card-title>
-              <v-card-subtitle>Zutaten:</v-card-subtitle>
+              <v-card-subtitle>{{ t('recipe.ingredients') }}</v-card-subtitle>
               <v-card-text>
                 <ul>
                   <li v-for="ingredient in recipe.recipeIngredients" :key="ingredient.ingredientId">
@@ -130,14 +133,14 @@ const error = ref('');
                   </li>
                 </ul>
                 <div class="mt-2">
-                  <strong>Zubereitung:</strong>
+                  <strong>{{ t('recipe.preparation') }}</strong>
                   <pre>{{ recipe.steps }}</pre>
                 </div>
               </v-card-text>
             </v-card>
           </v-list-item>
         </v-list>
-        <p v-else class="text-center py-4 text-gray-500">Keine Rezepte vorhanden</p>
+        <p v-else class="text-center py-4 text-gray-500">{{ t('recipe.noRecipes') }}</p>
       </div>
     </div>
   </div>

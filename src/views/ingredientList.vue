@@ -3,7 +3,9 @@ import { onMounted, ref } from 'vue';
 import { ingredientService } from '../services/ingredientService';
 import { useAuth } from '../composables/useAuth';
 import type { Ingredient } from '../types/recipeTypes';
+import { useI18n } from '../i18n';
 
+const { t } = useI18n();
 const ingredients = ref<Ingredient[]>([]);
 const loading = ref(false);
 const error = ref('');
@@ -50,7 +52,7 @@ async function loadIngredients() {
   try {
     ingredients.value = await ingredientService.getAllIngredients();
   } catch (err) {
-    error.value = 'Failed to load ingredients. Please try again later.';
+    error.value = t('errors.failedToLoadIngredients');
     console.error(err);
   } finally {
     loading.value = false;
@@ -59,7 +61,7 @@ async function loadIngredients() {
 
 async function addIngredient() {
   if (!newIngredient.value.name) {
-    error.value = 'Name is required';
+    error.value = t('errors.nameRequired');
     return;
   }
 
@@ -77,7 +79,7 @@ async function addIngredient() {
       protein: 0,
     };
   } catch (err) {
-    error.value = 'Failed to create ingredient. Please try again later.';
+    error.value = t('errors.failedToCreateIngredient');
     console.error(err);
   } finally {
     loading.value = false;
@@ -91,7 +93,7 @@ function openEditDialog(item: Ingredient) {
 
 async function updateIngredient() {
   if (!editedItem.value.name) {
-    error.value = 'Name is required';
+    error.value = t('errors.nameRequired');
     return;
   }
 
@@ -115,7 +117,7 @@ async function updateIngredient() {
 
     editDialog.value = false;
   } catch (err) {
-    error.value = 'Failed to update ingredient. Please try again later.';
+    error.value = t('errors.failedToUpdateIngredient');
     console.error(err);
   } finally {
     loading.value = false;
@@ -125,7 +127,7 @@ async function updateIngredient() {
 
 <template>
   <div class="p-4" v-if="userId !== null">
-    <h1 class="text-2xl font-bold mb-4">Zutaten</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ t('ingredients.title') }}</h1>
     <v-alert
       v-if="error"
       type="error"
@@ -142,11 +144,11 @@ async function updateIngredient() {
       class="mb-4"
       @click="newIngredientDialog = true"
       :disabled="loading">
-      Neue Zutat hinzufügen
+      {{ t('ingredients.addNew') }}
     </v-btn>
 
     <div class="mt-6">
-      <h2 class="text-xl font-semibold mb-3">Alle Zutaten</h2>
+      <h2 class="text-xl font-semibold mb-3">{{ t('ingredients.allIngredients') }}</h2>
       <v-progress-circular
         v-if="loading"
         indeterminate
@@ -157,59 +159,59 @@ async function updateIngredient() {
           <v-list-item v-for="item in ingredients" :key="item.id">
             <v-list-item-title>{{ item.name }}</v-list-item-title>
             <v-list-item-subtitle>
-              Kalorien: {{ item.calories }} | Kohlenhydrate: {{ item.carbs }}g |
-              Fett: {{ item.fat }}g | Protein: {{ item.protein }}g
+              {{ t('ingredients.calories') }}: {{ item.calories }} | {{ t('ingredients.carbs') }}: {{ item.carbs }}g |
+              {{ t('ingredients.fat') }}: {{ item.fat }}g | {{ t('ingredients.protein') }}: {{ item.protein }}g
             </v-list-item-subtitle>
             <div class="d-flex">
               <v-btn variant="text" color="white" @click="openEditDialog(item)">
-                Bearbeiten
+                {{ t('ingredients.edit') }}
               </v-btn>
             </div>
           </v-list-item>
         </v-list>
-        <p v-else class="text-center py-4 text-gray-500">Keine Zutaten vorhanden</p>
+        <p v-else class="text-center py-4 text-gray-500">{{ t('ingredients.noIngredients') }}</p>
       </div>
     </div>
 
     <!-- New Ingredient Dialog -->
     <v-dialog v-model="newIngredientDialog" max-width="500px">
       <v-card>
-        <v-card-title>Neue Zutat hinzufügen</v-card-title>
+        <v-card-title>{{ t('ingredients.addIngredient') }}</v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12">
                 <v-text-field
                   v-model="newIngredient.name"
-                  label="Name"
+                  :label="t('ingredients.name')"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="newIngredient.calories"
-                  label="Kalorien"
+                  :label="t('ingredients.caloriesLabel')"
                   type="number"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="newIngredient.carbs"
-                  label="Kohlenhydrate (g)"
+                  :label="t('ingredients.carbsLabel')"
                   type="number"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="newIngredient.fat"
-                  label="Fett (g)"
+                  :label="t('ingredients.fatLabel')"
                   type="number"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="newIngredient.protein"
-                  label="Protein (g)"
+                  :label="t('ingredients.proteinLabel')"
                   type="number"
                 ></v-text-field>
               </v-col>
@@ -219,10 +221,10 @@ async function updateIngredient() {
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-darken-1" variant="text" @click="newIngredientDialog = false">
-            Abbrechen
+            {{ t('ingredients.cancel') }}
           </v-btn>
           <v-btn color="blue-darken-1" variant="text" @click="addIngredient">
-            Speichern
+            {{ t('ingredients.save') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -231,42 +233,42 @@ async function updateIngredient() {
     <!-- Edit Ingredient Dialog -->
     <v-dialog v-model="editDialog" max-width="500px">
       <v-card>
-        <v-card-title>Zutat bearbeiten</v-card-title>
+        <v-card-title>{{ t('ingredients.editIngredient') }}</v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12">
                 <v-text-field
                   v-model="editedItem.name"
-                  label="Name"
+                  :label="t('ingredients.name')"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="editedItem.calories"
-                  label="Kalorien"
+                  :label="t('ingredients.caloriesLabel')"
                   type="number"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="editedItem.carbs"
-                  label="Kohlenhydrate (g)"
+                  :label="t('ingredients.carbsLabel')"
                   type="number"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="editedItem.fat"
-                  label="Fett (g)"
+                  :label="t('ingredients.fatLabel')"
                   type="number"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="editedItem.protein"
-                  label="Protein (g)"
+                  :label="t('ingredients.proteinLabel')"
                   type="number"
                 ></v-text-field>
               </v-col>
@@ -276,16 +278,16 @@ async function updateIngredient() {
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-darken-1" variant="text" @click="editDialog = false">
-            Abbrechen
+            {{ t('ingredients.cancel') }}
           </v-btn>
           <v-btn color="blue-darken-1" variant="text" @click="updateIngredient">
-            Speichern
+            {{ t('ingredients.save') }}
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
   <div v-else>
-    <h1>Bitte einloggen</h1>
+    <h1>{{ t('stock.pleaseLogin') }}</h1>
   </div>
 </template>
