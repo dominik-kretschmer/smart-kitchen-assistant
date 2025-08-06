@@ -1,4 +1,11 @@
 {
+  "common": {
+    "add": "Hinzufügen",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "noItems": "Keine Einträge vorhanden"
+  },
   "navigation": {
     "home": "Startseite",
     "recipe": "Rezept",
@@ -116,7 +123,19 @@
     "title": "Einkaufsliste",
     "myList": "Meine Einkaufsliste",
     "purchased": "Gekauft",
-    "noItems": "Keine Einkäufe vorhanden"
+    "noItems": "Keine Einkäufe vorhanden",
+    "loginRequired": "Bitte melde dich an, um deine Einkaufsliste zu sehen",
+    "loadError": "Fehler beim Laden der Einkaufsliste. Bitte versuche es später erneut.",
+    "ingredientsLoadError": "Fehler beim Laden der Zutaten. Bitte versuche es später erneut.",
+    "ingredientRequired": "Zutat ist erforderlich",
+    "addError": "Fehler beim Hinzufügen des Artikels zur Einkaufsliste. Bitte versuche es später erneut.",
+    "removeError": "Fehler beim Entfernen des Artikels aus der Einkaufsliste. Bitte versuche es später erneut.",
+    "updateError": "Fehler beim Aktualisieren des Artikels in der Einkaufsliste. Bitte versuche es später erneut.",
+    "addItem": "Artikel hinzufügen",
+    "addNewItem": "Neuen Artikel hinzufügen",
+    "ingredient": "Zutat",
+    "amount": "Menge",
+    "unit": "Einheit"
   },
   "units": {
     "piece": "Stück",

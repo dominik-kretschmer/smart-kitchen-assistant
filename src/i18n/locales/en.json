@@ -1,4 +1,11 @@
 {
+  "common": {
+    "add": "Add",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "noItems": "No items available"
+  },
   "navigation": {
     "home": "Home",
     "recipe": "Recipe",
@@ -116,7 +123,19 @@
     "title": "Shopping List",
     "myList": "My Shopping List",
     "purchased": "Purchased",
-    "noItems": "No shopping items available"
+    "noItems": "No shopping items available",
+    "loginRequired": "Please log in to view your shopping list",
+    "loadError": "Failed to load shopping list. Please try again later.",
+    "ingredientsLoadError": "Failed to load ingredients. Please try again later.",
+    "ingredientRequired": "Ingredient is required",
+    "addError": "Failed to add item to shopping list. Please try again later.",
+    "removeError": "Failed to remove item from shopping list. Please try again later.",
+    "updateError": "Failed to update item in shopping list. Please try again later.",
+    "addItem": "Add Item",
+    "addNewItem": "Add New Item",
+    "ingredient": "Ingredient",
+    "amount": "Amount",
+    "unit": "Unit"
   },
   "units": {
     "piece": "piece",

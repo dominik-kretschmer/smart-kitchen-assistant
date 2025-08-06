@@ -14,11 +14,17 @@ router.post('/', async (req, res) => {
       return res.status(401).json({ error: 'Not authenticated' });
     }
 
-    // Add userId to the data and ensure user connection
+    // Extract ingredient data from request body
+    const { ingredient, ...restOfBody } = req.body;
+
+    // Format data with proper connect patterns for both user and ingredient
     const data = {
-      ...req.body,
+      ...restOfBody,
       user: {
         connect: { id: parseInt(userId) }
+      },
+      ingredient: {
+        connect: { id: ingredient.id }
       }
     };
 
