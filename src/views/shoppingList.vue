@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { ShoppingListItem } from '../types/shoppingListTypes';
-import { useI18n } from '../i18n';
-
 const { t } = useI18n();
-
+const loading = ref(false);
+const error = ref('');
 const shoppingItems = ref<ShoppingListItem[]>([
   {
     id: 1,
@@ -43,14 +40,7 @@ const shoppingItems = ref<ShoppingListItem[]>([
     ingredient: { id: 6, name: 'Eggs' },
   },
 ]);
-
-const loading = ref(false);
-const error = ref('');
-
-// In a real implementation, we would use these for authentication and fetching user-specific shopping list
-// For demo purposes, we're just using hardcoded data
 </script>
-
 <template>
   <div class="p-4">
     <h1 class="text-2xl font-bold mb-4">{{ t('shoppingList.title') }}</h1>

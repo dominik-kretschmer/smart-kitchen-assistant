@@ -1,7 +1,7 @@
 <script setup lang="ts">
-
 const { t } = useI18n();
-
+const loading = ref(false);
+const error = ref('');
 const recipes = ref<Recipe[]>([
   {
     id: 1,
@@ -92,9 +92,6 @@ const recipes = ref<Recipe[]>([
     ],
   },
 ]);
-
-const loading = ref(false);
-const error = ref('');
 </script>
 
 <template>

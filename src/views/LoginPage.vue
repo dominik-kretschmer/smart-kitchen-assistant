@@ -2,14 +2,12 @@
 import { useAuth } from '@/composables/useAuth.ts';
 
 const { error, isLoggedIn, isLoading, checkLoginStatus, login } = useAuth();
-
-onMounted(() => {
-  checkLoginStatus();
-});
-
 const handleSubmit = async (credentials) => {
   await login(credentials);
 };
+onMounted(() => {
+  checkLoginStatus();
+});
 </script>
 <template>
   <AuthForm

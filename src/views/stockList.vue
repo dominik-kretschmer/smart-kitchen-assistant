@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { useValidation } from '@/composables/useValidation.ts';
 import { useAuth } from '@/composables/useAuth.ts';
 import { stockService } from '@/services/stockService.ts';
