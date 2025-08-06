@@ -41,8 +41,6 @@ const toggleLanguage = () => {
         <v-icon>{{ item.icon }}</v-icon>
         <span>{{ t(item.translationKey) }}</span>
       </v-btn>
-
-      <!-- Sprach-Toggle Button -->
       <v-btn @click="toggleLanguage">
         <v-icon>mdi-translate</v-icon>
         <span>{{ languageStore.isGerman ? 'EN' : 'DE' }}</span>
