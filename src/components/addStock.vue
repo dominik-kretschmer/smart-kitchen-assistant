@@ -19,7 +19,7 @@ const units = [
   t('units.l'),
   t('units.tbsp'),
   t('units.tsp'),
-  t('units.package')
+  t('units.package'),
 ];
 
 const emit = defineEmits(['add-item']);

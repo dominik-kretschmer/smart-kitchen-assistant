@@ -1,4 +1,4 @@
-import type { StockItem ,UpdatedStockItem} from '../types/stockTypes';
+import type { StockItem, UpdatedStockItem } from '../types/stockTypes';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const endPoints = {
@@ -19,9 +19,9 @@ export const stockService = {
     return await response.json();
   },
 
-  async getStockByUser(userId: number| null) {
-    if(userId === null){
-      throw Error("userId is null ")
+  async getStockByUser(userId: number | null) {
+    if (userId === null) {
+      throw Error('userId is null ');
     }
     const response = await fetch(`${API_URL}${endPoints.stockUser}/${userId}`, {
       credentials: 'include',
@@ -29,7 +29,7 @@ export const stockService = {
     return await response.json();
   },
 
-  async updateStock(id: number, stockData : UpdatedStockItem ) {
+  async updateStock(id: number, stockData: UpdatedStockItem) {
     const response = await fetch(`${API_URL}${endPoints.stock}/${id}`, {
       method: 'PUT',
       headers: {

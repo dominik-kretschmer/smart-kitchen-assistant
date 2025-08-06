@@ -99,16 +99,13 @@ async function updateIngredient() {
 
   loading.value = true;
   try {
-    const updatedItem = await ingredientService.updateIngredient(
-      editedItem.value.id,
-      {
-        name: editedItem.value.name,
-        calories: editedItem.value.calories,
-        carbs: editedItem.value.carbs,
-        fat: editedItem.value.fat,
-        protein: editedItem.value.protein,
-      }
-    );
+    const updatedItem = await ingredientService.updateIngredient(editedItem.value.id, {
+      name: editedItem.value.name,
+      calories: editedItem.value.calories,
+      carbs: editedItem.value.carbs,
+      fat: editedItem.value.fat,
+      protein: editedItem.value.protein,
+    });
 
     const index = ingredients.value.findIndex((item) => item.id === editedItem.value.id);
     if (index !== -1) {
@@ -139,11 +136,7 @@ async function updateIngredient() {
     </v-alert>
 
     <!-- Add Ingredient Button -->
-    <v-btn
-      color="primary"
-      class="mb-4"
-      @click="newIngredientDialog = true"
-      :disabled="loading">
+    <v-btn color="primary" class="mb-4" @click="newIngredientDialog = true" :disabled="loading">
       {{ t('ingredients.addNew') }}
     </v-btn>
 
@@ -159,8 +152,9 @@ async function updateIngredient() {
           <v-list-item v-for="item in ingredients" :key="item.id">
             <v-list-item-title>{{ item.name }}</v-list-item-title>
             <v-list-item-subtitle>
-              {{ t('ingredients.calories') }}: {{ item.calories }} | {{ t('ingredients.carbs') }}: {{ item.carbs }}g |
-              {{ t('ingredients.fat') }}: {{ item.fat }}g | {{ t('ingredients.protein') }}: {{ item.protein }}g
+              {{ t('ingredients.calories') }}: {{ item.calories }} | {{ t('ingredients.carbs') }}:
+              {{ item.carbs }}g | {{ t('ingredients.fat') }}: {{ item.fat }}g |
+              {{ t('ingredients.protein') }}: {{ item.protein }}g
             </v-list-item-subtitle>
             <div class="d-flex">
               <v-btn variant="text" color="white" @click="openEditDialog(item)">
@@ -184,36 +178,31 @@ async function updateIngredient() {
                 <v-text-field
                   v-model="newIngredient.name"
                   :label="t('ingredients.name')"
-                  required
-                ></v-text-field>
+                  required></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="newIngredient.calories"
                   :label="t('ingredients.caloriesLabel')"
-                  type="number"
-                ></v-text-field>
+                  type="number"></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="newIngredient.carbs"
                   :label="t('ingredients.carbsLabel')"
-                  type="number"
-                ></v-text-field>
+                  type="number"></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="newIngredient.fat"
                   :label="t('ingredients.fatLabel')"
-                  type="number"
-                ></v-text-field>
+                  type="number"></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="newIngredient.protein"
                   :label="t('ingredients.proteinLabel')"
-                  type="number"
-                ></v-text-field>
+                  type="number"></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -241,36 +230,31 @@ async function updateIngredient() {
                 <v-text-field
                   v-model="editedItem.name"
                   :label="t('ingredients.name')"
-                  required
-                ></v-text-field>
+                  required></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="editedItem.calories"
                   :label="t('ingredients.caloriesLabel')"
-                  type="number"
-                ></v-text-field>
+                  type="number"></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="editedItem.carbs"
                   :label="t('ingredients.carbsLabel')"
-                  type="number"
-                ></v-text-field>
+                  type="number"></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="editedItem.fat"
                   :label="t('ingredients.fatLabel')"
-                  type="number"
-                ></v-text-field>
+                  type="number"></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model.number="editedItem.protein"
                   :label="t('ingredients.proteinLabel')"
-                  type="number"
-                ></v-text-field>
+                  type="number"></v-text-field>
               </v-col>
             </v-row>
           </v-container>

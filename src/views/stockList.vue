@@ -36,7 +36,7 @@ onMounted(async () => {
       await handleStockItems();
     }
   } catch (err) {
-    error.value = "failed" + err;
+    error.value = 'failed' + err;
   }
 });
 
@@ -99,8 +99,8 @@ async function updateStockItem(item: StockItem) {
       unit: item.unit,
       userId: userId.value,
     };
-    if( typeof item.id !== "number"){
-      return
+    if (typeof item.id !== 'number') {
+      return;
     }
     const updatedItem = await stockService.updateStock(item.id, stockData);
     const index = stockItems.value.findIndex((stockItem) => stockItem.id === item.id);
@@ -108,7 +108,7 @@ async function updateStockItem(item: StockItem) {
     if (index !== -1) {
       stockItems.value[index] = updatedItem;
     }
-    loading.value = false
+    loading.value = false;
     editDialog.value = false;
   } catch (err) {
     error.value = t('errors.failedToUpdateStock') + err;
@@ -158,8 +158,12 @@ async function deleteStockItem(itemId: number) {
             <v-list-item-title>{{ item.name }}</v-list-item-title>
             <v-list-item-subtitle> {{ item.quantity }} {{ item.unit }}</v-list-item-subtitle>
             <div class="d-flex">
-              <v-btn variant="text" color="white" @click="openEditDialog(item)"> {{ t('stock.edit') }} </v-btn>
-              <v-btn variant="text" color="white" @click="openDeleteDialog(item)"> {{ t('stock.delete') }} </v-btn>
+              <v-btn variant="text" color="white" @click="openEditDialog(item)">
+                {{ t('stock.edit') }}
+              </v-btn>
+              <v-btn variant="text" color="white" @click="openDeleteDialog(item)">
+                {{ t('stock.delete') }}
+              </v-btn>
             </div>
           </v-list-item>
         </v-list>

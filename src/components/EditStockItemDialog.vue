@@ -51,7 +51,10 @@ function saveItem() {
         <v-container>
           <v-row>
             <v-col cols="12">
-              <v-text-field v-model="localItem.name" :label="t('editStockDialog.name')" required></v-text-field>
+              <v-text-field
+                v-model="localItem.name"
+                :label="t('editStockDialog.name')"
+                required></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
@@ -61,7 +64,10 @@ function saveItem() {
                 required></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field v-model="localItem.unit" :label="t('editStockDialog.unit')" required></v-text-field>
+              <v-text-field
+                v-model="localItem.unit"
+                :label="t('editStockDialog.unit')"
+                required></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -69,8 +75,12 @@ function saveItem() {
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue-darken-1" variant="text" @click="closeDialog"> {{ t('editStockDialog.cancel') }} </v-btn>
-        <v-btn color="blue-darken-1" variant="text" @click="saveItem"> {{ t('editStockDialog.save') }} </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
+          {{ t('editStockDialog.cancel') }}
+        </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="saveItem">
+          {{ t('editStockDialog.save') }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
