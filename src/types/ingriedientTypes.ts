@@ -4,7 +4,7 @@ export interface Ingredient {
   unit: string;
 }
 
-export interface Ingredient {
+export interface FullIngredient {
   id: number;
   name: string;
   calories?: number;

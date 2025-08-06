@@ -158,7 +158,6 @@ export function useValidation() {
 
     const unitCheck = validateRequired(item.unit, 'Unit');
     if (!unitCheck.isValid) return unitCheck;
-
     return { isValid: true, errorMessage: '' };
   };
 

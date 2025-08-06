@@ -1,8 +1,8 @@
-import type { Ingredient } from '@/types/ingriedientTypes.ts'
+import type { FullIngredient } from '@/types/ingriedientTypes.ts';
 
 export interface ShoppingListItem {
   id: number;
   amount: number;
   unit: string;
-  ingredient: Ingredient;
+  ingredient: FullIngredient;
 }

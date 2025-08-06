@@ -46,7 +46,12 @@ function viewItem(item: T) {
           </slot>
 
           <div class="d-flex">
-            <slot name="actions" :item="item" :edit="editItem" :delete="deleteItem" :view="viewItem">
+            <slot
+              name="actions"
+              :item="item"
+              :edit="editItem"
+              :delete="deleteItem"
+              :view="viewItem">
               <v-btn variant="text" color="white" @click="editItem(item)">
                 {{ t('common.edit') }}
               </v-btn>

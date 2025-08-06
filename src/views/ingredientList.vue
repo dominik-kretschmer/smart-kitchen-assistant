@@ -2,17 +2,16 @@
 import { onMounted, ref } from 'vue';
 import { ingredientService } from '../services/ingredientService';
 import { useAuth } from '../composables/useAuth';
-import { useI18n } from '../i18n';
-import type { Ingredient } from '@/types/ingriedientTypes.ts';
+import { useI18n } from '@/i18n';
+import type { FullIngredient } from '@/types/ingriedientTypes.ts';
 
 const { t } = useI18n();
-const ingredients = ref<Ingredient[]>([]);
+const ingredients = ref<FullIngredient[]>([]);
 const loading = ref(false);
 const error = ref('');
 const userId = ref<number | null>(null);
 const { checkLoginStatus } = useAuth();
 
-// Dialog for new ingredient
 const newIngredientDialog = ref(false);
 const newIngredient = ref({
   name: '',
@@ -22,9 +21,8 @@ const newIngredient = ref({
   protein: 0,
 });
 
-// Dialog for editing
 const editDialog = ref(false);
-const editedItem = ref<Ingredient>({
+const editedItem = ref<FullIngredient>({
   id: 0,
   name: '',
   calories: 0,
@@ -38,7 +36,7 @@ onMounted(async () => {
     const userData = await checkLoginStatus();
     if (userData) {
       userId.value = userData.id;
-      loadIngredients();
+      await loadIngredients();
     }
   } catch (err) {
     console.error('Error checking login status:', err);
@@ -70,7 +68,6 @@ async function addIngredient() {
     const createdIngredient = await ingredientService.createIngredient(newIngredient.value);
     ingredients.value.push(createdIngredient);
     newIngredientDialog.value = false;
-    // Reset form
     newIngredient.value = {
       name: '',
       calories: 0,
@@ -79,14 +76,13 @@ async function addIngredient() {
       protein: 0,
     };
   } catch (err) {
-    error.value = t('errors.failedToCreateIngredient');
-    console.error(err);
+    error.value = t('errors.failedToCreateIngredient' + err);
   } finally {
     loading.value = false;
   }
 }
 
-function openEditDialog(item: Ingredient) {
+function openEditDialog(item: FullIngredient) {
   editedItem.value = { ...item };
   editDialog.value = true;
 }
@@ -135,7 +131,6 @@ async function updateIngredient() {
       {{ error }}
     </v-alert>
 
-    <!-- Add Ingredient Button -->
     <v-btn color="primary" class="mb-4" @click="newIngredientDialog = true" :disabled="loading">
       {{ t('ingredients.addNew') }}
     </v-btn>
@@ -167,7 +162,6 @@ async function updateIngredient() {
       </div>
     </div>
 
-    <!-- New Ingredient Dialog -->
     <v-dialog v-model="newIngredientDialog" max-width="500px">
       <v-card>
         <v-card-title>{{ t('ingredients.addIngredient') }}</v-card-title>
@@ -219,7 +213,6 @@ async function updateIngredient() {
       </v-card>
     </v-dialog>
 
-    <!-- Edit Ingredient Dialog -->
     <v-dialog v-model="editDialog" max-width="500px">
       <v-card>
         <v-card-title>{{ t('ingredients.editIngredient') }}</v-card-title>

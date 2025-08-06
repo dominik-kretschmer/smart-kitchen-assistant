@@ -1,4 +1,4 @@
-import type { Ingredient } from '@/types/ingriedientTypes.ts'
+import type { FullIngredient } from '@/types/ingriedientTypes.ts';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const ENDPOINT = '/api/ingredients';
@@ -18,7 +18,7 @@ export const ingredientService = {
     return await response.json();
   },
 
-  async createIngredient(ingredientData: Omit<Ingredient, 'id'>) {
+  async createIngredient(ingredientData: Omit<FullIngredient, 'id'>) {
     const response = await fetch(`${API_URL}${ENDPOINT}`, {
       method: 'POST',
       headers: {
@@ -30,7 +30,7 @@ export const ingredientService = {
     return await response.json();
   },
 
-  async updateIngredient(id: number, ingredientData: Partial<Ingredient>) {
+  async updateIngredient(id: number, ingredientData: Partial<FullIngredient>) {
     const response = await fetch(`${API_URL}${ENDPOINT}/${id}`, {
       method: 'PUT',
       headers: {

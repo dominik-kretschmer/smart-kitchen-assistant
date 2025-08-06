@@ -1,6 +1,3 @@
-/* Import base styles */
 @import './base.css';
-
-/* Import component styles */
 @import './components/auth/auth-form.css';
 @import './components/common/loading-indicator.css';

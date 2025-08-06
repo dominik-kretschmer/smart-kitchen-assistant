@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useLanguageStore } from '../stores/languageStore';
 import { useI18n } from '@/i18n';
 
 const route = useRoute();

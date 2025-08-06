@@ -53,14 +53,10 @@ function handleConfirm() {
     :confirmText="t('editStockDialog.save')"
     @cancel="handleCancel"
     @confirm="handleConfirm">
-
     <v-container>
       <v-row>
         <v-col cols="12">
-          <FormTextField
-            v-model="localItem.name"
-            :label="t('editStockDialog.name')"
-            required />
+          <FormTextField v-model="localItem.name" :label="t('editStockDialog.name')" required />
         </v-col>
         <v-col cols="6">
           <QuantityInput
@@ -69,9 +65,7 @@ function handleConfirm() {
             required />
         </v-col>
         <v-col cols="6">
-          <UnitSelect
-            v-model="localItem.unit"
-            :label="t('editStockDialog.unit')" />
+          <UnitSelect v-model="localItem.unit" :label="t('editStockDialog.unit')" />
         </v-col>
       </v-row>
     </v-container>

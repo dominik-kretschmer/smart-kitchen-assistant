@@ -53,10 +53,7 @@ function addItem() {
           required />
       </v-col>
       <v-col cols="6">
-        <UnitSelect
-          v-model="unit"
-          :label="t('addStock.unit')"
-          :disabled="disabled" />
+        <UnitSelect v-model="unit" :label="t('addStock.unit')" :disabled="disabled" />
       </v-col>
     </v-row>
   </FormLayout>

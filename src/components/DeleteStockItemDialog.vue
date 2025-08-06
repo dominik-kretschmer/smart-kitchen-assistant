@@ -42,8 +42,6 @@ function handleConfirm() {
     confirmColor="error"
     @cancel="handleCancel"
     @confirm="handleConfirm">
-
     {{ t('deleteStockDialog.confirmMessage', { name: item?.name }) }}
-
   </DialogBase>
 </template>

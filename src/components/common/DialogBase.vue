@@ -35,10 +35,7 @@ function confirmDialog() {
 </script>
 
 <template>
-  <v-dialog
-    v-model="dialog"
-    :max-width="maxWidth || '500px'"
-    :persistent="persistent">
+  <v-dialog v-model="dialog" :max-width="maxWidth || '500px'" :persistent="persistent">
     <v-card>
       <v-card-title class="text-h5">{{ title }}</v-card-title>
       <v-card-text>

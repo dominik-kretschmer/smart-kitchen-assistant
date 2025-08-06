@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
   try {
     const ingredient = await getIngredient(parseInt(req.params.id));
     if (!ingredient) {
-      return res.status(404).json({ error: 'Ingredient not found' });
+      return res.status(404).json({ error: 'FullIngredient not found' });
     }
     res.json(ingredient);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

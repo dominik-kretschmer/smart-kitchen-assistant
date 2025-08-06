@@ -1,5 +1,4 @@
 import './assets/styles/main.css';
-
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import { router } from './router/router.ts';
@@ -23,7 +22,6 @@ app.use(router);
 app.use(vuetify);
 app.use(i18n);
 
-// Initialize language
 const languageStore = useLanguageStore(pinia);
 languageStore.initLanguage();
 

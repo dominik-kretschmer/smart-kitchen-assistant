@@ -60,16 +60,10 @@ const protein = computed({
         :disabled="disabled" />
     </v-col>
     <v-col cols="6">
-      <QuantityInput
-        v-model="carbs"
-        :label="t('ingredients.carbsLabel')"
-        :disabled="disabled" />
+      <QuantityInput v-model="carbs" :label="t('ingredients.carbsLabel')" :disabled="disabled" />
     </v-col>
     <v-col cols="6">
-      <QuantityInput
-        v-model="fat"
-        :label="t('ingredients.fatLabel')"
-        :disabled="disabled" />
+      <QuantityInput v-model="fat" :label="t('ingredients.fatLabel')" :disabled="disabled" />
     </v-col>
     <v-col cols="6">
       <QuantityInput

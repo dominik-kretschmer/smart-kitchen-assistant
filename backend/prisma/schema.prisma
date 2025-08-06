@@ -26,7 +26,7 @@ model RecipeIngredient {
   @@id([recipeId, ingredientId])
 }
 
-model Ingredient {
+model FullIngredient {
   id                Int                @id @default(autoincrement())
   name              String
   calories          Float

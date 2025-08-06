@@ -4,16 +4,16 @@ import { useI18n } from '@/i18n';
 import FormTextField from './FormTextField.vue';
 import QuantityInput from './QuantityInput.vue';
 import UnitSelect from './UnitSelect.vue';
-import type { Ingredient } from '@/types/ingriedientTypes';
+import type { FullIngredient } from '@/types/ingriedientTypes';
 
 const props = defineProps<{
-  modelValue: Ingredient;
+  modelValue: FullIngredient;
   showRemoveButton?: boolean;
   disabled?: boolean;
 }>();
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Ingredient];
+  'update:modelValue': [value: FullIngredient];
   remove: [];
 }>();
 
@@ -63,10 +63,7 @@ function removeIngredient() {
         required />
     </v-col>
     <v-col cols="3">
-      <UnitSelect
-        v-model="unit"
-        :label="t('recipe.unit')"
-        :disabled="disabled" />
+      <UnitSelect v-model="unit" :label="t('recipe.unit')" :disabled="disabled" />
     </v-col>
     <v-col cols="1" class="d-flex align-center" v-if="showRemoveButton">
       <v-btn

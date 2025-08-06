@@ -1,9 +1,9 @@
-import type { Ingredient } from '@/types/ingriedientTypes.ts';
+import type { FullIngredient } from '@/types/ingriedientTypes.ts';
 
 export interface RecipeIngredient {
   ingredientId: number;
   amount: string;
-  ingredient: Ingredient;
+  ingredient: FullIngredient;
 }
 
 export interface Recipe {

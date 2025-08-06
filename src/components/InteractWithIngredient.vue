@@ -56,7 +56,6 @@ function saveRecipe() {
     :title="t('recipe.createNew')"
     :submitText="t('recipe.saveRecipe')"
     @submit="saveRecipe">
-
     <FormTextField
       v-model="recipeName"
       :label="t('recipe.recipeName')"
