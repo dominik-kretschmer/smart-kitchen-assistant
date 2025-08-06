@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useI18n } from '@/i18n';
-import FormLayout from './common/FormLayout.vue';
-import FormTextField from './common/FormTextField.vue';
-import IngredientForm from './common/IngredientForm.vue';
-
 const { t } = useI18n();
 const recipeName = ref('');
 const description = ref('');

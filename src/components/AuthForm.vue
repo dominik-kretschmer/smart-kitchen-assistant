@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useI18n } from '../i18n';
-
 const emit = defineEmits(['submit']);
 const username = ref('');
 const password = ref('');

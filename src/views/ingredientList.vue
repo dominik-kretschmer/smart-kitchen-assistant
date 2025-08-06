@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { ingredientService } from '../services/ingredientService';
-import { useAuth } from '../composables/useAuth';
-import { useI18n } from '@/i18n';
-import type { FullIngredient } from '@/types/ingriedientTypes.ts';
+import { useAuth } from '@/composables/useAuth.ts';
+import { ingredientService } from '@/services/ingredientService.ts';
 
 const { t } = useI18n();
 const ingredients = ref<FullIngredient[]>([]);

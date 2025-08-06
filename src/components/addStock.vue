@@ -1,20 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useI18n } from '@/i18n';
-import FormLayout from './common/FormLayout.vue';
-import FormTextField from './common/FormTextField.vue';
-import QuantityInput from './common/QuantityInput.vue';
-import UnitSelect from './common/UnitSelect.vue';
-
-const props = defineProps<{
-  disabled?: boolean;
-}>();
-
 const { t } = useI18n();
 const newItem = ref('');
 const quantity = ref(1);
 const unit = ref(t('units.piece'));
 const emit = defineEmits(['add-item']);
+const props = defineProps<{
+  disabled?: boolean;
+}>();
 
 function addItem() {
   if (newItem.value.trim() && !props.disabled) {

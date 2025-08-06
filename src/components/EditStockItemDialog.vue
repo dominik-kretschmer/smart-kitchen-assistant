@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import { StockItem } from '../types/stockTypes';
-import { useI18n } from '../i18n';
-import DialogBase from './common/DialogBase.vue';
-import FormTextField from './common/FormTextField.vue';
-import QuantityInput from './common/QuantityInput.vue';
-import UnitSelect from './common/UnitSelect.vue';
 
 const props = defineProps<{
   modelValue: boolean;

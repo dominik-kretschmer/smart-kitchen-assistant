@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import AuthForm from '../components/AuthForm.vue';
-import { useAuth } from '../composables/useAuth';
+
+import { useAuth } from '@/composables/useAuth.ts';
 
 const { error, isLoggedIn, checkLoginStatus, register } = useAuth();
 

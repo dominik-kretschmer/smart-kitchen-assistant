@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useI18n } from '../i18n';
 
 const { t } = useI18n();
 const items = ref([]);

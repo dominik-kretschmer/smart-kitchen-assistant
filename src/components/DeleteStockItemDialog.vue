@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { StockItem } from '../types/stockTypes';
-import { useI18n } from '../i18n';
-import DialogBase from './common/DialogBase.vue';
 
 const props = defineProps<{
   modelValue: boolean;

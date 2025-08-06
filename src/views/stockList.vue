@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import AddStock from '../components/addStock.vue';
-import EditStockItemDialog from '../components/EditStockItemDialog.vue';
-import DeleteStockItemDialog from '../components/DeleteStockItemDialog.vue';
-import { stockService } from '../services/stockService';
-import { useValidation } from '../composables/useValidation';
-import { useAuth } from '../composables/useAuth';
-import type { StockItem } from '../types/stockTypes';
-import { useI18n } from '../i18n';
+
+import { useValidation } from '@/composables/useValidation.ts';
+import { useAuth } from '@/composables/useAuth.ts';
+import { stockService } from '@/services/stockService.ts';
 
 const stockItems = ref<StockItem[]>([]);
 const loading = ref(false);

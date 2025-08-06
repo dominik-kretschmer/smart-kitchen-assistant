@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Recipe } from '../types/recipeTypes';
-import { useI18n } from '../i18n';
 
 const { t } = useI18n();
 
