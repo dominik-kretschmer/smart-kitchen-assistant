@@ -13,7 +13,7 @@ const navigationItems = [
   { path: '/ingredients', icon: 'mdi-food-apple', translationKey: 'navigation.ingredients', color: 'green' },
   { path: '/login', icon: 'mdi-login', translationKey: 'navigation.login', color: 'purple' },
   { path: '/register', icon: 'mdi-account-plus', translationKey: 'navigation.register', color: 'deep-orange' }
-] as const;
+];
 
 const routes = navigationItems.map(item => item.path);
 const activeIndex = computed({
@@ -29,9 +29,6 @@ const activeIndex = computed({
 const colorMap = new Map(navigationItems.map(item => [item.path, item.color]));
 const currentColor = computed(() => colorMap.get(route.path) ?? 'blue-grey');
 
-const toggleLanguage = () => {
-  languageStore.toggleLanguage();
-};
 </script>
 
 <template>
@@ -41,7 +38,7 @@ const toggleLanguage = () => {
         <v-icon>{{ item.icon }}</v-icon>
         <span>{{ t(item.translationKey) }}</span>
       </v-btn>
-      <v-btn @click="toggleLanguage">
+      <v-btn @click=" languageStore.toggleLanguage()">
         <v-icon>mdi-translate</v-icon>
         <span>{{ languageStore.isGerman ? 'EN' : 'DE' }}</span>
       </v-btn>

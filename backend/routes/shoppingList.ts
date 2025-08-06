@@ -9,7 +9,20 @@ import {
 
 router.post('/', async (req, res) => {
   try {
-    const shoppingListItem = await createShoppingList(req.body);
+    const userId = req.cookies.userId;
+    if (!userId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    // Add userId to the data and ensure user connection
+    const data = {
+      ...req.body,
+      user: {
+        connect: { id: parseInt(userId) }
+      }
+    };
+
+    const shoppingListItem = await createShoppingList(data);
     res.status(201).json(shoppingListItem);
   } catch (error) {
     console.error('Error creating shopping list item:', error);

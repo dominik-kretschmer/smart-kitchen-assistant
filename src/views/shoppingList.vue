@@ -1,90 +1,122 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Cookies from 'universal-cookie';
 import type { ShoppingListItem } from '@/types/shoppingListTypes';
-
+import type { FullIngredient } from '@/types/ingriedientTypes';
+import { shoppingListService } from '@/services/shoppingListService';
+import { ingredientService } from '@/services/ingredientService';
+import { useAuth } from '@/composables/useAuth';
 const { t } = useI18n();
-const cookies = new Cookies();
-const COOKIE_NAME = 'shopping_list';
-const COOKIE_OPTIONS = {
-  path: '/',
-  maxAge: 60 * 60 * 24 * 30, // 30 days
-  sameSite: 'strict' as const,
-};
+const { user, checkLoginStatus, isLoggedIn } = useAuth();
 
 const loading = ref(false);
 const error = ref('');
 const shoppingItems = ref<(ShoppingListItem & { purchased?: boolean })[]>([]);
+const availableIngredients = ref<FullIngredient[]>([]);
+
+const showAddForm = ref(false);
+const newItem = reactive({
+  amount: 0,
+  unit: '',
+  ingredient: null as FullIngredient | null
+});
 
 const clearError = () => {
   error.value = '';
 };
 
-const saveToCookies = () => {
-  cookies.set(COOKIE_NAME, shoppingItems.value, COOKIE_OPTIONS);
-};
-
-const loadFromCookies = () => {
+const loadShoppingList = async () => {
   loading.value = true;
   try {
-    const savedItems = cookies.get(COOKIE_NAME);
-    if (savedItems) {
-      shoppingItems.value = savedItems;
+    if (!isLoggedIn.value || !user.value?.id) {
+      await checkLoginStatus();
+    }
+
+    if (isLoggedIn.value && user.value?.id) {
+      const items = await shoppingListService.getShoppingListByUser(user.value.id);
+      shoppingItems.value = items;
+
+      // Load available ingredients
+      await loadIngredients();
+    } else {
+      error.value = t('shoppingList.loginRequired');
     }
   } catch (err) {
-    console.error('Error loading from cookies:', err);
+    console.error('Error loading shopping list:', err);
     error.value = t('shoppingList.loadError');
   } finally {
     loading.value = false;
   }
 };
 
-// These functions are defined for future use but not currently used in the UI
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const addItem = (item: Omit<ShoppingListItem, 'id'>) => {
+const loadIngredients = async () => {
   try {
-    // Generate a unique ID
-    const newItem = {
-      ...item,
-      id: Date.now(),
-      purchased: false
-    } as ShoppingListItem & { purchased: boolean };
+    availableIngredients.value = await ingredientService.getAllIngredients();
+  } catch (err) {
+    console.error('Error loading ingredients:', err);
+    error.value = t('shoppingList.ingredientsLoadError');
+  }
+};
 
-    shoppingItems.value.push(newItem);
-    saveToCookies();
+const addItem = async (item: Omit<ShoppingListItem, 'id'>) => {
+  try {
+    if (!item.ingredient) {
+      error.value = t('shoppingList.ingredientRequired');
+      return;
+    }
+
+    loading.value = true;
+    const newShoppingItem = await shoppingListService.createShoppingListItem(item);
+    shoppingItems.value.push(newShoppingItem);
+
+    // Reset form
+    newItem.amount = 0;
+    newItem.unit = '';
+    newItem.ingredient = null;
+    showAddForm.value = false;
   } catch (err) {
     console.error('Error adding item:', err);
     error.value = t('shoppingList.addError');
+  } finally {
+    loading.value = false;
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const removeItem = (id: number) => {
+const removeItem = async (id: number) => {
   try {
-    shoppingItems.value = shoppingItems.value.filter(item => item.id !== id);
-    saveToCookies();
+    loading.value = true;
+    const success = await shoppingListService.deleteShoppingListItem(id);
+    if (success) {
+      shoppingItems.value = shoppingItems.value.filter(item => item.id !== id);
+    } else {
+      error.value = t('shoppingList.removeError');
+    }
   } catch (err) {
     console.error('Error removing item:', err);
     error.value = t('shoppingList.removeError');
+  } finally {
+    loading.value = false;
   }
 };
 
-const markItemAsPurchased = (id: number, purchased: boolean) => {
+const markItemAsPurchased = async (id: number, purchased: boolean) => {
   try {
+    loading.value = true;
+    await shoppingListService.markItemAsPurchased(id, purchased);
     const index = shoppingItems.value.findIndex(item => item.id === id);
     if (index !== -1) {
       shoppingItems.value[index].purchased = purchased;
-      saveToCookies();
     }
   } catch (err) {
     console.error('Error updating item:', err);
     error.value = t('shoppingList.updateError');
+  } finally {
+    loading.value = false;
   }
 };
 
-onMounted(() => {
-  loadFromCookies();
+onMounted(async () => {
+  await loadShoppingList();
 });
 </script>
 <template>
@@ -99,6 +131,58 @@ onMounted(() => {
       @click:close="clearError()">
       {{ error }}
     </v-alert>
+
+    <!-- Add Item Button -->
+    <v-btn
+      color="primary"
+      class="mb-4"
+      @click="showAddForm = !showAddForm"
+      :disabled="!isLoggedIn">
+      <v-icon start>mdi-plus</v-icon>
+      {{ showAddForm ? t('common.cancel') : t('shoppingList.addItem') }}
+    </v-btn>
+
+    <!-- Add Item Form -->
+    <v-card v-if="showAddForm" class="mb-6 pa-4">
+      <v-card-title>{{ t('shoppingList.addNewItem') }}</v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col cols="12" sm="6">
+            <v-select
+              v-model="newItem.ingredient"
+              :items="availableIngredients"
+              item-title="name"
+              item-value="id"
+              return-object
+              :label="t('shoppingList.ingredient')"
+              required></v-select>
+          </v-col>
+          <v-col cols="6" sm="3">
+            <v-text-field
+              v-model.number="newItem.amount"
+              type="number"
+              :label="t('shoppingList.amount')"
+              required></v-text-field>
+          </v-col>
+          <v-col cols="6" sm="3">
+            <v-text-field
+              v-model="newItem.unit"
+              :label="t('shoppingList.unit')"
+              required></v-text-field>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          color="primary"
+          @click="addItem(newItem as Omit<ShoppingListItem, 'id'>)"
+          :disabled="!newItem.ingredient || newItem.amount <= 0 || !newItem.unit">
+          {{ t('common.add') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('shoppingList.myList') }}</h2>
       <v-progress-circular
@@ -109,15 +193,19 @@ onMounted(() => {
       <div v-else>
         <v-list v-if="shoppingItems.length > 0" class="bg-transparent">
           <v-list-item v-for="item in shoppingItems" :key="item.id">
-            <v-list-item-title>{{ item.ingredient.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ item.amount }} {{ item.unit }}</v-list-item-subtitle>
-            <div class="d-flex">
+            <template v-slot:prepend>
               <v-checkbox
-                :label="t('shoppingList.purchased')"
                 :model-value="item.purchased"
                 hide-details
                 @change="(value) => markItemAsPurchased(item.id, value)"></v-checkbox>
-            </div>
+            </template>
+            <v-list-item-title>{{ item.ingredient.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ item.amount }} {{ item.unit }}</v-list-item-subtitle>
+            <template v-slot:append>
+              <v-btn icon @click="removeItem(item.id)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
           </v-list-item>
         </v-list>
         <p v-else class="text-center py-4 text-gray-500">{{ t('shoppingList.noItems') }}</p>
