@@ -1,39 +1,33 @@
 <script setup lang="ts">
+
 const route = useRoute();
 const router = useRouter();
 const languageStore = useLanguageStore();
 const { t } = useI18n();
-const routes = ['/', '/recipe', '/shoppingList', '/stock', '/ingredients', '/login', '/register'];
 
-const value = computed({
+const navigationItems = [
+  { path: '/', icon: 'mdi-television-play', translationKey: 'navigation.home', color: 'blue-grey' },
+  { path: '/recipe', icon: 'mdi-book', translationKey: 'navigation.recipe', color: 'teal' },
+  { path: '/shoppingList', icon: 'mdi-cart', translationKey: 'navigation.shopping', color: 'brown' },
+  { path: '/stock', icon: 'mdi-warehouse', translationKey: 'navigation.stock', color: 'indigo' },
+  { path: '/ingredients', icon: 'mdi-food-apple', translationKey: 'navigation.ingredients', color: 'green' },
+  { path: '/login', icon: 'mdi-login', translationKey: 'navigation.login', color: 'purple' },
+  { path: '/register', icon: 'mdi-account-plus', translationKey: 'navigation.register', color: 'deep-orange' }
+] as const;
+
+const routes = navigationItems.map(item => item.path);
+const activeIndex = computed({
   get: () => routes.indexOf(route.path),
   set: (index: number) => {
-    if (routes[index]) {
-      router.replace(routes[index]);
+    const targetRoute = routes[index];
+    if (targetRoute && targetRoute !== route.path) {
+      router.replace(targetRoute);
     }
   },
 });
 
-const color = computed(() => {
-  switch (route.path) {
-    case '/':
-      return 'blue-grey';
-    case '/recipe':
-      return 'teal';
-    case '/shoppingList':
-      return 'brown';
-    case '/stock':
-      return 'indigo';
-    case '/ingredients':
-      return 'green';
-    case '/login':
-      return 'purple';
-    case '/register':
-      return 'deep-orange';
-    default:
-      return 'blue-grey';
-  }
-});
+const colorMap = new Map(navigationItems.map(item => [item.path, item.color]));
+const currentColor = computed(() => colorMap.get(route.path) ?? 'blue-grey');
 
 const toggleLanguage = () => {
   languageStore.toggleLanguage();
@@ -42,35 +36,13 @@ const toggleLanguage = () => {
 
 <template>
   <v-layout class="overflow-visible" style="height: 56px">
-    <v-bottom-navigation v-model="value" :bg-color="color" mode="shift">
-      <v-btn>
-        <v-icon>mdi-television-play</v-icon>
-        <span>{{ t('navigation.home') }}</span>
+    <v-bottom-navigation v-model="activeIndex" :bg-color="currentColor" mode="shift">
+      <v-btn v-for="item in navigationItems" :key="item.path">
+        <v-icon>{{ item.icon }}</v-icon>
+        <span>{{ t(item.translationKey) }}</span>
       </v-btn>
-      <v-btn>
-        <v-icon>mdi-book</v-icon>
-        <span>{{ t('navigation.recipe') }}</span>
-      </v-btn>
-      <v-btn>
-        <v-icon>mdi-cart</v-icon>
-        <span>{{ t('navigation.shopping') }}</span>
-      </v-btn>
-      <v-btn>
-        <v-icon>mdi-warehouse</v-icon>
-        <span>{{ t('navigation.stock') }}</span>
-      </v-btn>
-      <v-btn>
-        <v-icon>mdi-food-apple</v-icon>
-        <span>{{ t('navigation.ingredients') }}</span>
-      </v-btn>
-      <v-btn>
-        <v-icon>mdi-login</v-icon>
-        <span>{{ t('navigation.login') }}</span>
-      </v-btn>
-      <v-btn>
-        <v-icon>mdi-account-plus</v-icon>
-        <span>{{ t('navigation.register') }}</span>
-      </v-btn>
+
+      <!-- Sprach-Toggle Button -->
       <v-btn @click="toggleLanguage">
         <v-icon>mdi-translate</v-icon>
         <span>{{ languageStore.isGerman ? 'EN' : 'DE' }}</span>

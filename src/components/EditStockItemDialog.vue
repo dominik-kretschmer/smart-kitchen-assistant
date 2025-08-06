@@ -1,24 +1,21 @@
 <script setup lang="ts">
+
 const props = defineProps<{
   modelValue: boolean;
   item: StockItem;
 }>();
-
+const { t } = useI18n();
+const localItem = ref<StockItem>({ ...props.item });
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];
   save: [item: StockItem];
 }>();
 
-const { t } = useI18n();
-const localItem = ref<StockItem>({ ...props.item });
-
-// Computed property for v-model binding
 const dialog = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 });
 
-// Update local item when prop changes
 watch(
   () => props.item,
   (newItem) => {
@@ -26,10 +23,6 @@ watch(
   },
   { deep: true },
 );
-
-function handleCancel() {
-  emit('update:modelValue', false);
-}
 
 function handleConfirm() {
   emit('save', localItem.value);
@@ -43,7 +36,7 @@ function handleConfirm() {
     :title="t('editStockDialog.title')"
     :cancelText="t('editStockDialog.cancel')"
     :confirmText="t('editStockDialog.save')"
-    @cancel="handleCancel"
+    @cancel="emit('update:modelValue', false)"
     @confirm="handleConfirm">
     <v-container>
       <v-row>

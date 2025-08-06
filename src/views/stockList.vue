@@ -37,13 +37,13 @@ onMounted(async () => {
 function validateUserInput(item: Omit<StockItem, 'id'> | undefined = undefined) {
   if (!userId.value) {
     error.value = t('errors.userNotLoggedIn');
-    return;
+    throw error;
   }
   if (item !== undefined) {
     const validationResult = validateStockItem(item);
     if (!validationResult.isValid) {
       error.value = validationResult.errorMessage;
-      return;
+      throw error;
     }
   }
   loading.value = true;
@@ -51,10 +51,7 @@ function validateUserInput(item: Omit<StockItem, 'id'> | undefined = undefined) 
 }
 
 async function useCreateStock(item: Omit<StockItem, 'id'>) {
-  if (!userId.value) {
-    error.value = t('errors.userNotLoggedIn');
-    return;
-  }
+  validateUserInput();
   const stockData = {
     userId: userId.value,
     ...item,
@@ -69,9 +66,9 @@ async function handleStockItems(item: Omit<StockItem, 'id'> | undefined = undefi
   try {
     if (item === undefined) {
       stockItems.value = await stockService.getStockByUser(userId.value);
-    } else {
-      await useCreateStock(item);
+      return;
     }
+    await useCreateStock(item);
   } catch (err) {
     error.value = t('errors.failedToLoadStock') + err;
   } finally {
