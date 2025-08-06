@@ -1,4 +1,4 @@
-import type { Ingredient } from '../types/recipeTypes';
+import type { Ingredient } from '@/types/ingriedientTypes.ts'
 
 const API_URL = import.meta.env.VITE_API_URL;
 const ENDPOINT = '/api/ingredients';

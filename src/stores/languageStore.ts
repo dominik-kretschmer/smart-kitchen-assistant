@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { i18n } from '@/i18n';
+
 type Language = 'en' | 'de';
 
 export const useLanguageStore = defineStore('language', {
@@ -23,11 +24,11 @@ export const useLanguageStore = defineStore('language', {
       const savedLanguage = localStorage.getItem('language') as Language;
       if (savedLanguage) {
         this.setLanguage(savedLanguage);
-      } else {
-        const browserLang = navigator.language.split('-')[0] as Language;
-        const supportedLang = ['en', 'de'].includes(browserLang) ? browserLang : 'de';
-        this.setLanguage(supportedLang);
+        return;
       }
+      const browserLang = navigator.language.split('-')[0] as Language;
+      const supportedLang = ['en', 'de'].includes(browserLang) ? browserLang : 'de';
+      this.setLanguage(supportedLang);
     },
   },
 

@@ -2,6 +2,10 @@
 import { ref, watch, computed } from 'vue';
 import { StockItem } from '../types/stockTypes';
 import { useI18n } from '../i18n';
+import DialogBase from './common/DialogBase.vue';
+import FormTextField from './common/FormTextField.vue';
+import QuantityInput from './common/QuantityInput.vue';
+import UnitSelect from './common/UnitSelect.vue';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -31,57 +35,45 @@ watch(
   { deep: true },
 );
 
-function closeDialog() {
+function handleCancel() {
   emit('update:modelValue', false);
 }
 
-function saveItem() {
+function handleConfirm() {
   emit('save', localItem.value);
+  emit('update:modelValue', false);
 }
 </script>
 
 <template>
-  <v-dialog v-model="dialog" max-width="500px">
-    <v-card>
-      <v-card-title>
-        <span class="text-h5">{{ t('editStockDialog.title') }}</span>
-      </v-card-title>
+  <DialogBase
+    v-model="dialog"
+    :title="t('editStockDialog.title')"
+    :cancelText="t('editStockDialog.cancel')"
+    :confirmText="t('editStockDialog.save')"
+    @cancel="handleCancel"
+    @confirm="handleConfirm">
 
-      <v-card-text>
-        <v-container>
-          <v-row>
-            <v-col cols="12">
-              <v-text-field
-                v-model="localItem.name"
-                :label="t('editStockDialog.name')"
-                required></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field
-                v-model.number="localItem.quantity"
-                :label="t('editStockDialog.quantity')"
-                type="number"
-                required></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field
-                v-model="localItem.unit"
-                :label="t('editStockDialog.unit')"
-                required></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
-          {{ t('editStockDialog.cancel') }}
-        </v-btn>
-        <v-btn color="blue-darken-1" variant="text" @click="saveItem">
-          {{ t('editStockDialog.save') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    <v-container>
+      <v-row>
+        <v-col cols="12">
+          <FormTextField
+            v-model="localItem.name"
+            :label="t('editStockDialog.name')"
+            required />
+        </v-col>
+        <v-col cols="6">
+          <QuantityInput
+            v-model="localItem.quantity"
+            :label="t('editStockDialog.quantity')"
+            required />
+        </v-col>
+        <v-col cols="6">
+          <UnitSelect
+            v-model="localItem.unit"
+            :label="t('editStockDialog.unit')" />
+        </v-col>
+      </v-row>
+    </v-container>
+  </DialogBase>
 </template>

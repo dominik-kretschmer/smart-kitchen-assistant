@@ -2,8 +2,8 @@
 import { onMounted, ref } from 'vue';
 import { ingredientService } from '../services/ingredientService';
 import { useAuth } from '../composables/useAuth';
-import type { Ingredient } from '../types/recipeTypes';
 import { useI18n } from '../i18n';
+import type { Ingredient } from '@/types/ingriedientTypes.ts';
 
 const { t } = useI18n();
 const ingredients = ref<Ingredient[]>([]);

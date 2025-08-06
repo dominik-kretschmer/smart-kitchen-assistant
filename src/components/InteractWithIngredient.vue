@@ -1,23 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useI18n } from '../i18n';
+import { useI18n } from '@/i18n';
+import FormLayout from './common/FormLayout.vue';
+import FormTextField from './common/FormTextField.vue';
+import IngredientForm from './common/IngredientForm.vue';
 
 const { t } = useI18n();
-
 const recipeName = ref('');
 const description = ref('');
 const ingredients = ref([{ name: '', quantity: 1, unit: t('units.piece') }]);
 const steps = ref(['']);
-const units = [
-  t('units.piece'),
-  t('units.g'),
-  t('units.kg'),
-  t('units.ml'),
-  t('units.l'),
-  t('units.tbsp'),
-  t('units.tsp'),
-  t('units.package'),
-];
 
 const emit = defineEmits(['save-recipe']);
 
@@ -29,10 +21,6 @@ function removeIngredient(index: number) {
   if (ingredients.value.length > 1) {
     ingredients.value.splice(index, 1);
   }
-}
-
-function addStep() {
-  steps.value.push('');
 }
 
 function removeStep(index: number) {
@@ -63,108 +51,66 @@ function saveRecipe() {
   }
 }
 </script>
-
 <template>
-  <div class="create-recipe-form p-4 bg-gray-100 rounded-lg">
-    <h2 class="text-xl font-semibold mb-3">{{ t('recipe.createNew') }}</h2>
-    <v-form @submit.prevent="saveRecipe">
-      <v-text-field
-        v-model="recipeName"
-        :label="t('recipe.recipeName')"
-        :placeholder="t('recipe.recipeNamePlaceholder')"
-        variant="outlined"
-        density="comfortable"
-        class="mb-3"
-        required></v-text-field>
+  <FormLayout
+    :title="t('recipe.createNew')"
+    :submitText="t('recipe.saveRecipe')"
+    @submit="saveRecipe">
 
-      <v-textarea
-        v-model="description"
-        :label="t('recipe.description')"
-        :placeholder="t('recipe.descriptionPlaceholder')"
-        variant="outlined"
-        density="comfortable"
-        class="mb-3"
-        rows="2"></v-textarea>
+    <FormTextField
+      v-model="recipeName"
+      :label="t('recipe.recipeName')"
+      :placeholder="t('recipe.recipeNamePlaceholder')"
+      customClass="mb-3"
+      required />
 
-      <h3 class="text-lg font-medium mb-2">{{ t('recipe.ingredientsSection') }}</h3>
-      <div v-for="(ingredient, index) in ingredients" :key="index" class="mb-2">
-        <v-row>
-          <v-col cols="5">
-            <v-text-field
-              v-model="ingredient.name"
-              :label="t('recipe.ingredient')"
-              :placeholder="t('recipe.ingredientPlaceholder')"
-              variant="outlined"
-              density="comfortable"
-              required></v-text-field>
-          </v-col>
-          <v-col cols="3">
-            <v-text-field
-              v-model.number="ingredient.quantity"
-              :label="t('recipe.quantity')"
-              type="number"
-              min="0"
-              variant="outlined"
-              density="comfortable"
-              required></v-text-field>
-          </v-col>
-          <v-col cols="3">
-            <v-select
-              v-model="ingredient.unit"
-              :items="units"
-              :label="t('recipe.unit')"
-              variant="outlined"
-              density="comfortable"></v-select>
-          </v-col>
-          <v-col cols="1" class="d-flex align-center">
-            <v-btn
-              icon
-              variant="text"
-              density="comfortable"
-              color="error"
-              @click="removeIngredient(index)"
-              :disabled="ingredients.length <= 1">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </div>
+    <FormTextField
+      v-model="description"
+      :label="t('recipe.description')"
+      :placeholder="t('recipe.descriptionPlaceholder')"
+      :multiLine="true"
+      :rows="2"
+      customClass="mb-3" />
 
-      <v-btn prepend-icon="mdi-plus" variant="text" class="mb-4" @click="addIngredient">
-        {{ t('recipe.addIngredient') }}
-      </v-btn>
+    <h3 class="text-lg font-medium mb-2">{{ t('recipe.ingredientsSection') }}</h3>
+    <div v-for="(ingredient, index) in ingredients" :key="index" class="mb-2">
+      <IngredientForm
+        v-model="ingredients[index]"
+        :showRemoveButton="ingredients.length > 1"
+        @remove="removeIngredient(index)" />
+    </div>
 
-      <h3 class="text-lg font-medium mb-2">{{ t('recipe.steps') }}</h3>
-      <div v-for="(step, index) in steps" :key="index" class="mb-2">
-        <v-row>
-          <v-col cols="11">
-            <v-textarea
-              v-model="steps[index]"
-              :label="t('recipe.step', { number: index + 1 })"
-              variant="outlined"
-              density="comfortable"
-              rows="2"
-              required></v-textarea>
-          </v-col>
-          <v-col cols="1" class="d-flex align-center">
-            <v-btn
-              icon
-              variant="text"
-              density="comfortable"
-              color="error"
-              @click="removeStep(index)"
-              :disabled="steps.length <= 1">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </div>
+    <v-btn prepend-icon="mdi-plus" variant="text" class="mb-4" @click="addIngredient">
+      {{ t('recipe.addIngredient') }}
+    </v-btn>
 
-      <v-btn prepend-icon="mdi-plus" variant="text" class="mb-4" @click="addStep">
-        {{ t('recipe.addStep') }}
-      </v-btn>
+    <h3 class="text-lg font-medium mb-2">{{ t('recipe.steps') }}</h3>
+    <div v-for="(step, index) in steps" :key="index" class="mb-2">
+      <v-row>
+        <v-col cols="11">
+          <FormTextField
+            v-model="steps[index]"
+            :label="t('recipe.step', { number: index + 1 })"
+            :multiLine="true"
+            :rows="2"
+            required />
+        </v-col>
+        <v-col cols="1" class="d-flex align-center">
+          <v-btn
+            icon
+            variant="text"
+            density="comfortable"
+            color="error"
+            @click="removeStep(index)"
+            :disabled="steps.length <= 1">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </div>
 
-      <v-btn color="primary" type="submit" block class="mt-4"> {{ t('recipe.saveRecipe') }} </v-btn>
-    </v-form>
-  </div>
+    <v-btn prepend-icon="mdi-plus" variant="text" class="mb-4" @click="steps.push('')">
+      {{ t('recipe.addStep') }}
+    </v-btn>
+  </FormLayout>
 </template>
