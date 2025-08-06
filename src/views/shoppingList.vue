@@ -18,7 +18,7 @@ const showAddForm = ref(false);
 const newItem = reactive({
   amount: 0,
   unit: '',
-  ingredient: null as FullIngredient | null
+  ingredient: null as FullIngredient | null,
 });
 
 const clearError = () => {
@@ -87,7 +87,7 @@ const removeItem = async (id: number) => {
     loading.value = true;
     const success = await shoppingListService.deleteShoppingListItem(id);
     if (success) {
-      shoppingItems.value = shoppingItems.value.filter(item => item.id !== id);
+      shoppingItems.value = shoppingItems.value.filter((item) => item.id !== id);
     } else {
       error.value = t('shoppingList.removeError');
     }
@@ -103,7 +103,7 @@ const markItemAsPurchased = async (id: number, purchased: boolean) => {
   try {
     loading.value = true;
     await shoppingListService.markItemAsPurchased(id, purchased);
-    const index = shoppingItems.value.findIndex(item => item.id === id);
+    const index = shoppingItems.value.findIndex((item) => item.id === id);
     if (index !== -1) {
       shoppingItems.value[index].purchased = purchased;
     }
@@ -133,11 +133,7 @@ onMounted(async () => {
     </v-alert>
 
     <!-- Add Item Button -->
-    <v-btn
-      color="primary"
-      class="mb-4"
-      @click="showAddForm = !showAddForm"
-      :disabled="!isLoggedIn">
+    <v-btn color="primary" class="mb-4" @click="showAddForm = !showAddForm" :disabled="!isLoggedIn">
       <v-icon start>mdi-plus</v-icon>
       {{ showAddForm ? t('common.cancel') : t('shoppingList.addItem') }}
     </v-btn>

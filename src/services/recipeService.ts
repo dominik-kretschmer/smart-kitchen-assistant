@@ -39,5 +39,5 @@ export const recipeService = {
     // Will delete recipe at `${API_URL}${ENDPOINT}/${id}`
     console.log(`Will delete recipe with id: ${id}`);
     return true;
-  }
+  },
 };

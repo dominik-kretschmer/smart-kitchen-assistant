@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const route = useRoute();
 const router = useRouter();
 const languageStore = useLanguageStore();
@@ -8,14 +7,29 @@ const { t } = useI18n();
 const navigationItems = [
   { path: '/', icon: 'mdi-television-play', translationKey: 'navigation.home', color: 'blue-grey' },
   { path: '/recipe', icon: 'mdi-book', translationKey: 'navigation.recipe', color: 'teal' },
-  { path: '/shoppingList', icon: 'mdi-cart', translationKey: 'navigation.shopping', color: 'brown' },
+  {
+    path: '/shoppingList',
+    icon: 'mdi-cart',
+    translationKey: 'navigation.shopping',
+    color: 'brown',
+  },
   { path: '/stock', icon: 'mdi-warehouse', translationKey: 'navigation.stock', color: 'indigo' },
-  { path: '/ingredients', icon: 'mdi-food-apple', translationKey: 'navigation.ingredients', color: 'green' },
+  {
+    path: '/ingredients',
+    icon: 'mdi-food-apple',
+    translationKey: 'navigation.ingredients',
+    color: 'green',
+  },
   { path: '/login', icon: 'mdi-login', translationKey: 'navigation.login', color: 'purple' },
-  { path: '/register', icon: 'mdi-account-plus', translationKey: 'navigation.register', color: 'deep-orange' }
+  {
+    path: '/register',
+    icon: 'mdi-account-plus',
+    translationKey: 'navigation.register',
+    color: 'deep-orange',
+  },
 ];
 
-const routes = navigationItems.map(item => item.path);
+const routes = navigationItems.map((item) => item.path);
 const activeIndex = computed({
   get: () => routes.indexOf(route.path),
   set: (index: number) => {
@@ -26,9 +40,8 @@ const activeIndex = computed({
   },
 });
 
-const colorMap = new Map(navigationItems.map(item => [item.path, item.color]));
+const colorMap = new Map(navigationItems.map((item) => [item.path, item.color]));
 const currentColor = computed(() => colorMap.get(route.path) ?? 'blue-grey');
-
 </script>
 
 <template>
@@ -38,7 +51,7 @@ const currentColor = computed(() => colorMap.get(route.path) ?? 'blue-grey');
         <v-icon>{{ item.icon }}</v-icon>
         <span>{{ t(item.translationKey) }}</span>
       </v-btn>
-      <v-btn @click=" languageStore.toggleLanguage()">
+      <v-btn @click="languageStore.toggleLanguage()">
         <v-icon>mdi-translate</v-icon>
         <span>{{ languageStore.isGerman ? 'EN' : 'DE' }}</span>
       </v-btn>

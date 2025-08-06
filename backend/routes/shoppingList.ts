@@ -21,11 +21,11 @@ router.post('/', async (req, res) => {
     const data = {
       ...restOfBody,
       user: {
-        connect: { id: parseInt(userId) }
+        connect: { id: parseInt(userId) },
       },
       ingredient: {
-        connect: { id: ingredient.id }
-      }
+        connect: { id: ingredient.id },
+      },
     };
 
     const shoppingListItem = await createShoppingList(data);
