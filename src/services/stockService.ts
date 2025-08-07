@@ -1,5 +1,5 @@
 import type { StockItem, UpdatedStockItem } from '../types/stockTypes';
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiCallService } from '@/services/apiCallService.ts';
 
 const endPoints = {
   stock: import.meta.env.VITE_API_ENDPOINT_STOCK,
@@ -8,44 +8,24 @@ const endPoints = {
 
 export const stockService = {
   async createStock(stockData: StockItem) {
-    const response = await fetch(`${API_URL}${endPoints.stock}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(stockData),
-      credentials: 'include',
-    });
-    return await response.json();
+    return await apiCallService('POST', endPoints.stock, stockData);
   },
 
   async getStockByUser(userId: number | null) {
     if (userId === null) {
       throw Error('userId is null ');
     }
-    const response = await fetch(`${API_URL}${endPoints.stockUser}/${userId}`, {
-      credentials: 'include',
-    });
-    return await response.json();
+    const fullEndpoint = endPoints.stockUser + '/' + userId;
+    return await apiCallService('GET', fullEndpoint);
   },
 
   async updateStock(id: number, stockData: UpdatedStockItem) {
-    const response = await fetch(`${API_URL}${endPoints.stock}/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(stockData),
-      credentials: 'include',
-    });
-    return await response.json();
+    const fullEndpoint = endPoints.stock + '/' + id;
+    return await apiCallService('PUT', fullEndpoint, stockData);
   },
 
   async deleteStock(id: number) {
-    const response = await fetch(`${API_URL}${endPoints.stock}/${id}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
-    return response.status === 204;
+    const fullEndpoint = endPoints.stock + '/' + id;
+    return apiCallService('DELETE', fullEndpoint);
   },
 };

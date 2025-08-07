@@ -1,6 +1,6 @@
 import type { ShoppingListItem } from '../types/shoppingListTypes';
+import { apiCallService } from '@/services/apiCallService.ts';
 
-const API_URL = import.meta.env.VITE_API_URL;
 const endPoints = {
   shoppingList: import.meta.env.VITE_API_ENDPOINT_SHOPPING_LIST,
   shoppingListUser: import.meta.env.VITE_API_ENDPOINT_SHOPPING_LIST_USER,
@@ -8,56 +8,30 @@ const endPoints = {
 
 export const shoppingListService = {
   async createShoppingListItem(shoppingListItem: Omit<ShoppingListItem, 'id'>) {
-    const response = await fetch(`${API_URL}${endPoints.shoppingList}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(shoppingListItem),
-      credentials: 'include',
-    });
-    return await response.json();
+    return await apiCallService('POST' , endPoints.shoppingList, shoppingListItem);
   },
 
   async getShoppingListByUser(userId: number | null) {
     if (userId === null) {
       throw Error('userId is null');
     }
-    const response = await fetch(`${API_URL}${endPoints.shoppingListUser}/${userId}`, {
-      credentials: 'include',
-    });
-    return await response.json();
+    const fullEndpoint = endPoints.shoppingListUser+"/"+userId
+    return apiCallService('GET',fullEndpoint);
   },
 
   async updateShoppingListItem(id: number, shoppingListItem: Partial<ShoppingListItem>) {
-    const response = await fetch(`${API_URL}${endPoints.shoppingList}/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(shoppingListItem),
-      credentials: 'include',
-    });
-    return await response.json();
+    const fullEndpoint = endPoints.shoppingList+"/"+id
+    return apiCallService('PUT',fullEndpoint , shoppingListItem);
   },
 
   async deleteShoppingListItem(id: number) {
-    const response = await fetch(`${API_URL}${endPoints.shoppingList}/${id}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
-    return response.status === 204;
+    const fullEndpoint = endPoints.shoppingList+"/"+id
+    const response = await apiCallService('DELETE',fullEndpoint);
+    return  response.status === 204;
   },
 
   async markItemAsPurchased(id: number, purchased: boolean) {
-    const response = await fetch(`${API_URL}${endPoints.shoppingList}/${id}/purchased`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ purchased }),
-      credentials: 'include',
-    });
-    return await response.json();
+    const fullEndpoint = endPoints.shoppingList+"/"+id+"/purchased"
+    return apiCallService('PUT',fullEndpoint , purchased);
   },
 };

@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiCallService } from '@/services/apiCallService.ts';
 
 const endPoints: { [key: string]: string } = {
   login: import.meta.env.VITE_API_ENDPOINT_LOGIN,
@@ -8,20 +8,10 @@ const endPoints: { [key: string]: string } = {
 
 export const authService = {
   async checkLoginStatus() {
-    const response = await fetch(`${API_URL}${endPoints.me}`, {
-      credentials: 'include',
-    });
-    return await response.json();
+    return await apiCallService("GET" , endPoints.me)
   },
   async auth(username: string, password: string, methode: string) {
-    const response = await fetch(`${API_URL}${endPoints[methode]}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-      credentials: 'include',
-    });
-    return await response.json();
+    const body = { username, password };
+    return await apiCallService('POST' , endPoints[methode] , body)
   },
 };

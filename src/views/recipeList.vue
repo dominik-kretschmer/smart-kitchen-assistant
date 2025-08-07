@@ -13,12 +13,10 @@ const recipeToEdit = ref<Recipe | null>(null);
 const loadRecipes = async () => {
   isLoading.value = true;
   error.value = '';
-
   try {
     recipes.value = await recipeService.getAllRecipes();
   } catch (err) {
-    console.error('Error loading recipes:', err);
-    error.value = t('recipe.loadError') || 'Failed to load recipes';
+    error.value = t('recipe.loadError') + err;
   } finally {
     isLoading.value = false;
   }
@@ -81,7 +79,7 @@ const handleUpdateRecipe = async (recipeData) => {
     const apiRecipeData = {
       name: recipeData.name,
       steps: recipeData.steps.join('\n\n'),
-      recipeIngredients: recipeData.ingredients.map((ing ) => ({
+      recipeIngredients: recipeData.ingredients.map((ing) => ({
         ingredientId: 0,
         amount: `${ing.quantity} ${ing.unit}`,
         ingredient: {
@@ -130,10 +128,7 @@ onMounted(async () => {
         :recipe="recipeToEdit"
         :isEditing="true"
         @save-recipe="handleUpdateRecipe" />
-      <v-btn
-        color="secondary"
-        class="mt-2"
-        @click="cancelEdit">
+      <v-btn color="secondary" class="mt-2" @click="cancelEdit">
         {{ t('common.cancel') }}
       </v-btn>
     </div>
