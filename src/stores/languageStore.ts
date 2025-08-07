@@ -29,7 +29,5 @@ export const useLanguageStore = defineStore('language', {
   },
   getters: {
     language: (state) => state.currentLanguage,
-    isEnglish: (state) => state.currentLanguage === 'en',
-    isGerman: (state) => state.currentLanguage === 'de',
   },
 });
