@@ -29,11 +29,4 @@ app.use('/api/auth', authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log('Available endpoints:');
-  console.log('- /api/recipes');
-  console.log('- /api/ingredients');
-  console.log('- /api/users');
-  console.log('- /api/shopping-lists');
-  console.log('- /api/stock');
-  console.log('- /api/auth');
 });

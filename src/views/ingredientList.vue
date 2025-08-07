@@ -2,6 +2,8 @@
 import { useAuth } from '@/composables/useAuth.ts';
 import { ingredientService } from '@/services/ingredientService.ts';
 import { useStatus } from '@/composables/useStatus.ts';
+import CreateNewIngredient from '@/components/CreateNewIngredient.vue';
+import type { FullIngredient } from '@/types/ingriedientTypes';
 
 const { t } = useI18n();
 const ingredients = ref<FullIngredient[]>([]);
@@ -36,7 +38,7 @@ onMounted(async () => {
       await loadIngredients();
     }
   } catch (err) {
-    console.error('Error checking login status:', err);
+    error.value = '' + err;
   }
 });
 
@@ -47,36 +49,21 @@ async function loadIngredients() {
   try {
     ingredients.value = await ingredientService.getAllIngredients();
   } catch (err) {
-    error.value = t('errors.failedToLoadIngredients');
-    console.error(err);
-  } finally {
-    isLoading.value = false;
+    error.value = t('errors.failedToLoadIngredients') + err;
   }
+  isLoading.value = false;
 }
 
-async function addIngredient() {
-  if (!newIngredient.value.name) {
-    error.value = t('errors.nameRequired');
-    return;
-  }
-
-  isLoading.value = true;
-  try {
-    const createdIngredient = await ingredientService.createIngredient(newIngredient.value);
-    ingredients.value.push(createdIngredient);
-    newIngredientDialog.value = false;
-    newIngredient.value = {
-      name: '',
-      calories: 0,
-      carbs: 0,
-      fat: 0,
-      protein: 0,
-    };
-  } catch (err) {
-    error.value = t('errors.failedToCreateIngredient' + err);
-  } finally {
-    isLoading.value = false;
-  }
+function handleIngredientCreated(createdIngredient: FullIngredient) {
+  ingredients.value.push(createdIngredient);
+  // Reset the form
+  newIngredient.value = {
+    name: '',
+    calories: 0,
+    carbs: 0,
+    fat: 0,
+    protein: 0,
+  };
 }
 
 function openEditDialog(item: FullIngredient) {
@@ -84,33 +71,10 @@ function openEditDialog(item: FullIngredient) {
   editDialog.value = true;
 }
 
-async function updateIngredient() {
-  if (!editedItem.value.name) {
-    error.value = t('errors.nameRequired');
-    return;
-  }
-
-  isLoading.value = true;
-  try {
-    const updatedItem = await ingredientService.updateIngredient(editedItem.value.id, {
-      name: editedItem.value.name,
-      calories: editedItem.value.calories,
-      carbs: editedItem.value.carbs,
-      fat: editedItem.value.fat,
-      protein: editedItem.value.protein,
-    });
-
-    const index = ingredients.value.findIndex((item) => item.id === editedItem.value.id);
-    if (index !== -1) {
-      ingredients.value[index] = updatedItem;
-    }
-
-    editDialog.value = false;
-  } catch (err) {
-    error.value = t('errors.failedToUpdateIngredient');
-    console.error(err);
-  } finally {
-    isLoading.value = false;
+function handleIngredientUpdated(updatedIngredient: FullIngredient) {
+  const index = ingredients.value.findIndex((item) => item.id === updatedIngredient.id);
+  if (index !== -1) {
+    ingredients.value[index] = updatedIngredient;
   }
 }
 </script>
@@ -127,11 +91,9 @@ async function updateIngredient() {
       @click:close="error = ''">
       {{ error }}
     </v-alert>
-
     <v-btn color="primary" class="mb-4" @click="newIngredientDialog = true" :disabled="isLoading">
       {{ t('ingredients.addNew') }}
     </v-btn>
-
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('ingredients.allIngredients') }}</h2>
       <div v-if="!isLoading">
@@ -153,110 +115,24 @@ async function updateIngredient() {
         <p v-else class="text-center py-4 text-gray-500">{{ t('ingredients.noIngredients') }}</p>
       </div>
     </div>
-
-    <v-dialog v-model="newIngredientDialog" max-width="500px">
-      <v-card>
-        <v-card-title>{{ t('ingredients.addIngredient') }}</v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="newIngredient.name"
-                  :label="t('ingredients.name')"
-                  required></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model.number="newIngredient.calories"
-                  :label="t('ingredients.caloriesLabel')"
-                  type="number"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model.number="newIngredient.carbs"
-                  :label="t('ingredients.carbsLabel')"
-                  type="number"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model.number="newIngredient.fat"
-                  :label="t('ingredients.fatLabel')"
-                  type="number"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model.number="newIngredient.protein"
-                  :label="t('ingredients.proteinLabel')"
-                  type="number"></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="newIngredientDialog = false">
-            {{ t('ingredients.cancel') }}
-          </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="addIngredient">
-            {{ t('ingredients.save') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="editDialog" max-width="500px">
-      <v-card>
-        <v-card-title>{{ t('ingredients.editIngredient') }}</v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="editedItem.name"
-                  :label="t('ingredients.name')"
-                  required></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model.number="editedItem.calories"
-                  :label="t('ingredients.caloriesLabel')"
-                  type="number"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model.number="editedItem.carbs"
-                  :label="t('ingredients.carbsLabel')"
-                  type="number"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model.number="editedItem.fat"
-                  :label="t('ingredients.fatLabel')"
-                  type="number"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model.number="editedItem.protein"
-                  :label="t('ingredients.proteinLabel')"
-                  type="number"></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="editDialog = false">
-            {{ t('ingredients.cancel') }}
-          </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="updateIngredient">
-            {{ t('ingredients.save') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <edit-ingredient
+      v-model="editDialog"
+      :edited-item="editedItem"
+      :is-loading="isLoading"
+      :error="error"
+      @update:error="error = $event"
+      @update:is-loading="isLoading = $event"
+      @ingredient-updated="handleIngredientUpdated" />
   </div>
   <div v-else>
     <h1>{{ t('stock.pleaseLogin') }}</h1>
   </div>
+  <create-new-ingredient
+    v-model="newIngredientDialog"
+    :new-ingredient="newIngredient"
+    :is-loading="isLoading"
+    :error="error"
+    @update:error="error = $event"
+    @update:is-loading="isLoading = $event"
+    @ingredient-created="handleIngredientCreated" />
 </template>

@@ -13,6 +13,6 @@ export const ingredientService = {
   },
 
   async updateIngredient(id: number, ingredientData: Partial<FullIngredient>) {
-    return await apiCallService('PUT', ENDPOINT, ingredientData);
+    return await apiCallService('PUT', `${ENDPOINT}/${id}`, ingredientData);
   },
 };
