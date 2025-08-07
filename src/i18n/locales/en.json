@@ -37,7 +37,7 @@
   },
   "deleteStockDialog": {
     "title": "Delete Stock Item",
-    "confirmMessage": "Are you sure you want to delete \"{{name}}\" from your stock?",
+    "confirmMessage": "Are you sure you want to delete this item from your stock?",
     "cancel": "Cancel",
     "delete": "Delete"
   },
@@ -91,7 +91,7 @@
     "unit": "Unit",
     "addIngredient": "Add Ingredient",
     "steps": "Preparation Steps",
-    "step": "Step {{number}}",
+    "step": "Step",
     "addStep": "Add Step",
     "saveRecipe": "Save Recipe"
   },

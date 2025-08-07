@@ -37,7 +37,7 @@
   },
   "deleteStockDialog": {
     "title": "Vorrat löschen",
-    "confirmMessage": "Möchtest du wirklich \"{{name}}\" aus deinem Vorrat löschen?",
+    "confirmMessage": "Möchtest du wirklich aus deinem Vorrat löschen?",
     "cancel": "Abbrechen",
     "delete": "Löschen"
   },
@@ -91,7 +91,7 @@
     "unit": "Einheit",
     "addIngredient": "Zutat hinzufügen",
     "steps": "Zubereitungsschritte",
-    "step": "Schritt {{number}}",
+    "step": "Schritt",
     "addStep": "Schritt hinzufügen",
     "saveRecipe": "Rezept speichern"
   },
