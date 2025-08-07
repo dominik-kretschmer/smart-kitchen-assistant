@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { ShoppingListItem } from '@/types/shoppingListTypes';
 import type { FullIngredient } from '@/types/ingriedientTypes';
 import { shoppingListService } from '@/services/shoppingListService';
 import { ingredientService } from '@/services/ingredientService';
 import { useAuth } from '@/composables/useAuth';
+import { useStatus } from '@/composables/useStatus.ts';
+
 const { t } = useI18n();
 const { user, checkLoginStatus, isLoggedIn } = useAuth();
-
-const loading = ref(false);
-const error = ref('');
+const { isLoading, error } = useStatus();
 const shoppingItems = ref<(ShoppingListItem & { purchased?: boolean })[]>([]);
 const availableIngredients = ref<FullIngredient[]>([]);
 
@@ -26,7 +26,7 @@ const clearError = () => {
 };
 
 const loadShoppingList = async () => {
-  loading.value = true;
+  isLoading.value = true;
   try {
     if (!isLoggedIn.value || !user.value?.id) {
       await checkLoginStatus();
@@ -45,7 +45,7 @@ const loadShoppingList = async () => {
     console.error('Error loading shopping list:', err);
     error.value = t('shoppingList.loadError');
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
 
@@ -65,7 +65,7 @@ const addItem = async (item: Omit<ShoppingListItem, 'id'>) => {
       return;
     }
 
-    loading.value = true;
+    isLoading.value = true;
     const newShoppingItem = await shoppingListService.createShoppingListItem(item);
     shoppingItems.value.push(newShoppingItem);
 
@@ -78,13 +78,13 @@ const addItem = async (item: Omit<ShoppingListItem, 'id'>) => {
     console.error('Error adding item:', err);
     error.value = t('shoppingList.addError');
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
 
 const removeItem = async (id: number) => {
   try {
-    loading.value = true;
+    isLoading.value = true;
     const success = await shoppingListService.deleteShoppingListItem(id);
     if (success) {
       shoppingItems.value = shoppingItems.value.filter((item) => item.id !== id);
@@ -95,13 +95,13 @@ const removeItem = async (id: number) => {
     console.error('Error removing item:', err);
     error.value = t('shoppingList.removeError');
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
 
 const markItemAsPurchased = async (id: number, purchased: boolean) => {
   try {
-    loading.value = true;
+    isLoading.value = true;
     await shoppingListService.markItemAsPurchased(id, purchased);
     const index = shoppingItems.value.findIndex((item) => item.id === id);
     if (index !== -1) {
@@ -111,7 +111,7 @@ const markItemAsPurchased = async (id: number, purchased: boolean) => {
     console.error('Error updating item:', err);
     error.value = t('shoppingList.updateError');
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
 
@@ -181,12 +181,7 @@ onMounted(async () => {
 
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('shoppingList.myList') }}</h2>
-      <v-progress-circular
-        v-if="loading"
-        indeterminate
-        color="primary"
-        class="d-block mx-auto my-8"></v-progress-circular>
-      <div v-else>
+      <div v-if="!isLoading">
         <v-list v-if="shoppingItems.length > 0" class="bg-transparent">
           <v-list-item v-for="item in shoppingItems" :key="item.id">
             <template v-slot:prepend>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const props = defineProps({
   recipe: {
     type: Object as () => Recipe | null,
@@ -12,20 +11,22 @@ const props = defineProps({
 });
 
 const { t } = useI18n();
-const recipeName = ref('');
-const description = ref('');
-const ingredients = ref([{ name: '', quantity: 1, unit: t('units.piece') }]);
-const steps = ref(['']);
-const emit = defineEmits(['save-recipe']);
+const recipeName = ref<string>('');
+const description = ref<string>('');
+const ingredients = ref<Ingredient[]>([{ name: '', quantity: 1, unit: t('units.piece') }]);
+const steps = ref<string[]>(['']);
+const emit = defineEmits<{
+  'save-recipe': [recipe: EditableRecipe]
+}>();
 
 watch(
   () => props.recipe,
-  (newRecipe) => {
+  (newRecipe: Recipe | null) => {
     if (newRecipe && props.isEditing) {
       recipeName.value = newRecipe.name;
-      steps.value = newRecipe.steps.split('\n\n').filter((step) => step.trim());
+      steps.value = newRecipe.steps.split('\n\n').filter((step: string) => step.trim());
       if (steps.value.length === 0) steps.value = [''];
-      ingredients.value = newRecipe.recipeIngredients.map((ri) => {
+      ingredients.value = newRecipe.recipeIngredients.map((ri: RecipeIngredient) => {
         const amountParts = ri.amount.split(' ');
         const quantity = parseFloat(amountParts[0]) || 1;
         const unit = amountParts.slice(1).join(' ') || t('units.piece');
@@ -43,29 +44,29 @@ watch(
   { immediate: true },
 );
 
-function removeIngredient(index: number) {
+function removeIngredient(index: number): void {
   if (ingredients.value.length > 1) {
     ingredients.value.splice(index, 1);
   }
 }
 
-function removeStep(index: number) {
+function removeStep(index: number): void {
   if (steps.value.length > 1) {
     steps.value.splice(index, 1);
   }
 }
 
-function saveRecipe() {
+function saveRecipe(): void {
   if (
     recipeName.value.trim() &&
-    ingredients.value.every((ing) => ing.name.trim()) &&
-    steps.value.every((step) => step.trim())
+    ingredients.value.every((ing: Ingredient) => ing.name.trim()) &&
+    steps.value.every((step: string) => step.trim())
   ) {
-    const recipe = {
+    const recipe: EditableRecipe = {
       name: recipeName.value,
       description: description.value,
       ingredients: ingredients.value,
-      steps: steps.value.filter((step) => step.trim()),
+      steps: steps.value.filter((step: string) => step.trim()),
     };
 
     emit('save-recipe', recipe);

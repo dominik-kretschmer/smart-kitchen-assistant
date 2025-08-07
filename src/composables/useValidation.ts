@@ -1,10 +1,8 @@
-import { ref } from 'vue';
 import type { ValidationResult } from '../types/validationTypes';
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function useValidation() {
-  const error = ref('');
-
-  const validateRequired = (value: unknown, fieldName: string): ValidationResult => {
+   const validateRequired = (value: unknown, fieldName: string): ValidationResult => {
     if (!value || (typeof value === 'string' && value.trim() === '')) {
       return {
         isValid: false,
@@ -43,7 +41,6 @@ export function useValidation() {
   };
 
   const validateEmail = (email: string): ValidationResult => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return {
         isValid: false,
@@ -162,7 +159,6 @@ export function useValidation() {
   };
 
   return {
-    error,
     validateRequired,
     validateMinLength,
     validateMaxLength,

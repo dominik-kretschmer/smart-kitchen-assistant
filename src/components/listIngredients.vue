@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useStatus } from '@/composables/useStatus.ts';
+
 const { t } = useI18n();
 const items = ref([]);
-const error = ref('');
+const { isLoading, error } = useStatus();
 
 async function fetchRecipes() {
+  isLoading.value = true;
   try {
     const response = await fetch('http://localhost:3000/api/ingredients');
     if (!response.ok) {
@@ -12,6 +15,8 @@ async function fetchRecipes() {
     items.value = await response.json();
   } catch (err) {
     error.value = `${t('errors.failedToLoadIngredients')} ${err}`;
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -21,7 +26,7 @@ onMounted(() => {
 </script>
 <template>
   <v-container class="bg-surface-variant">
-    <v-row no-gutters>
+    <v-row v-if="!isLoading" no-gutters>
       <v-col v-for="item in items" :key="item.id" cols="12" sm="6">
         <v-sheet class="ma-2 pa-2">
           <div class="font-weight-bold">{{ item.name }}</div>

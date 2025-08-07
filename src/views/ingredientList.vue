@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useAuth } from '@/composables/useAuth.ts';
 import { ingredientService } from '@/services/ingredientService.ts';
+import { useStatus } from '@/composables/useStatus.ts';
 
 const { t } = useI18n();
 const ingredients = ref<FullIngredient[]>([]);
-const loading = ref(false);
-const error = ref('');
+const { isLoading, error } = useStatus();
 const userId = ref<number | null>(null);
 const { checkLoginStatus } = useAuth();
 
@@ -41,7 +41,7 @@ onMounted(async () => {
 });
 
 async function loadIngredients() {
-  loading.value = true;
+  isLoading.value = true;
   error.value = '';
 
   try {
@@ -50,7 +50,7 @@ async function loadIngredients() {
     error.value = t('errors.failedToLoadIngredients');
     console.error(err);
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 }
 
@@ -60,7 +60,7 @@ async function addIngredient() {
     return;
   }
 
-  loading.value = true;
+  isLoading.value = true;
   try {
     const createdIngredient = await ingredientService.createIngredient(newIngredient.value);
     ingredients.value.push(createdIngredient);
@@ -75,7 +75,7 @@ async function addIngredient() {
   } catch (err) {
     error.value = t('errors.failedToCreateIngredient' + err);
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 }
 
@@ -90,7 +90,7 @@ async function updateIngredient() {
     return;
   }
 
-  loading.value = true;
+  isLoading.value = true;
   try {
     const updatedItem = await ingredientService.updateIngredient(editedItem.value.id, {
       name: editedItem.value.name,
@@ -110,7 +110,7 @@ async function updateIngredient() {
     error.value = t('errors.failedToUpdateIngredient');
     console.error(err);
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 }
 </script>
@@ -128,18 +128,13 @@ async function updateIngredient() {
       {{ error }}
     </v-alert>
 
-    <v-btn color="primary" class="mb-4" @click="newIngredientDialog = true" :disabled="loading">
+    <v-btn color="primary" class="mb-4" @click="newIngredientDialog = true" :disabled="isLoading">
       {{ t('ingredients.addNew') }}
     </v-btn>
 
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('ingredients.allIngredients') }}</h2>
-      <v-progress-circular
-        v-if="loading"
-        indeterminate
-        color="primary"
-        class="d-block mx-auto my-8"></v-progress-circular>
-      <div v-else>
+      <div  v-if="!isLoading">
         <v-list v-if="ingredients.length > 0" class="bg-transparent">
           <v-list-item v-for="item in ingredients" :key="item.id">
             <v-list-item-title>{{ item.name }}</v-list-item-title>

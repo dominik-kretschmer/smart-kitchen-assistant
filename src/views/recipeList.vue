@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import type { Recipe } from '@/types/recipeTypes';
-import { recipeService } from '@/services/recipeService';
-import InteractWithIngredient from '@/components/InteractWithIngredient.vue';
+import type { Recipe } from '@/types/recipeTypes.ts';
+import { recipeService } from '@/services/recipeService.ts';
+import { useStatus } from '@/composables/useStatus.ts';
 
 const { t } = useI18n();
-const loading = ref(false);
-const error = ref('');
+const { isLoading, error } = useStatus();
 const recipes = ref<Recipe[]>([]);
 const showCreateForm = ref(false);
 const showEditForm = ref(false);
 const recipeToEdit = ref<Recipe | null>(null);
 
 const loadRecipes = async () => {
-  loading.value = true;
+  isLoading.value = true;
   error.value = '';
 
   try {
@@ -23,20 +20,14 @@ const loadRecipes = async () => {
     console.error('Error loading recipes:', err);
     error.value = t('recipe.loadError') || 'Failed to load recipes';
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
-};
-
-const clearError = () => {
-  error.value = '';
 };
 
 const toggleCreateForm = () => {
   showCreateForm.value = !showCreateForm.value;
   if (showCreateForm.value) {
-    // Close edit form if open
-    showEditForm.value = false;
-    recipeToEdit.value = null;
+    cancelEdit();
   }
 };
 
@@ -52,7 +43,7 @@ const cancelEdit = () => {
 };
 
 const handleSaveRecipe = async (recipeData) => {
-  loading.value = true;
+  isLoading.value = true;
   error.value = '';
 
   try {
@@ -76,21 +67,21 @@ const handleSaveRecipe = async (recipeData) => {
     console.error('Error creating recipe:', err);
     error.value = t('recipe.createError') || 'Failed to create recipe';
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
 
 const handleUpdateRecipe = async (recipeData) => {
   if (!recipeToEdit.value) return;
 
-  loading.value = true;
+  isLoading.value = true;
   error.value = '';
 
   try {
     const apiRecipeData = {
       name: recipeData.name,
       steps: recipeData.steps.join('\n\n'),
-      recipeIngredients: recipeData.ingredients.map((ing) => ({
+      recipeIngredients: recipeData.ingredients.map((ing ) => ({
         ingredientId: 0,
         amount: `${ing.quantity} ${ing.unit}`,
         ingredient: {
@@ -108,7 +99,7 @@ const handleUpdateRecipe = async (recipeData) => {
     console.error('Error updating recipe:', err);
     error.value = t('recipe.updateError') || 'Failed to update recipe';
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
 
@@ -125,7 +116,7 @@ onMounted(async () => {
       variant="tonal"
       class="mb-4"
       closable
-      @click:close="clearError">
+      @click:close="error = ''">
       {{ error }}
     </v-alert>
     <v-btn color="primary" class="mb-4" @click="toggleCreateForm" prepend-icon="mdi-plus">
@@ -148,12 +139,7 @@ onMounted(async () => {
     </div>
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('recipe.myRecipes') }}</h2>
-      <v-progress-circular
-        v-if="loading"
-        indeterminate
-        color="primary"
-        class="d-block mx-auto my-8"></v-progress-circular>
-      <div v-else>
+      <div v-if="!isLoading">
         <v-list v-if="recipes.length > 0" class="bg-transparent">
           <v-list-item v-for="recipe in recipes" :key="recipe.id" class="mb-4">
             <v-card width="100%">

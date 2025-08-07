@@ -2,10 +2,10 @@
 import { useValidation } from '@/composables/useValidation.ts';
 import { useAuth } from '@/composables/useAuth.ts';
 import { stockService } from '@/services/stockService.ts';
+import { useStatus } from '@/composables/useStatus.ts';
 
 const stockItems = ref<StockItem[]>([]);
-const loading = ref(false);
-const error = ref<string>('');
+const { isLoading, error } = useStatus();
 const userId = ref<number | null>(null);
 const { validateStockItem } = useValidation();
 const { checkLoginStatus } = useAuth();
@@ -46,7 +46,7 @@ function validateUserInput(item: Omit<StockItem, 'id'> | undefined = undefined) 
       throw error;
     }
   }
-  loading.value = true;
+  isLoading.value = true;
   error.value = '';
 }
 
@@ -72,7 +72,7 @@ async function handleStockItems(item: Omit<StockItem, 'id'> | undefined = undefi
   } catch (err) {
     error.value = t('errors.failedToLoadStock') + err;
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 }
 
@@ -99,7 +99,7 @@ async function updateStockItem(item: StockItem) {
     if (index !== -1) {
       stockItems.value[index] = updatedItem;
     }
-    loading.value = false;
+    isLoading.value = false;
     editDialog.value = false;
   } catch (err) {
     error.value = t('errors.failedToUpdateStock') + err;
@@ -135,15 +135,10 @@ async function deleteStockItem(itemId: number) {
       @click:close="error = ''">
       {{ error }}
     </v-alert>
-    <AddStock @add-item="handleStockItems" :disabled="loading" />
+    <AddStock @add-item="handleStockItems" :disabled="isLoading" />
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('stock.currentStock') }}</h2>
-      <v-progress-circular
-        v-if="loading"
-        indeterminate
-        color="primary"
-        class="d-block mx-auto my-8"></v-progress-circular>
-      <div v-else>
+      <div  v-if="!isLoading">
         <v-list v-if="stockItems.length > 0" class="bg-transparent">
           <v-list-item v-for="item in stockItems" :key="item.id">
             <v-list-item-title>{{ item.name }}</v-list-item-title>
