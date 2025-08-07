@@ -1,97 +1,36 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import type { Recipe } from '@/types/recipeTypes';
+import { recipeService } from '@/services/recipeService';
+
 const { t } = useI18n();
 const loading = ref(false);
 const error = ref('');
-const recipes = ref<Recipe[]>([
-  {
-    id: 1,
-    name: 'Spaghetti Carbonara',
-    steps: '1. Cook pasta\n2. Fry bacon\n3. Mix eggs and cheese\n4. Combine all ingredients',
-    recipeIngredients: [
-      {
-        ingredientId: 1,
-        amount: '200g',
-        ingredient: { id: 1, name: 'Spaghetti' },
-      },
-      {
-        ingredientId: 2,
-        amount: '100g',
-        ingredient: { id: 2, name: 'Bacon' },
-      },
-      {
-        ingredientId: 3,
-        amount: '2',
-        ingredient: { id: 3, name: 'Eggs' },
-      },
-      {
-        ingredientId: 4,
-        amount: '50g',
-        ingredient: { id: 4, name: 'Parmesan' },
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Chicken Curry',
-    steps:
-      '1. Dice chicken\n2. Sauté onions and garlic\n3. Add curry paste\n4. Add chicken and coconut milk\n5. Simmer until cooked',
-    recipeIngredients: [
-      {
-        ingredientId: 5,
-        amount: '300g',
-        ingredient: { id: 5, name: 'Chicken Breast' },
-      },
-      {
-        ingredientId: 6,
-        amount: '1',
-        ingredient: { id: 6, name: 'Onion' },
-      },
-      {
-        ingredientId: 7,
-        amount: '2 cloves',
-        ingredient: { id: 7, name: 'Garlic' },
-      },
-      {
-        ingredientId: 8,
-        amount: '2 tbsp',
-        ingredient: { id: 8, name: 'Curry Paste' },
-      },
-      {
-        ingredientId: 9,
-        amount: '400ml',
-        ingredient: { id: 9, name: 'Coconut Milk' },
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Vegetable Stir Fry',
-    steps:
-      '1. Chop vegetables\n2. Heat oil in wok\n3. Stir fry vegetables\n4. Add sauce\n5. Serve with rice',
-    recipeIngredients: [
-      {
-        ingredientId: 10,
-        amount: '1',
-        ingredient: { id: 10, name: 'Bell Pepper' },
-      },
-      {
-        ingredientId: 11,
-        amount: '1',
-        ingredient: { id: 11, name: 'Carrot' },
-      },
-      {
-        ingredientId: 12,
-        amount: '100g',
-        ingredient: { id: 12, name: 'Broccoli' },
-      },
-      {
-        ingredientId: 13,
-        amount: '2 tbsp',
-        ingredient: { id: 13, name: 'Soy Sauce' },
-      },
-    ],
-  },
-]);
+const recipes = ref<Recipe[]>([]);
+
+const loadRecipes = async () => {
+  loading.value = true;
+  error.value = '';
+
+  try {
+    const data = await recipeService.getAllRecipes();
+    recipes.value = data;
+  } catch (err) {
+    console.error('Error loading recipes:', err);
+    error.value = t('recipe.loadError') || 'Failed to load recipes';
+  } finally {
+    loading.value = false;
+  }
+};
+
+const clearError = () => {
+  error.value = '';
+};
+
+onMounted(async () => {
+  await loadRecipes();
+});
 </script>
 
 <template>
@@ -103,7 +42,7 @@ const recipes = ref<Recipe[]>([
       variant="tonal"
       class="mb-4"
       closable
-      @click:close="error = ''">
+      @click:close="clearError()">
       {{ error }}
     </v-alert>
 

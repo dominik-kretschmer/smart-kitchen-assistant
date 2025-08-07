@@ -1,6 +1,6 @@
 import type { ShoppingListItem } from '../types/shoppingListTypes';
-const API_URL = import.meta.env.VITE_API_URL;
 
+const API_URL = import.meta.env.VITE_API_URL;
 const endPoints = {
   shoppingList: import.meta.env.VITE_API_ENDPOINT_SHOPPING_LIST,
   shoppingListUser: import.meta.env.VITE_API_ENDPOINT_SHOPPING_LIST_USER,
