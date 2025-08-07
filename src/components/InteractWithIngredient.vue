@@ -16,7 +16,7 @@ const description = ref<string>('');
 const ingredients = ref<Ingredient[]>([{ name: '', quantity: 1, unit: t('units.piece') }]);
 const steps = ref<string[]>(['']);
 const emit = defineEmits<{
-  'save-recipe': [recipe: EditableRecipe]
+  'save-recipe': [recipe: EditableRecipe];
 }>();
 
 watch(
@@ -116,7 +116,7 @@ function saveRecipe(): void {
         <v-col cols="11">
           <FormTextField
             v-model="steps[index]"
-            :label=" index+1 +'.'+ t('recipe.step')"
+            :label="index + 1 + '.' + t('recipe.step')"
             :multiLine="true"
             :rows="2"
             required />

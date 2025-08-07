@@ -2,7 +2,7 @@ import type { ValidationResult } from '../types/validationTypes';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function useValidation() {
-   const validateRequired = (value: unknown, fieldName: string): ValidationResult => {
+  const validateRequired = (value: unknown, fieldName: string): ValidationResult => {
     if (!value || (typeof value === 'string' && value.trim() === '')) {
       return {
         isValid: false,

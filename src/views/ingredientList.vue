@@ -134,7 +134,7 @@ async function updateIngredient() {
 
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('ingredients.allIngredients') }}</h2>
-      <div  v-if="!isLoading">
+      <div v-if="!isLoading">
         <v-list v-if="ingredients.length > 0" class="bg-transparent">
           <v-list-item v-for="item in ingredients" :key="item.id">
             <v-list-item-title>{{ item.name }}</v-list-item-title>

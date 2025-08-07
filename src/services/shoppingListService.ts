@@ -8,30 +8,30 @@ const endPoints = {
 
 export const shoppingListService = {
   async createShoppingListItem(shoppingListItem: Omit<ShoppingListItem, 'id'>) {
-    return await apiCallService('POST' , endPoints.shoppingList, shoppingListItem);
+    return await apiCallService('POST', endPoints.shoppingList, shoppingListItem);
   },
 
   async getShoppingListByUser(userId: number | null) {
     if (userId === null) {
       throw Error('userId is null');
     }
-    const fullEndpoint = endPoints.shoppingListUser+"/"+userId
-    return apiCallService('GET',fullEndpoint);
+    const fullEndpoint = endPoints.shoppingListUser + '/' + userId;
+    return apiCallService('GET', fullEndpoint);
   },
 
   async updateShoppingListItem(id: number, shoppingListItem: Partial<ShoppingListItem>) {
-    const fullEndpoint = endPoints.shoppingList+"/"+id
-    return apiCallService('PUT',fullEndpoint , shoppingListItem);
+    const fullEndpoint = endPoints.shoppingList + '/' + id;
+    return apiCallService('PUT', fullEndpoint, shoppingListItem);
   },
 
   async deleteShoppingListItem(id: number) {
-    const fullEndpoint = endPoints.shoppingList+"/"+id
-    const response = await apiCallService('DELETE',fullEndpoint);
-    return  response.status === 204;
+    const fullEndpoint = endPoints.shoppingList + '/' + id;
+    const response = await apiCallService('DELETE', fullEndpoint);
+    return response.status === 204;
   },
 
   async markItemAsPurchased(id: number, purchased: boolean) {
-    const fullEndpoint = endPoints.shoppingList+"/"+id+"/purchased"
-    return apiCallService('PUT',fullEndpoint , purchased);
+    const fullEndpoint = endPoints.shoppingList + '/' + id + '/purchased';
+    return apiCallService('PUT', fullEndpoint, purchased);
   },
 };

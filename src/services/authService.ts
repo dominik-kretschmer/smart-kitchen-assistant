@@ -8,10 +8,10 @@ const endPoints: { [key: string]: string } = {
 
 export const authService = {
   async checkLoginStatus() {
-    return await apiCallService("GET" , endPoints.me)
+    return await apiCallService('GET', endPoints.me);
   },
   async auth(username: string, password: string, methode: string) {
     const body = { username, password };
-    return await apiCallService('POST' , endPoints[methode] , body)
+    return await apiCallService('POST', endPoints[methode], body);
   },
 };
