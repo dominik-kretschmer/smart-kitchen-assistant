@@ -2,7 +2,6 @@
 import { useAuth } from '@/composables/useAuth.ts';
 import { ingredientService } from '@/services/ingredientService.ts';
 import { useStatus } from '@/composables/useStatus.ts';
-import CreateNewIngredient from '@/components/forms/CreateNewIngredient.vue';
 import type { FullIngredient } from '@/types/ingriedientTypes';
 
 const { t } = useI18n();

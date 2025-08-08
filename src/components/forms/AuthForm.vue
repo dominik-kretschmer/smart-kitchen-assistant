@@ -15,14 +15,6 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  isLoading: {
-    type: Boolean,
-    default: false,
-  },
-  error: {
-    type: String,
-    default: '',
-  },
 });
 
 const handleSubmit = () => {

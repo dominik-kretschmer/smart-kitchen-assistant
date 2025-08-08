@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const props = defineProps<{
   modelValue: boolean;
   item: StockItem | null;
@@ -9,16 +10,10 @@ const emit = defineEmits<{
   delete: [id: number];
 }>();
 
-const { t } = useI18n();
-
 const dialog = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (value: boolean) => emit('update:modelValue', value),
 });
-
-function handleCancel() {
-  emit('update:modelValue', false);
-}
 
 function handleConfirm() {
   if (props.item) {
@@ -26,7 +21,6 @@ function handleConfirm() {
   }
 }
 </script>
-
 <template>
   <DialogBase
     v-model="dialog"
@@ -34,7 +28,7 @@ function handleConfirm() {
     :cancelText="t('deleteStockDialog.cancel')"
     :confirmText="t('deleteStockDialog.delete')"
     confirmColor="error"
-    @cancel="handleCancel"
+    @cancel="dialog.set(false)"
     @confirm="handleConfirm">
     {{ t('deleteStockDialog.confirmMessage', { name: item?.name }) }}
   </DialogBase>

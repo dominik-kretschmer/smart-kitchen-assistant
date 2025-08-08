@@ -9,7 +9,7 @@ const props = defineProps<{
   isLoading: boolean;
   error: string;
 }>();
-
+const localEditedItem = ref<FullIngredient>({ ...props.editedItem });
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];
   'update:error': [value: string];
@@ -17,11 +17,9 @@ const emit = defineEmits<{
   'ingredient-updated': [ingredient: FullIngredient];
 }>();
 
-const localEditedItem = ref<FullIngredient>({ ...props.editedItem });
-
 watch(
   () => props.editedItem,
-  (newVal) => {
+  (newVal:FullIngredient) => {
     localEditedItem.value = { ...newVal };
   },
   { deep: true },
@@ -29,7 +27,7 @@ watch(
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (value : boolean) => emit('update:modelValue', value),
 });
 
 async function updateIngredient() {
@@ -49,7 +47,7 @@ async function updateIngredient() {
     });
 
     emit('ingredient-updated', updatedItem);
-    emit('update:modelValue', false);
+    dialogVisible.set(false)
   } catch (err) {
     emit('update:error', t('errors.failedToUpdateIngredient') + err);
   }

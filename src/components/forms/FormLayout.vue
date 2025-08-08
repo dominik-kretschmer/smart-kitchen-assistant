@@ -11,7 +11,6 @@ const emit = defineEmits<{
   submit: [];
 }>();
 </script>
-
 <template>
   <div :class="['form-container p-4 bg-gray-100 rounded-lg', customClass]">
     <h2 v-if="title" class="text-xl font-semibold mb-3">{{ title }}</h2>

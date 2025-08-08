@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-
 const props = defineProps<{
   modelValue: string;
   label: string;
@@ -20,7 +18,7 @@ const emit = defineEmits<{
 
 const inputValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (value : string) => emit('update:modelValue', value),
 });
 </script>
 

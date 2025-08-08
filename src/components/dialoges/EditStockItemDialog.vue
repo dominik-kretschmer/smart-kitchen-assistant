@@ -28,7 +28,6 @@ function handleConfirm() {
   emit('update:modelValue', false);
 }
 </script>
-
 <template>
   <DialogBase
     v-model="dialog"
