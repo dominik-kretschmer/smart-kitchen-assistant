@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
 
     const { password: _, ...userData } = user;
     res.status(200).json(userData);
-  } catch{
+  } catch {
     res.status(500).json({ error: 'Failed to login' });
   }
 });

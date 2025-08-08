@@ -8,27 +8,6 @@ async function createUser(data) {
 async function getUser(id) {
   return prisma.user.findUnique({
     where: { id },
-    include: {
-      stock: {
-        include: {
-          ingredient: true,
-        },
-      },
-      recipes: {
-        include: {
-          recipeIngredients: {
-            include: {
-              ingredient: true,
-            },
-          },
-        },
-      },
-      shoppingLists: {
-        include: {
-          ingredient: true,
-        },
-      },
-    },
   });
 }
 

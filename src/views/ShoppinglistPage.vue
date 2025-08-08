@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import type { ShoppingListItem } from '@/types/shoppingListTypes';
 import type { FullIngredient } from '@/types/ingriedientTypes';
 import { shoppingListService } from '@/services/shoppingListService';
@@ -9,8 +7,8 @@ import { useAuth } from '@/composables/useAuth';
 import { useStatus } from '@/composables/useStatus.ts';
 
 const { t } = useI18n();
-const { user, checkLoginStatus, isLoggedIn } = useAuth();
-const { isLoading, error } = useStatus();
+const { checkLoginStatus } = useAuth();
+const { isLoading, error, user } = useStatus();
 const shoppingItems = ref<(ShoppingListItem & { purchased?: boolean })[]>([]);
 const availableIngredients = ref<FullIngredient[]>([]);
 
@@ -21,38 +19,31 @@ const newItem = reactive({
   ingredient: null as FullIngredient | null,
 });
 
-const clearError = () => {
-  error.value = '';
-};
-
 const loadShoppingList = async () => {
   isLoading.value = true;
   try {
-    if (!isLoggedIn.value || !user.value?.id) {
-      await checkLoginStatus();
+    if (!user.value?.id) {
+      user.value = checkLoginStatus();
     }
 
-    if (isLoggedIn.value && user.value?.id) {
-      const items = await shoppingListService.getShoppingListByUser(user.value.id);
-      shoppingItems.value = items;
-
+    if (user.value?.id) {
+      shoppingItems.value = await shoppingListService.getShoppingListByUser(user.value.id);
       await loadIngredients();
-    } else {
-      error.value = t('shoppingList.loginRequired');
+      return;
     }
+    error.value = t('shoppingList.loginRequired');
   } catch (err) {
-    console.error('Error loading shopping list:', err);
+    console.error(err);
     error.value = t('shoppingList.loadError');
-  } finally {
-    isLoading.value = false;
   }
+  isLoading.value = false;
 };
 
 const loadIngredients = async () => {
   try {
     availableIngredients.value = await ingredientService.getAllIngredients();
   } catch (err) {
-    console.error('Error loading ingredients:', err);
+    console.error(err);
     error.value = t('shoppingList.ingredientsLoadError');
   }
 };
@@ -67,17 +58,15 @@ const addItem = async (item: Omit<ShoppingListItem, 'id'>) => {
     isLoading.value = true;
     const newShoppingItem = await shoppingListService.createShoppingListItem(item);
     shoppingItems.value.push(newShoppingItem);
-
     newItem.amount = 0;
     newItem.unit = '';
     newItem.ingredient = null;
     showAddForm.value = false;
   } catch (err) {
-    console.error('Error adding item:', err);
+    console.error(err);
     error.value = t('shoppingList.addError');
-  } finally {
-    isLoading.value = false;
   }
+  isLoading.value = false;
 };
 
 const removeItem = async (id: number) => {
@@ -86,15 +75,14 @@ const removeItem = async (id: number) => {
     const success = await shoppingListService.deleteShoppingListItem(id);
     if (success) {
       shoppingItems.value = shoppingItems.value.filter((item) => item.id !== id);
-    } else {
-      error.value = t('shoppingList.removeError');
+      return;
     }
-  } catch (err) {
-    console.error('Error removing item:', err);
     error.value = t('shoppingList.removeError');
-  } finally {
-    isLoading.value = false;
+  } catch (err) {
+    console.error(err);
+    error.value = t('shoppingList.removeError');
   }
+  isLoading.value = false;
 };
 
 const markItemAsPurchased = async (id: number, purchased: boolean) => {
@@ -106,7 +94,7 @@ const markItemAsPurchased = async (id: number, purchased: boolean) => {
       shoppingItems.value[index].purchased = purchased;
     }
   } catch (err) {
-    console.error('Error updating item:', err);
+    console.error(err);
     error.value = t('shoppingList.updateError');
   } finally {
     isLoading.value = false;
@@ -126,17 +114,13 @@ onMounted(async () => {
       variant="tonal"
       class="mb-4"
       closable
-      @click:close="clearError()">
+      @click:close="error = ''">
       {{ error }}
     </v-alert>
-
-    <!-- Add Item Button -->
-    <v-btn color="primary" class="mb-4" @click="showAddForm = !showAddForm" :disabled="!isLoggedIn">
+    <v-btn color="primary" class="mb-4" @click="showAddForm = !showAddForm">
       <v-icon start>mdi-plus</v-icon>
       {{ showAddForm ? t('common.cancel') : t('shoppingList.addItem') }}
     </v-btn>
-
-    <!-- Add Item Form -->
     <v-card v-if="showAddForm" class="mb-6 pa-4">
       <v-card-title>{{ t('shoppingList.addNewItem') }}</v-card-title>
       <v-card-text>
@@ -176,7 +160,6 @@ onMounted(async () => {
         </v-btn>
       </v-card-actions>
     </v-card>
-
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('shoppingList.myList') }}</h2>
       <div v-if="!isLoading">

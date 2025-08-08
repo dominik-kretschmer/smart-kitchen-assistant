@@ -21,7 +21,6 @@ function addItem() {
   }
 }
 </script>
-
 <template>
   <FormLayout
     :title="t('addStock.title')"

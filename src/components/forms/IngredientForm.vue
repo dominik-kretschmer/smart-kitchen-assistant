@@ -13,8 +13,6 @@ const emit = defineEmits<{
   remove: [];
 }>();
 
-
-
 const name = computed({
   get: () => props.modelValue.name,
   set: (value) => {
@@ -35,7 +33,6 @@ const unit = computed({
     emit('update:modelValue', { ...props.modelValue, unit: value });
   },
 });
-
 </script>
 <template>
   <v-row>
