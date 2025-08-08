@@ -1,11 +1,25 @@
 import { authService } from '@/services/authService';
 import { useValidation } from './useValidation';
 import type { credentialsLogin, credentialsRegister } from '@/types/validationTypes.ts';
+import { useUserStore } from '@/stores/userStore';
 
 const { validateLoginForm, validateRegisterForm } = useValidation();
 export function useAuth() {
+  const userStore = useUserStore();
+
   const checkLoginStatus = async () => {
-    return await authService.checkLoginStatus();
+    try {
+      const response = await authService.checkLoginStatus();
+      if (typeof response.id === 'number') {
+        userStore.setUser(response.id, response.username);
+        return response;
+      }
+      userStore.clearUser();
+      return null;
+    } catch {
+      userStore.clearUser();
+      return null;
+    }
   };
 
   const login = async (credentials: credentialsLogin) => {
@@ -13,8 +27,16 @@ export function useAuth() {
     if (!validationResult.isValid) {
       return false;
     }
-    const response = await authService.auth(credentials.username, credentials.password, 'login');
-    return typeof response.id === 'number';
+    try {
+      const response = await authService.auth(credentials.username, credentials.password, 'login');
+      if (response && typeof response.id === 'number') {
+        userStore.setUser(response.id, credentials.username);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
   };
 
   const register = async (credentials: credentialsRegister) => {
@@ -22,13 +44,26 @@ export function useAuth() {
     if (!validationResult.isValid) {
       return false;
     }
-    const response = await authService.auth(credentials.username, credentials.password, 'register');
-    return typeof response.id === 'number';
+    try {
+      const response = await authService.auth(
+        credentials.username,
+        credentials.password,
+        'register',
+      );
+      if (response && typeof response.id === 'number') {
+        userStore.setUser(response.id, credentials.username);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
   };
+
 
   return {
     checkLoginStatus,
     login,
-    register,
+    register
   };
 }

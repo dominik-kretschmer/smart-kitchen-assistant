@@ -9,7 +9,7 @@ defineProps({
   formType: {
     type: String,
     required: true,
-    validator: (value) => ['login', 'register'].includes(value),
+    validator: (value:string) => ['login', 'register'].includes(value),
   },
   isLoggedIn: {
     type: Boolean,

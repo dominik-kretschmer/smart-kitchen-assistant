@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { useAuth } from '@/composables/useAuth.ts';
-const isLoggedIn=ref(false)
-const user = ref({});
-const {checkLoginStatus, login } = useAuth();
-const handleSubmit = async (credentials) => {
+import type { credentialsLogin } from '@/types/validationTypes.ts';
+
+const user = ref<Record<string, unknown> | null>(null);
+const { checkLoginStatus, login } = useAuth();
+const isLoggedIn = computed(() => !!user.value && Object.keys(user.value).length > 0);
+
+const handleSubmit = async (credentials: credentialsLogin) => {
   await login(credentials);
 };
-watch(user, (newUser : object) => {
-  isLoggedIn.value = !!newUser && Object.keys(newUser).length > 0;
-}, { immediate: true });
 
-onMounted(() => {
-  checkLoginStatus();
+onMounted(async () => {
+  user.value = await checkLoginStatus();
 });
 </script>
 <template>

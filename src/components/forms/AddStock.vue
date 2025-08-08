@@ -1,51 +1,55 @@
 <script setup lang="ts">
-const { t } = useI18n();
-const newItem = ref('');
-const quantity = ref(1);
-const unit = ref(t('units.piece'));
-const emit = defineEmits(['add-item']);
+const dialogVisible = defineModel<boolean>({ default: false });
+
 const props = defineProps<{
-  disabled?: boolean;
+  newIngredient: {
+    name: string;
+    calories: number;
+    carbs: number;
+    fat: number;
+    protein: number;
+  };
+  isLoading: boolean;
+  error: string | null;
 }>();
 
-function addItem() {
-  if (newItem.value.trim() && !props.disabled) {
-    emit('add-item', {
-      name: newItem.value.trim(),
-      quantity: quantity.value,
-      unit: unit.value,
-    });
-    newItem.value = '';
-    quantity.value = 1;
-    unit.value = t('units.piece');
+const emit = defineEmits<{
+  (e: 'update:error', value: string): void;
+  (e: 'update:is-loading', value: boolean): void;
+  (e: 'ingredient-created', value: { id: number; name: string; calories?: number; carbs?: number; fat?: number; protein?: number }): void;
+}>();
+
+async function submit() {
+  emit('update:is-loading', true);
+  emit('update:error', '');
+  try {
+    const payload = {
+      name: props.newIngredient.name,
+      calories: props.newIngredient.calories,
+      carbs: props.newIngredient.carbs,
+      fat: props.newIngredient.fat,
+      protein: props.newIngredient.protein,
+    };
+    const created = await ingredientService.createIngredient(payload);
+    emit('ingredient-created', created);
+    dialogVisible.value = false;
+  } catch (err) {
+    const message =
+      'Failed to create ingredient. Please try again later.' +
+      (err instanceof Error ? ` ${err.message}` : '');
+    emit('update:error', message);
+  } finally {
+    emit('update:is-loading', false);
   }
 }
 </script>
 <template>
-  <FormLayout
-    :title="t('addStock.title')"
-    :submitText="t('addStock.add')"
-    :disabled="disabled"
-    :loading="disabled"
-    customClass="mb-6"
-    @submit="addItem">
-    <FormTextField
-      v-model="newItem"
-      :label="t('addStock.ingredient')"
-      :placeholder="t('addStock.ingredientPlaceholder')"
-      :disabled="disabled"
-      required />
-    <v-row>
-      <v-col cols="6">
-        <QuantityInput
-          v-model="quantity"
-          :label="t('addStock.quantity')"
-          :disabled="disabled"
-          required />
-      </v-col>
-      <v-col cols="6">
-        <UnitSelect v-model="unit" :label="t('addStock.unit')" :disabled="disabled" />
-      </v-col>
-    </v-row>
-  </FormLayout>
+  <v-dialog v-model="dialogVisible" max-width="600">
+    <template #actions>
+      <v-btn variant="text" @click=" dialogVisible= false">{{ t('common.cancel') }}</v-btn>
+      <v-btn color="primary" :loading="isLoading" :disabled="isLoading" @click="submit">
+        {{ t('common.save') }}
+      </v-btn>
+    </template>
+  </v-dialog>
 </template>

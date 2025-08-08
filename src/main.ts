@@ -9,6 +9,7 @@ import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import { i18n } from './i18n';
 import { useLanguageStore } from './stores/languageStore';
+import { useUserStore } from './stores/userStore';
 
 const vuetify = createVuetify({
   components,
@@ -24,5 +25,8 @@ app.use(i18n);
 
 const languageStore = useLanguageStore(pinia);
 languageStore.initLanguage();
+
+const userStore = useUserStore(pinia);
+userStore.initUser();
 
 app.mount('#app');
