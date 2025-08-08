@@ -32,7 +32,7 @@ onMounted(async () => {
   }
 });
 
-function validateUserInput(item: StockItem  | undefined = undefined) {
+function validateUserInput(item: StockItem | undefined = undefined) {
   if (!userId.value) {
     error.value = t('errors.userNotLoggedIn');
     throw error;
@@ -50,7 +50,7 @@ function validateUserInput(item: StockItem  | undefined = undefined) {
 
 async function useCreateStock(item: Omit<StockItem, 'id'>) {
   validateUserInput();
-  console.log(item)
+  console.log(item);
   const stockData = {
     userId: userId.value,
     ...item,
@@ -93,7 +93,7 @@ async function updateStockItem(item: StockItem) {
       return;
     }
     const updatedItem = await stockService.updateStock(item.id, stockData);
-    const index = stockItems.value.findIndex((stockItem:StockItem) => stockItem.id === item.id);
+    const index = stockItems.value.findIndex((stockItem: StockItem) => stockItem.id === item.id);
 
     if (index !== -1) {
       stockItems.value[index] = updatedItem;

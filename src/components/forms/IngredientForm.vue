@@ -16,14 +16,17 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:error', value: string): void;
   (e: 'update:is-loading', value: boolean): void;
-  (e: 'ingredient-created', value: {
-    id: number;
-    name: string;
-    calories?: number;
-    carbs?: number;
-    fat?: number;
-    protein?: number;
-  }): void;
+  (
+    e: 'ingredient-created',
+    value: {
+      id: number;
+      name: string;
+      calories?: number;
+      carbs?: number;
+      fat?: number;
+      protein?: number;
+    },
+  ): void;
 }>();
 
 async function submit() {

@@ -28,15 +28,15 @@ const localNewIngredient = ref({ ...props.newIngredient });
 
 watch(
   () => props.newIngredient,
-  (newVal : FullIngredient) => {
+  (newVal: FullIngredient) => {
     localNewIngredient.value = { ...newVal };
   },
-  { deep: true }
+  { deep: true },
 );
 
 const dialogVisible = computed<boolean>({
   get: () => props.modelValue,
-  set: (value : boolean) => emit('update:modelValue', value),
+  set: (value: boolean) => emit('update:modelValue', value),
 });
 
 async function addIngredient() {

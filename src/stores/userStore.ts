@@ -26,11 +26,14 @@ export const useUserStore = defineStore('user', {
       this.saveToLocalStorage();
     },
     saveToLocalStorage() {
-      localStorage.setItem('user', JSON.stringify({
-        userId: this.userId,
-        username: this.username,
-        isLoggedIn: this.isLoggedIn,
-      }));
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          userId: this.userId,
+          username: this.username,
+          isLoggedIn: this.isLoggedIn,
+        }),
+      );
     },
     loadFromLocalStorage() {
       const userJson = localStorage.getItem('user');

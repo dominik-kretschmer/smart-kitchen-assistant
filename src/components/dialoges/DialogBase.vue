@@ -28,8 +28,7 @@ function closeDialog() {
   <v-dialog v-model="dialog" :max-width="maxWidth || '500px'" :persistent="persistent">
     <v-card>
       <v-card-title class="text-h5">
-        <slot name="title">
-        </slot>
+        <slot name="title"> </slot>
       </v-card-title>
       <slot />
       <v-card-actions v-if="!hideActions">

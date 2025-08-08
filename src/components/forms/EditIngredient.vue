@@ -19,7 +19,7 @@ const emit = defineEmits<{
 
 watch(
   () => props.editedItem,
-  (newVal:FullIngredient) => {
+  (newVal: FullIngredient) => {
     localEditedItem.value = { ...newVal };
   },
   { deep: true },
@@ -27,7 +27,7 @@ watch(
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (value : boolean) => emit('update:modelValue', value),
+  set: (value: boolean) => emit('update:modelValue', value),
 });
 
 async function updateIngredient() {
@@ -47,7 +47,7 @@ async function updateIngredient() {
     });
 
     emit('ingredient-updated', updatedItem);
-    dialogVisible.value=false
+    dialogVisible.value = false;
   } catch (err) {
     emit('update:error', t('errors.failedToUpdateIngredient') + err);
   }

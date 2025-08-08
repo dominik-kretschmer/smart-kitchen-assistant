@@ -15,8 +15,5 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <AuthForm
-    formType="login"
-    :isLoggedIn="isLoggedIn"
-    @submit="handleSubmit" />
+  <AuthForm formType="login" :isLoggedIn="isLoggedIn" @submit="handleSubmit" />
 </template>

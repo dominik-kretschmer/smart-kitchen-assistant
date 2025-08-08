@@ -60,10 +60,9 @@ export function useAuth() {
     }
   };
 
-
   return {
     checkLoginStatus,
     login,
-    register
+    register,
   };
 }

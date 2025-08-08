@@ -13,7 +13,6 @@ const userId = ref<number | null>(null);
 const shoppingItems = ref<(ShoppingListItem & { purchased?: boolean })[]>([]);
 const availableIngredients = ref<FullIngredient[]>([]);
 const showAddForm = ref(false);
-
 const newItem = reactive({
   amount: 0,
   unit: '',
@@ -41,9 +40,8 @@ const loadShoppingList = async () => {
   } catch (err) {
     console.error(err);
     error.value = t('shoppingList.loadError');
-  } finally {
-    isLoading.value = false;
   }
+  isLoading.value = false;
 };
 
 const loadIngredients = async () => {
@@ -73,9 +71,8 @@ const addItem = async (item: Omit<ShoppingListItem, 'id'>) => {
   } catch (err) {
     console.error(err);
     error.value = t('shoppingList.addError');
-  } finally {
-    isLoading.value = false;
   }
+  isLoading.value = false;
 };
 
 const removeItem = async (id: number) => {
@@ -157,10 +154,7 @@ onMounted(async () => {
               required />
           </v-col>
           <v-col cols="6" sm="3">
-            <v-text-field
-              v-model="newItem.unit"
-              :label="t('shoppingList.unit')"
-              required />
+            <v-text-field v-model="newItem.unit" :label="t('shoppingList.unit')" required />
           </v-col>
         </v-row>
       </v-card-text>

@@ -44,7 +44,7 @@ watch(
   { immediate: true },
 );
 
-function removeItem(index: number , item:object): void {
+function removeItem(index: number, item: object): void {
   if (item.value.length > 1) {
     item.value.splice(index, 1);
   }
@@ -95,7 +95,7 @@ function saveRecipe(): void {
       <IngredientForm
         v-model="ingredients[index]"
         :showRemoveButton="ingredients.length > 1"
-        @remove="removeItem(index,ingredient)" />
+        @remove="removeItem(index, ingredient)" />
     </div>
     <v-btn
       prepend-icon="mdi-plus"
