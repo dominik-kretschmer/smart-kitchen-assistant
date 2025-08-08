@@ -44,15 +44,9 @@ watch(
   { immediate: true },
 );
 
-function removeIngredient(index: number): void {
-  if (ingredients.value.length > 1) {
-    ingredients.value.splice(index, 1);
-  }
-}
-
-function removeStep(index: number): void {
-  if (steps.value.length > 1) {
-    steps.value.splice(index, 1);
+function removeItem(index: number , item:object): void {
+  if (item.value.length > 1) {
+    item.value.splice(index, 1);
   }
 }
 
@@ -101,7 +95,7 @@ function saveRecipe(): void {
       <IngredientForm
         v-model="ingredients[index]"
         :showRemoveButton="ingredients.length > 1"
-        @remove="removeIngredient(index)" />
+        @remove="removeItem(index,ingredient)" />
     </div>
     <v-btn
       prepend-icon="mdi-plus"
@@ -127,7 +121,7 @@ function saveRecipe(): void {
             variant="text"
             density="comfortable"
             color="error"
-            @click="removeStep(index)"
+            @click="removeItem(index, steps)"
             :disabled="steps.length <= 1">
             <v-icon>mdi-delete</v-icon>
           </v-btn>

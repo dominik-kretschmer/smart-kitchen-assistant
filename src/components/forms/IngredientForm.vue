@@ -1,35 +1,34 @@
 <script setup lang="ts">
-import { useI18n } from '@/i18n';
-import type { FullIngredient } from '@/types/ingriedientTypes';
+import type { Ingredient } from '@/types/ingriedientTypes';
 const { t } = useI18n();
 const props = defineProps<{
-  modelValue: FullIngredient;
+  modelValue: Ingredient;
   showRemoveButton?: boolean;
   disabled?: boolean;
 }>();
 
 const emit = defineEmits<{
-  'update:modelValue': [value: FullIngredient];
+  'update:modelValue': [value: Ingredient];
   remove: [];
 }>();
 
 const name = computed({
   get: () => props.modelValue.name,
-  set: (value) => {
+  set: (value:string) => {
     emit('update:modelValue', { ...props.modelValue, name: value });
   },
 });
 
 const quantity = computed({
   get: () => props.modelValue.quantity,
-  set: (value) => {
+  set: (value :number) => {
     emit('update:modelValue', { ...props.modelValue, quantity: value });
   },
 });
 
 const unit = computed({
   get: () => props.modelValue.unit,
-  set: (value) => {
+  set: (value:string) => {
     emit('update:modelValue', { ...props.modelValue, unit: value });
   },
 });

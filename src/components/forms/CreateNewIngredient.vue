@@ -15,7 +15,7 @@ const props = defineProps<{
   isLoading: boolean;
   error: string;
 }>();
-
+const localNewIngredient = ref({ ...props.newIngredient });
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];
   'update:error': [value: string];
@@ -23,11 +23,9 @@ const emit = defineEmits<{
   'ingredient-created': [ingredient: FullIngredient];
 }>();
 
-const localNewIngredient = ref({ ...props.newIngredient });
-
 watch(
   () => props.newIngredient,
-  (newVal) => {
+  (newVal: FullIngredient,) => {
     localNewIngredient.value = { ...newVal };
   },
   { deep: true },
@@ -35,7 +33,7 @@ watch(
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (value :boolean) => emit('update:modelValue', value),
 });
 
 async function addIngredient() {
@@ -48,7 +46,7 @@ async function addIngredient() {
   try {
     const createdIngredient = await ingredientService.createIngredient(localNewIngredient.value);
     emit('ingredient-created', createdIngredient);
-    emit('update:modelValue', false);
+    dialogVisible.set(false);
     localNewIngredient.value = {
       name: '',
       calories: 0,

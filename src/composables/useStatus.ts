@@ -7,5 +7,5 @@ export function useStatus() {
     id: 0,
     username: '',
   };
-  return { isLoading, error , user};
+  return { isLoading, error, user };
 }
