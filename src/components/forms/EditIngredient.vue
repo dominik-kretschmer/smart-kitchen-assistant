@@ -47,7 +47,7 @@ async function updateIngredient() {
     });
 
     emit('ingredient-updated', updatedItem);
-    dialogVisible.set(false)
+    dialogVisible.value=false
   } catch (err) {
     emit('update:error', t('errors.failedToUpdateIngredient') + err);
   }

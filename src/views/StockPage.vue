@@ -10,7 +10,8 @@ const userId = ref<number | null>(null);
 const { validateStockItem } = useValidation();
 const { checkLoginStatus } = useAuth();
 const { t } = useI18n();
-
+const deleteDialog = ref(false);
+const itemToDelete = ref<StockItem | null>(null);
 const editDialog = ref(false);
 const editedItem = ref<StockItem>({
   id: 0,
@@ -18,9 +19,6 @@ const editedItem = ref<StockItem>({
   quantity: 0,
   unit: '',
 });
-
-const deleteDialog = ref(false);
-const itemToDelete = ref<StockItem | null>(null);
 
 onMounted(async () => {
   try {
@@ -34,7 +32,7 @@ onMounted(async () => {
   }
 });
 
-function validateUserInput(item: Omit<StockItem, 'id'> | undefined = undefined) {
+function validateUserInput(item: StockItem  | undefined = undefined) {
   if (!userId.value) {
     error.value = t('errors.userNotLoggedIn');
     throw error;
@@ -52,6 +50,7 @@ function validateUserInput(item: Omit<StockItem, 'id'> | undefined = undefined) 
 
 async function useCreateStock(item: Omit<StockItem, 'id'>) {
   validateUserInput();
+  console.log(item)
   const stockData = {
     userId: userId.value,
     ...item,
@@ -94,7 +93,7 @@ async function updateStockItem(item: StockItem) {
       return;
     }
     const updatedItem = await stockService.updateStock(item.id, stockData);
-    const index = stockItems.value.findIndex((stockItem) => stockItem.id === item.id);
+    const index = stockItems.value.findIndex((stockItem:StockItem) => stockItem.id === item.id);
 
     if (index !== -1) {
       stockItems.value[index] = updatedItem;
@@ -122,7 +121,6 @@ async function deleteStockItem(itemId: number) {
   }
 }
 </script>
-
 <template>
   <div class="p-4" v-if="userId !== null">
     <h1 class="text-2xl font-bold mb-4">{{ t('stock.title') }}</h1>

@@ -1,68 +1,67 @@
 <script setup lang="ts">
-import type { Ingredient } from '@/types/ingriedientTypes';
+const dialogVisible = defineModel<boolean>({ default: false });
 const { t } = useI18n();
 const props = defineProps<{
-  modelValue: Ingredient;
-  showRemoveButton?: boolean;
-  disabled?: boolean;
+  newIngredient: {
+    name: string;
+    calories: number;
+    carbs: number;
+    fat: number;
+    protein: number;
+  };
+  isLoading: boolean;
+  error: string | null;
 }>();
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Ingredient];
-  remove: [];
+  (e: 'update:error', value: string): void;
+  (e: 'update:is-loading', value: boolean): void;
+  (e: 'ingredient-created', value: {
+    id: number;
+    name: string;
+    calories?: number;
+    carbs?: number;
+    fat?: number;
+    protein?: number;
+  }): void;
 }>();
 
-const name = computed({
-  get: () => props.modelValue.name,
-  set: (value:string) => {
-    emit('update:modelValue', { ...props.modelValue, name: value });
-  },
-});
+async function submit() {
+  emit('update:is-loading', true);
+  emit('update:error', '');
+  try {
+    const payload = {
+      name: props.newIngredient.name,
+      calories: props.newIngredient.calories,
+      carbs: props.newIngredient.carbs,
+      fat: props.newIngredient.fat,
+      protein: props.newIngredient.protein,
+    };
+    const created = await ingredientService.createIngredient(payload);
+    emit('ingredient-created', created);
+    dialogVisible.value = false;
+  } catch (err) {
+    const message =
+      'Failed to create ingredient.ssss Please try again later.' +
+      (err instanceof Error ? ` ${err.message}` : '');
+    emit('update:error', message);
+  } finally {
+    emit('update:is-loading', false);
+  }
+}
 
-const quantity = computed({
-  get: () => props.modelValue.quantity,
-  set: (value :number) => {
-    emit('update:modelValue', { ...props.modelValue, quantity: value });
-  },
-});
-
-const unit = computed({
-  get: () => props.modelValue.unit,
-  set: (value:string) => {
-    emit('update:modelValue', { ...props.modelValue, unit: value });
-  },
-});
+function cancel() {
+  dialogVisible.value = false;
+}
 </script>
+
 <template>
-  <v-row>
-    <v-col cols="5">
-      <FormTextField
-        v-model="name"
-        :label="t('recipe.ingredient')"
-        :placeholder="t('recipe.ingredientPlaceholder')"
-        :disabled="disabled"
-        required />
-    </v-col>
-    <v-col cols="3">
-      <QuantityInput
-        v-model="quantity"
-        :label="t('recipe.quantity')"
-        :disabled="disabled"
-        required />
-    </v-col>
-    <v-col cols="3">
-      <UnitSelect v-model="unit" :label="t('recipe.unit')" :disabled="disabled" />
-    </v-col>
-    <v-col cols="1" class="d-flex align-center" v-if="showRemoveButton">
-      <v-btn
-        icon
-        variant="text"
-        density="comfortable"
-        color="error"
-        @click="emit('remove')"
-        :disabled="disabled">
-        <v-icon>mdi-delete</v-icon>
+  <v-dialog v-model="dialogVisible" max-width="600">
+    <template #actions>
+      <v-btn variant="text" @click="cancel">{{ t('common.cancel') }}</v-btn>
+      <v-btn color="primary" :loading="isLoading" :disabled="isLoading" @click="submit">
+        {{ t('common.save') }}
       </v-btn>
-    </v-col>
-  </v-row>
+    </template>
+  </v-dialog>
 </template>

@@ -3,6 +3,7 @@ import { ingredientService } from '@/services/ingredientService';
 import type { FullIngredient } from '@/types/ingriedientTypes';
 
 const { t } = useI18n();
+
 const props = defineProps<{
   modelValue: boolean;
   newIngredient: {
@@ -15,25 +16,27 @@ const props = defineProps<{
   isLoading: boolean;
   error: string;
 }>();
-const localNewIngredient = ref({ ...props.newIngredient });
+
 const emit = defineEmits<{
-  'update:modelValue': [value: boolean];
-  'update:error': [value: string];
-  'update:isLoading': [value: boolean];
-  'ingredient-created': [ingredient: FullIngredient];
+  (e: 'update:modelValue', value: boolean): void;
+  (e: 'update:error', value: string): void;
+  (e: 'update:is-loading', value: boolean): void; // an Parent angepasst
+  (e: 'ingredient-created', ingredient: FullIngredient): void;
 }>();
+
+const localNewIngredient = ref({ ...props.newIngredient });
 
 watch(
   () => props.newIngredient,
-  (newVal: FullIngredient,) => {
+  (newVal : FullIngredient) => {
     localNewIngredient.value = { ...newVal };
   },
-  { deep: true },
+  { deep: true }
 );
 
-const dialogVisible = computed({
+const dialogVisible = computed<boolean>({
   get: () => props.modelValue,
-  set: (value :boolean) => emit('update:modelValue', value),
+  set: (value : boolean) => emit('update:modelValue', value),
 });
 
 async function addIngredient() {
@@ -42,11 +45,21 @@ async function addIngredient() {
     return;
   }
 
-  emit('update:isLoading', true);
+  emit('update:is-loading', true);
+  emit('update:error', '');
+
   try {
-    const createdIngredient = await ingredientService.createIngredient(localNewIngredient.value);
+    const createdIngredient = await ingredientService.createIngredient({
+      name: localNewIngredient.value.name,
+      calories: localNewIngredient.value.calories,
+      carbs: localNewIngredient.value.carbs,
+      fat: localNewIngredient.value.fat,
+      protein: localNewIngredient.value.protein,
+    });
     emit('ingredient-created', createdIngredient);
-    dialogVisible.set(false);
+
+    dialogVisible.value = false;
+
     localNewIngredient.value = {
       name: '',
       calories: 0,
@@ -55,9 +68,13 @@ async function addIngredient() {
       protein: 0,
     };
   } catch (err) {
-    emit('update:error', t('errors.failedToCreateIngredient') + err);
+    const message =
+      'Failed to create ingredient. Please try again later.' +
+      (err instanceof Error ? ` ${err.message}` : '');
+    emit('update:error', message);
+  } finally {
+    emit('update:is-loading', false);
   }
-  emit('update:isLoading', false);
 }
 </script>
 
@@ -72,41 +89,41 @@ async function addIngredient() {
               <v-text-field
                 v-model="localNewIngredient.name"
                 :label="t('ingredients.name')"
-                required></v-text-field>
+                required />
             </v-col>
             <v-col cols="6">
               <v-text-field
                 v-model.number="localNewIngredient.calories"
                 :label="t('ingredients.caloriesLabel')"
-                type="number"></v-text-field>
+                type="number" />
             </v-col>
             <v-col cols="6">
               <v-text-field
                 v-model.number="localNewIngredient.carbs"
                 :label="t('ingredients.carbsLabel')"
-                type="number"></v-text-field>
+                type="number" />
             </v-col>
             <v-col cols="6">
               <v-text-field
                 v-model.number="localNewIngredient.fat"
                 :label="t('ingredients.fatLabel')"
-                type="number"></v-text-field>
+                type="number" />
             </v-col>
             <v-col cols="6">
               <v-text-field
                 v-model.number="localNewIngredient.protein"
                 :label="t('ingredients.proteinLabel')"
-                type="number"></v-text-field>
+                type="number" />
             </v-col>
           </v-row>
         </v-container>
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue-darken-1" variant="text" @click="emit('update:modelValue', false)">
+        <v-spacer />
+        <v-btn variant="text" @click="emit('update:modelValue', false)">
           {{ t('ingredients.cancel') }}
         </v-btn>
-        <v-btn color="blue-darken-1" variant="text" @click="addIngredient">
+        <v-btn color="primary" variant="text" @click="addIngredient">
           {{ t('ingredients.save') }}
         </v-btn>
       </v-card-actions>

@@ -8,35 +8,42 @@ import { useStatus } from '@/composables/useStatus.ts';
 
 const { t } = useI18n();
 const { checkLoginStatus } = useAuth();
-const { isLoading, error, user } = useStatus();
+const { isLoading, error } = useStatus();
+const userId = ref<number | null>(null);
 const shoppingItems = ref<(ShoppingListItem & { purchased?: boolean })[]>([]);
 const availableIngredients = ref<FullIngredient[]>([]);
-
 const showAddForm = ref(false);
+
 const newItem = reactive({
   amount: 0,
   unit: '',
   ingredient: null as FullIngredient | null,
 });
 
+const ensureLoggedIn = async () => {
+  const userData = await checkLoginStatus();
+  userId.value = userData?.id ?? null;
+  if (!userId.value) {
+    error.value = t('shoppingList.loginRequired');
+    return false;
+  }
+  return true;
+};
+
 const loadShoppingList = async () => {
   isLoading.value = true;
+  error.value = '';
   try {
-    if (!user.value?.id) {
-      user.value = checkLoginStatus();
-    }
+    if (!(await ensureLoggedIn())) return;
 
-    if (user.value?.id) {
-      shoppingItems.value = await shoppingListService.getShoppingListByUser(user.value.id);
-      await loadIngredients();
-      return;
-    }
-    error.value = t('shoppingList.loginRequired');
+    shoppingItems.value = await shoppingListService.getShoppingListByUser(userId.value as number);
+    await loadIngredients();
   } catch (err) {
     console.error(err);
     error.value = t('shoppingList.loadError');
+  } finally {
+    isLoading.value = false;
   }
-  isLoading.value = false;
 };
 
 const loadIngredients = async () => {
@@ -54,6 +61,7 @@ const addItem = async (item: Omit<ShoppingListItem, 'id'>) => {
       error.value = t('shoppingList.ingredientRequired');
       return;
     }
+    if (!(await ensureLoggedIn())) return;
 
     isLoading.value = true;
     const newShoppingItem = await shoppingListService.createShoppingListItem(item);
@@ -65,31 +73,37 @@ const addItem = async (item: Omit<ShoppingListItem, 'id'>) => {
   } catch (err) {
     console.error(err);
     error.value = t('shoppingList.addError');
+  } finally {
+    isLoading.value = false;
   }
-  isLoading.value = false;
 };
 
 const removeItem = async (id: number) => {
   try {
+    if (!(await ensureLoggedIn())) return;
+
     isLoading.value = true;
     const success = await shoppingListService.deleteShoppingListItem(id);
     if (success) {
-      shoppingItems.value = shoppingItems.value.filter((item) => item.id !== id);
+      shoppingItems.value = shoppingItems.value.filter((it) => it.id !== id);
       return;
     }
     error.value = t('shoppingList.removeError');
   } catch (err) {
     console.error(err);
     error.value = t('shoppingList.removeError');
+  } finally {
+    isLoading.value = false;
   }
-  isLoading.value = false;
 };
 
 const markItemAsPurchased = async (id: number, purchased: boolean) => {
   try {
+    if (!(await ensureLoggedIn())) return;
+
     isLoading.value = true;
     await shoppingListService.markItemAsPurchased(id, purchased);
-    const index = shoppingItems.value.findIndex((item) => item.id === id);
+    const index = shoppingItems.value.findIndex((it) => it.id === id);
     if (index !== -1) {
       shoppingItems.value[index].purchased = purchased;
     }
@@ -133,25 +147,25 @@ onMounted(async () => {
               item-value="id"
               return-object
               :label="t('shoppingList.ingredient')"
-              required></v-select>
+              required />
           </v-col>
           <v-col cols="6" sm="3">
             <v-text-field
               v-model.number="newItem.amount"
               type="number"
               :label="t('shoppingList.amount')"
-              required></v-text-field>
+              required />
           </v-col>
           <v-col cols="6" sm="3">
             <v-text-field
               v-model="newItem.unit"
               :label="t('shoppingList.unit')"
-              required></v-text-field>
+              required />
           </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-btn
           color="primary"
           @click="addItem(newItem as Omit<ShoppingListItem, 'id'>)"
@@ -165,15 +179,15 @@ onMounted(async () => {
       <div v-if="!isLoading">
         <v-list v-if="shoppingItems.length > 0" class="bg-transparent">
           <v-list-item v-for="item in shoppingItems" :key="item.id">
-            <template v-slot:prepend>
+            <template #prepend>
               <v-checkbox
                 :model-value="item.purchased"
                 hide-details
-                @change="(value) => markItemAsPurchased(item.id, value)"></v-checkbox>
+                @change="(val: boolean) => markItemAsPurchased(item.id, Boolean(val))" />
             </template>
             <v-list-item-title>{{ item.ingredient.name }}</v-list-item-title>
             <v-list-item-subtitle>{{ item.amount }} {{ item.unit }}</v-list-item-subtitle>
-            <template v-slot:append>
+            <template #append>
               <v-btn icon @click="removeItem(item.id)">
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
