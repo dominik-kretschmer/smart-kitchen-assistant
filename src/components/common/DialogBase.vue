@@ -18,7 +18,6 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-// Computed property for v-model binding
 const dialog = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),

@@ -36,7 +36,6 @@ const loadShoppingList = async () => {
       const items = await shoppingListService.getShoppingListByUser(user.value.id);
       shoppingItems.value = items;
 
-      // Load available ingredients
       await loadIngredients();
     } else {
       error.value = t('shoppingList.loginRequired');
@@ -69,7 +68,6 @@ const addItem = async (item: Omit<ShoppingListItem, 'id'>) => {
     const newShoppingItem = await shoppingListService.createShoppingListItem(item);
     shoppingItems.value.push(newShoppingItem);
 
-    // Reset form
     newItem.amount = 0;
     newItem.unit = '';
     newItem.ingredient = null;

@@ -11,7 +11,6 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-// Computed property for v-model binding
 const dialog = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),

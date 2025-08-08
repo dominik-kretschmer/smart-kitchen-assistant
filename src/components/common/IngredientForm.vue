@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useI18n } from '@/i18n';
-import FormTextField from './FormTextField.vue';
-import QuantityInput from './QuantityInput.vue';
-import UnitSelect from './UnitSelect.vue';
 import type { FullIngredient } from '@/types/ingriedientTypes';
-
+const { t } = useI18n();
 const props = defineProps<{
   modelValue: FullIngredient;
   showRemoveButton?: boolean;
@@ -17,7 +13,7 @@ const emit = defineEmits<{
   remove: [];
 }>();
 
-const { t } = useI18n();
+
 
 const name = computed({
   get: () => props.modelValue.name,
@@ -40,11 +36,7 @@ const unit = computed({
   },
 });
 
-function removeIngredient() {
-  emit('remove');
-}
 </script>
-
 <template>
   <v-row>
     <v-col cols="5">
@@ -71,7 +63,7 @@ function removeIngredient() {
         variant="text"
         density="comfortable"
         color="error"
-        @click="removeIngredient"
+        @click="emit('remove')"
         :disabled="disabled">
         <v-icon>mdi-delete</v-icon>
       </v-btn>

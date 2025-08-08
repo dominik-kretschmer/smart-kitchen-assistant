@@ -56,7 +56,6 @@ async function loadIngredients() {
 
 function handleIngredientCreated(createdIngredient: FullIngredient) {
   ingredients.value.push(createdIngredient);
-  // Reset the form
   newIngredient.value = {
     name: '',
     calories: 0,

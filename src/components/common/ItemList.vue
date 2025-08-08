@@ -2,7 +2,6 @@
 import { useI18n } from '@/i18n';
 import LoadingIndicator from './LoadingIndicator.vue';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   items: T[];
   loading?: boolean;

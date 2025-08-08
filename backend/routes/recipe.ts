@@ -6,7 +6,6 @@ router.post('/', async (req, res) => {
   try {
     const recipe = await createRecipe(req.body);
     res.status(201).json(recipe);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     res.status(500).json({ error: 'Failed to create recipe' });
   }
@@ -16,7 +15,6 @@ router.get('/', async (req, res) => {
   try {
     const recipes = await getAllRecipes();
     res.json(recipes);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     res.status(500).json({ error: 'Failed to get recipes' });
   }
@@ -29,7 +27,6 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Recipe not found' });
     }
     res.json(recipe);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     res.status(500).json({ error: 'Failed to get recipe' });
   }
@@ -39,7 +36,6 @@ router.put('/:id', async (req, res) => {
   try {
     const recipe = await updateRecipe(parseInt(req.params.id), req.body);
     res.json(recipe);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     res.status(500).json({ error: 'Failed to update recipe' });
   }

@@ -22,11 +22,9 @@ router.post('/login', async (req, res) => {
       path: '/',
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userData } = user;
     res.status(200).json(userData);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
+  } catch{
     res.status(500).json({ error: 'Failed to login' });
   }
 });

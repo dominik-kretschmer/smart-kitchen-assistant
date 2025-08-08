@@ -49,7 +49,6 @@ async function addIngredient() {
     const createdIngredient = await ingredientService.createIngredient(localNewIngredient.value);
     emit('ingredient-created', createdIngredient);
     emit('update:modelValue', false);
-    // Reset the local form
     localNewIngredient.value = {
       name: '',
       calories: 0,

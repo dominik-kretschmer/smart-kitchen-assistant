@@ -13,17 +13,12 @@ const emit = defineEmits<{
   'update:modelValue': [value: string];
 }>();
 
-// Computed property for v-model binding
 const errorMessage = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 });
 
-function clearError() {
-  emit('update:modelValue', '');
-}
 </script>
-
 <template>
   <v-alert
     v-if="errorMessage"
@@ -31,7 +26,7 @@ function clearError() {
     :variant="variant || 'tonal'"
     :class="['mb-4', customClass]"
     :closable="closable"
-    @click:close="clearError">
+    @click:close="emit('update:modelValue', '')">
     {{ errorMessage }}
   </v-alert>
 </template>

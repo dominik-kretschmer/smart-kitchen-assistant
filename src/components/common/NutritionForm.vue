@@ -21,7 +21,6 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-// Computed properties for v-model binding
 const calories = computed({
   get: () => props.modelValue.calories,
   set: (value) => {
