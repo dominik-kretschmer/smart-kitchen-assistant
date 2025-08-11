@@ -5,7 +5,11 @@
     "cancel": "Abbrechen",
     "edit": "Bearbeiten",
     "delete": "Löschen",
-    "noItems": "Keine Einträge vorhanden"
+    "quantity": "Menge",
+    "unit": "Einheit",
+    "noItems": "Keine Einträge vorhanden",
+    "ingredient": "Zutat",
+    "save": "Speichern"
   },
   "navigation": {
     "home": "Startseite",
@@ -21,8 +25,6 @@
     "title": "Vorrat",
     "currentStock": "Aktuelle Vorräte",
     "noItems": "Keine Vorräte vorhanden",
-    "edit": "Bearbeiten",
-    "delete": "Löschen",
     "pleaseLogin": "Bitte anmelden"
   },
   "errors": {
@@ -38,46 +40,30 @@
   },
   "deleteStockDialog": {
     "title": "Vorrat löschen",
-    "confirmMessage": "Möchtest du wirklich aus deinem Vorrat löschen?",
-    "cancel": "Abbrechen",
-    "delete": "Löschen"
+    "confirmMessage": "Möchtest du wirklich aus deinem Vorrat löschen?"
   },
   "editStockDialog": {
     "title": "Vorrat bearbeiten",
-    "name": "Name",
-    "quantity": "Menge",
-    "unit": "Einheit",
-    "cancel": "Abbrechen",
-    "save": "Speichern"
+    "name": "Name"
   },
   "addStock": {
     "title": "Vorrat hinzufügen",
-    "ingredient": "Zutat",
-    "ingredientPlaceholder": "z.B. Tomaten",
-    "quantity": "Menge",
-    "unit": "Einheit",
-    "add": "Hinzufügen"
+    "ingredientPlaceholder": "z.B. Tomaten"
   },
   "auth": {
     "alreadyLoggedIn": "Du bist bereits angemeldet",
     "goToHome": "Zur Startseite",
-    "login": "Anmelden",
-    "register": "Registrieren",
     "username": "Benutzername",
     "password": "Passwort",
     "confirmPassword": "Passwort bestätigen",
     "enterUsername": "Gib deinen Benutzernamen ein",
-    "chooseUsername": "Wähle einen Benutzernamen",
     "enterPassword": "Gib dein Passwort ein",
-    "choosePassword": "Wähle ein Passwort",
-    "confirmYourPassword": "Bestätige dein Passwort",
     "noAccount": "Noch kein Konto?",
     "haveAccount": "Bereits ein Konto?"
   },
   "recipe": {
     "title": "Rezepte",
     "myRecipes": "Meine Rezepte",
-    "ingredients": "Zutaten:",
     "preparation": "Zubereitung:",
     "noRecipes": "Keine Rezepte vorhanden",
     "createNew": "Neues Rezept erstellen",
@@ -85,23 +71,16 @@
     "recipeNamePlaceholder": "z.B. Spaghetti Bolognese",
     "description": "Beschreibung",
     "descriptionPlaceholder": "Kurze Beschreibung des Rezepts",
-    "ingredientsSection": "Zutaten",
-    "ingredient": "Zutat",
     "ingredientPlaceholder": "z.B. Tomaten",
-    "quantity": "Menge",
-    "unit": "Einheit",
     "addIngredient": "Zutat hinzufügen",
     "steps": "Zubereitungsschritte",
     "step": "Schritt",
-    "addStep": "Schritt hinzufügen",
-    "saveRecipe": "Rezept speichern"
+    "addStep": "Schritt hinzufügen"
   },
   "ingredients": {
     "title": "Zutaten",
-    "addNew": "Neue Zutat hinzufügen",
     "allIngredients": "Alle Zutaten",
     "noIngredients": "Keine Zutaten vorhanden",
-    "edit": "Bearbeiten",
     "calories": "Kalorien",
     "carbs": "Kohlenhydrate",
     "fat": "Fett",
@@ -112,9 +91,7 @@
     "caloriesLabel": "Kalorien",
     "carbsLabel": "Kohlenhydrate (g)",
     "fatLabel": "Fett (g)",
-    "proteinLabel": "Protein (g)",
-    "cancel": "Abbrechen",
-    "save": "Speichern"
+    "proteinLabel": "Protein (g)"
   },
   "home": {
     "title": "Startseite",
@@ -124,19 +101,12 @@
     "title": "Einkaufsliste",
     "myList": "Meine Einkaufsliste",
     "purchased": "Gekauft",
-    "noItems": "Keine Einkäufe vorhanden",
-    "loginRequired": "Bitte melde dich an, um deine Einkaufsliste zu sehen",
     "loadError": "Fehler beim Laden der Einkaufsliste. Bitte versuche es später erneut.",
     "ingredientsLoadError": "Fehler beim Laden der Zutaten. Bitte versuche es später erneut.",
     "ingredientRequired": "Zutat ist erforderlich",
     "addError": "Fehler beim Hinzufügen des Artikels zur Einkaufsliste. Bitte versuche es später erneut.",
     "removeError": "Fehler beim Entfernen des Artikels aus der Einkaufsliste. Bitte versuche es später erneut.",
-    "updateError": "Fehler beim Aktualisieren des Artikels in der Einkaufsliste. Bitte versuche es später erneut.",
-    "addItem": "Artikel hinzufügen",
-    "addNewItem": "Neuen Artikel hinzufügen",
-    "ingredient": "Zutat",
-    "amount": "Menge",
-    "unit": "Einheit"
+    "updateError": "Fehler beim Aktualisieren des Artikels in der Einkaufsliste. Bitte versuche es später erneut."
   },
   "units": {
     "piece": "Stück",

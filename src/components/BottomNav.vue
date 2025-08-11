@@ -53,7 +53,7 @@ const currentColor = computed(() => colorMap.get(route.path) ?? 'blue-grey');
       </v-btn>
       <v-btn @click="languageStore.toggleLanguage()">
         <v-icon>mdi-translate</v-icon>
-        <span>{{ languageStore.isGerman ? 'EN' : 'DE' }}</span>
+        <span>{{ t('navigation.language') }}</span>
       </v-btn>
     </v-bottom-navigation>
   </v-layout>

@@ -1,10 +1,5 @@
 import { defineStore } from 'pinia';
-
-export interface UserState {
-  userId: number | null;
-  username: string;
-  isLoggedIn: boolean;
-}
+import type { UserState } from '@/types/validationTypes.ts';
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({

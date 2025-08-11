@@ -74,7 +74,7 @@ function saveRecipe(): void {
 <template>
   <FormLayout
     :title="props.isEditing ? t('recipe.editRecipe') : t('recipe.createNew')"
-    :submitText="props.isEditing ? t('recipe.updateRecipe') : t('recipe.saveRecipe')"
+    :submitText="props.isEditing ? t('recipe.updateRecipe') : t('common.save')"
     @submit="saveRecipe">
     <FormTextField
       v-model="recipeName"
@@ -89,7 +89,7 @@ function saveRecipe(): void {
       :multiLine="true"
       :rows="2"
       customClass="mb-3" />
-    <h3 class="text-lg font-medium mb-2">{{ t('recipe.ingredientsSection') }}</h3>
+    <h3 class="text-lg font-medium mb-2">{{ t('navigation.ingredients') }}</h3>
     <div v-for="(ingredient, index) in ingredients" :key="index" class="mb-2">
       <IngredientForm
         v-model="ingredients[index]"

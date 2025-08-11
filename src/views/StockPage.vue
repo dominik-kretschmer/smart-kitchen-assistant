@@ -30,7 +30,7 @@ onMounted(async () => {
       await handleStockItems();
     }
   } catch (err) {
-    error.value = 'failed' + err;
+    error.value = t('errors.httpError') + err;
   }
 });
 
@@ -147,10 +147,10 @@ async function deleteStockItem(itemId: number) {
             <v-list-item-subtitle> {{ item.quantity }} {{ item.unit }}</v-list-item-subtitle>
             <div class="d-flex">
               <v-btn variant="text" color="white" @click="openEditDialog(item)">
-                {{ t('stock.edit') }}
+                {{ t('common.edit') }}
               </v-btn>
               <v-btn variant="text" color="white" @click="openDeleteDialog(item)">
-                {{ t('stock.delete') }}
+                {{ t('common.delete') }}
               </v-btn>
             </div>
           </v-list-item>

@@ -1,11 +1,6 @@
 import { PrismaClient, ShoppingList } from '@prisma/client';
+import { ShoppingListData } from '../../types/types';
 const prisma = new PrismaClient();
-
-interface ShoppingListData {
-  userId: number;
-  ingredientId: number;
-  quantity?: number;
-}
 
 async function createShoppingList(data: ShoppingListData): Promise<ShoppingList> {
   return prisma.shoppingList.create({

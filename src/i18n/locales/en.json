@@ -5,7 +5,11 @@
     "cancel": "Cancel",
     "edit": "Edit",
     "delete": "Delete",
-    "noItems": "No items available"
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "noItems": "No items available",
+    "ingredient": "Ingredient",
+    "save": "Save"
   },
   "navigation": {
     "home": "Home",
@@ -19,133 +23,99 @@
   },
   "stock": {
     "title": "Stock",
-    "currentStock": "Current Stock",
-    "noItems": "No stock items available",
-    "edit": "Edit",
-    "delete": "Delete",
-    "pleaseLogin": "Please login"
+    "currentStock": "Current stock",
+    "noItems": "No stock available",
+    "pleaseLogin": "Please log in"
   },
   "errors": {
     "userNotLoggedIn": "User not logged in",
-    "failedToLoadStock": "Failed to load stock items. Please try again later.",
-    "failedToUpdateStock": "Failed to update stock item. Please try again later.",
-    "failedToDeleteStock": "Failed to delete stock item. Please try again later.",
+    "failedToLoadStock": "Error loading stock. Please try again later.",
+    "failedToUpdateStock": "Error updating stock. Please try again later.",
+    "failedToDeleteStock": "Error deleting stock. Please try again later.",
     "nameRequired": "Name is required",
-    "failedToLoadIngredients": "Failed to load ingredients. Please try again later.",
-    "failedToCreateIngredient": "Failed to create ingredient. Please try again later.",
-    "failedToUpdateIngredient": "Failed to update ingredient. Please try again later.",
-    "httpError": "HTTP Error"
+    "failedToLoadIngredients": "Error loading ingredients. Please try again later.",
+    "failedToCreateIngredient": "Error creating ingredient. Please try again later.",
+    "failedToUpdateIngredient": "Error updating ingredient. Please try again later.",
+    "httpError": "HTTP error"
   },
   "deleteStockDialog": {
-    "title": "Delete Stock Item",
-    "confirmMessage": "Are you sure you want to delete this item from your stock?",
-    "cancel": "Cancel",
-    "delete": "Delete"
+    "title": "Delete stock",
+    "confirmMessage": "Do you really want to remove this from your stock?"
   },
   "editStockDialog": {
-    "title": "Edit Stock Item",
-    "name": "Name",
-    "quantity": "Quantity",
-    "unit": "Unit",
-    "cancel": "Cancel",
-    "save": "Save"
+    "title": "Edit stock",
+    "name": "Name"
   },
   "addStock": {
-    "title": "Add Stock Item",
-    "ingredient": "Ingredient",
-    "ingredientPlaceholder": "e.g. Tomatoes",
-    "quantity": "Quantity",
-    "unit": "Unit",
-    "add": "Add"
+    "title": "Add stock",
+    "ingredientPlaceholder": "e.g. Tomatoes"
   },
   "auth": {
     "alreadyLoggedIn": "You are already logged in",
-    "goToHome": "Go to Home",
-    "login": "Login",
-    "register": "Register",
+    "goToHome": "Go to home",
     "username": "Username",
     "password": "Password",
-    "confirmPassword": "Confirm Password",
+    "confirmPassword": "Confirm password",
     "enterUsername": "Enter your username",
-    "chooseUsername": "Choose a username",
     "enterPassword": "Enter your password",
-    "choosePassword": "Choose a password",
-    "confirmYourPassword": "Confirm your password",
-    "noAccount": "Don't have an account?",
+    "noAccount": "No account yet?",
     "haveAccount": "Already have an account?"
   },
   "recipe": {
     "title": "Recipes",
-    "myRecipes": "My Recipes",
-    "ingredients": "Ingredients:",
+    "myRecipes": "My recipes",
     "preparation": "Preparation:",
     "noRecipes": "No recipes available",
-    "createNew": "Create New Recipe",
-    "recipeName": "Recipe Name",
+    "createNew": "Create new recipe",
+    "recipeName": "Recipe name",
     "recipeNamePlaceholder": "e.g. Spaghetti Bolognese",
     "description": "Description",
-    "descriptionPlaceholder": "Brief description of the recipe",
-    "ingredientsSection": "Ingredients",
-    "ingredient": "Ingredient",
+    "descriptionPlaceholder": "Short description of the recipe",
     "ingredientPlaceholder": "e.g. Tomatoes",
-    "quantity": "Quantity",
-    "unit": "Unit",
-    "addIngredient": "Add Ingredient",
-    "steps": "Preparation Steps",
+    "addIngredient": "Add ingredient",
+    "steps": "Preparation steps",
     "step": "Step",
-    "addStep": "Add Step",
-    "saveRecipe": "Save Recipe"
+    "addStep": "Add step"
   },
   "ingredients": {
     "title": "Ingredients",
-    "addNew": "Add New Ingredient",
-    "allIngredients": "All Ingredients",
+    "allIngredients": "All ingredients",
     "noIngredients": "No ingredients available",
-    "edit": "Edit",
     "calories": "Calories",
     "carbs": "Carbohydrates",
     "fat": "Fat",
     "protein": "Protein",
-    "addIngredient": "Add New Ingredient",
-    "editIngredient": "Edit Ingredient",
+    "addIngredient": "Add new ingredient",
+    "editIngredient": "Edit ingredient",
     "name": "Name",
     "caloriesLabel": "Calories",
     "carbsLabel": "Carbohydrates (g)",
     "fatLabel": "Fat (g)",
-    "proteinLabel": "Protein (g)",
-    "cancel": "Cancel",
-    "save": "Save"
+    "proteinLabel": "Protein (g)"
   },
   "home": {
     "title": "Home",
     "welcome": "Welcome to your cooking app!"
   },
   "shoppingList": {
-    "title": "Shopping List",
-    "myList": "My Shopping List",
+    "title": "Shopping list",
+    "myList": "My shopping list",
     "purchased": "Purchased",
-    "noItems": "No shopping items available",
-    "loginRequired": "Please log in to view your shopping list",
-    "loadError": "Failed to load shopping list. Please try again later.",
-    "ingredientsLoadError": "Failed to load ingredients. Please try again later.",
+    "loadError": "Error loading shopping list. Please try again later.",
+    "ingredientsLoadError": "Error loading ingredients. Please try again later.",
     "ingredientRequired": "Ingredient is required",
-    "addError": "Failed to add item to shopping list. Please try again later.",
-    "removeError": "Failed to remove item from shopping list. Please try again later.",
-    "updateError": "Failed to update item in shopping list. Please try again later.",
-    "addItem": "Add Item",
-    "addNewItem": "Add New Item",
-    "ingredient": "Ingredient",
-    "amount": "Amount",
-    "unit": "Unit"
+    "addError": "Error adding item to shopping list. Please try again later.",
+    "removeError": "Error removing item from shopping list. Please try again later.",
+    "updateError": "Error updating item in shopping list. Please try again later."
   },
   "units": {
-    "piece": "piece",
+    "piece": "Piece",
     "g": "g",
     "kg": "kg",
     "ml": "ml",
     "l": "l",
     "tbsp": "tbsp",
     "tsp": "tsp",
-    "package": "package"
+    "package": "Package"
   }
 }

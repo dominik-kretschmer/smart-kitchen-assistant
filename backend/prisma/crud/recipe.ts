@@ -1,18 +1,6 @@
 import { PrismaClient, Recipe } from '@prisma/client';
+import { RecipeData } from '../../types/types';
 const prisma = new PrismaClient();
-
-interface RecipeIngredient {
-  ingredientId: number;
-  amount: number;
-}
-
-interface RecipeData {
-  title: string;
-  description?: string;
-  instructions?: string;
-  userId: number;
-  ingredients?: RecipeIngredient[];
-}
 
 async function createRecipe(data: RecipeData): Promise<Recipe> {
   const { ingredients, ...recipeData } = data;

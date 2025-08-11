@@ -39,6 +39,7 @@ const loadRecipes = async (): Promise<void> => {
 };
 
 const toggleCreateForm = (): void => {
+  console.log(typeof showCreateForm.value);
   showCreateForm.value = !showCreateForm.value;
   if (showCreateForm.value) {
     cancelEdit();

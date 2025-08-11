@@ -1,19 +1,6 @@
 import { PrismaClient, Stock } from '@prisma/client';
+import { StockData, StockResponse } from '../../types/types';
 const prisma = new PrismaClient();
-
-interface StockData {
-  name: string;
-  userId: number;
-  quantity: number;
-  unit?: string;
-}
-
-interface StockResponse {
-  id: number;
-  name: string;
-  quantity: number;
-  unit: string;
-}
 
 async function createStock(data: StockData): Promise<StockResponse> {
   const { name, userId, quantity } = data;

@@ -1,11 +1,6 @@
 import { PrismaClient, User } from '@prisma/client';
+import { UserData } from '../../types/types';
 const prisma = new PrismaClient();
-
-interface UserData {
-  username: string;
-  password: string;
-  email?: string;
-}
 
 async function createUser(data: UserData): Promise<User> {
   return prisma.user.create({ data });

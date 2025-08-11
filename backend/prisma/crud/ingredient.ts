@@ -1,13 +1,6 @@
 import { PrismaClient, Ingredient } from '@prisma/client';
+import { IngredientData } from '../../types/types';
 const prisma = new PrismaClient();
-
-interface IngredientData {
-  name: string;
-  calories: number;
-  carbs: number;
-  fat: number;
-  protein: number;
-}
 
 async function createIngredient(data: IngredientData): Promise<Ingredient> {
   return prisma.ingredient.create({ data });

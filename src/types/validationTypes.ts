@@ -13,3 +13,8 @@ export interface credentialsLogin {
   username: string;
   password: string;
 }
+export interface UserState {
+  userId: number | null;
+  username: string;
+  isLoggedIn: boolean;
+}

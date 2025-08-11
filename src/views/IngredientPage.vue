@@ -88,7 +88,7 @@ function handleIngredientUpdated(updatedIngredient: FullIngredient) {
       {{ error }}
     </v-alert>
     <v-btn color="primary" class="mb-4" @click="newIngredientDialog = true" :disabled="isLoading">
-      {{ t('ingredients.addNew') }}
+      {{ t('ingredients.addIngredient') }}
     </v-btn>
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('ingredients.allIngredients') }}</h2>
