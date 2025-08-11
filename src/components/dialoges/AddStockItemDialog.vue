@@ -83,8 +83,7 @@ function handleConfirm() {
         variant="tonal"
         class="mb-2"
         closable
-        @click:close="localError = ''"
-      >
+        @click:close="localError = ''">
         {{ localError }}
       </v-alert>
       <v-row>
@@ -96,15 +95,10 @@ function handleConfirm() {
             item-value="id"
             return-object
             :label="t('shoppingList.ingredient')"
-            required
-          />
+            required />
         </v-col>
         <v-col cols="6" md="3">
-          <QuantityInput
-            v-model="quantity"
-            :label="t('editStockDialog.quantity')"
-            required
-          />
+          <QuantityInput v-model="quantity" :label="t('editStockDialog.quantity')" required />
         </v-col>
         <v-col cols="6" md="3">
           <UnitSelect v-model="unit" :label="t('editStockDialog.unit')" />

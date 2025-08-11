@@ -114,7 +114,7 @@ function openDeleteDialog(item: StockItem) {
 async function deleteStockItem(itemId: number) {
   try {
     await stockService.deleteStock(itemId);
-    stockItems.value = stockItems.value.filter((item :stockItems) => item.id !== itemId);
+    stockItems.value = stockItems.value.filter((item: stockItems) => item.id !== itemId);
     deleteDialog.value = false;
     itemToDelete.value = null;
   } catch (err) {

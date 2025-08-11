@@ -30,7 +30,8 @@ function submit() {
     return;
   }
   if (!quantity.value || quantity.value <= 0) {
-    localError.value = t('editStockDialog.quantity') + ' ' + (t('errors.mustBePositive') || 'must be > 0');
+    localError.value =
+      t('editStockDialog.quantity') + ' ' + (t('errors.mustBePositive') || 'must be > 0');
     return;
   }
   const payload = {
