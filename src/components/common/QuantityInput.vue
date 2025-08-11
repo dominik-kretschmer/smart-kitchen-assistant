@@ -15,8 +15,6 @@ const emit = defineEmits<{
   'update:modelValue': [value: number];
 }>();
 
-
-
 const quantity = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', Number(value)),

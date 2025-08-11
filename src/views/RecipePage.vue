@@ -5,17 +5,16 @@ import { useStatus } from '@/composables/useStatus.ts';
 
 const { t } = useI18n();
 const { isLoading, error } = useStatus();
-
 const recipes = ref<Recipe[]>([]);
 const showCreateForm = ref<boolean>(false);
 const showEditForm = ref<boolean>(false);
 const recipeToEdit = ref<Recipe | null>(null);
 
-const mapFormToApi = (data: Recipe)  => {
+const mapFormToApi = (data: Recipe) => {
   return {
     name: data.name,
     steps: data.steps.join('\n\n'),
-    recipeIngredients: data.ingredients.map((ing :ingredient) => ({
+    recipeIngredients: data.ingredients.map((ing: ingredient) => ({
       ingredientId: 0,
       amount: `${ing.quantity} ${ing.unit}`,
       ingredient: {

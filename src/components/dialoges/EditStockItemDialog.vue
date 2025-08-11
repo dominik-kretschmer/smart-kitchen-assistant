@@ -12,12 +12,12 @@ const emit = defineEmits<{
 
 const dialog = computed({
   get: () => props.modelValue,
-  set: (value:boolean) => emit('update:modelValue', value),
+  set: (value: boolean) => emit('update:modelValue', value),
 });
 
 watch(
   () => props.item,
-  (newItem:StockItem) => {
+  (newItem: StockItem) => {
     localItem.value = { ...newItem };
   },
   { deep: true },
@@ -25,7 +25,7 @@ watch(
 
 function handleConfirm() {
   emit('save', localItem.value);
-  dialog.value=false;
+  dialog.value = false;
 }
 </script>
 <template>
@@ -34,7 +34,7 @@ function handleConfirm() {
     :title="t('editStockDialog.title')"
     :cancelText="t('editStockDialog.cancel')"
     :confirmText="t('editStockDialog.save')"
-    @cancel=" dialog.value=false"
+    @cancel="dialog.value = false"
     @confirm="handleConfirm">
     <v-container>
       <v-row>

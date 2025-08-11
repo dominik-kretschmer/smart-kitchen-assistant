@@ -3,6 +3,7 @@ import { useValidation } from '@/composables/useValidation.ts';
 import { useAuth } from '@/composables/useAuth.ts';
 import { stockService } from '@/services/stockService.ts';
 import { useStatus } from '@/composables/useStatus.ts';
+import AddStockItemDialog from '@/components/dialoges/AddStockItemDialog.vue';
 
 const stockItems = ref<StockItem[]>([]);
 const { isLoading, error } = useStatus();
@@ -13,6 +14,7 @@ const { t } = useI18n();
 const deleteDialog = ref(false);
 const itemToDelete = ref<StockItem | null>(null);
 const editDialog = ref(false);
+const createDialog = ref(false);
 const editedItem = ref<StockItem>({
   id: 0,
   name: '',
@@ -133,7 +135,10 @@ async function deleteStockItem(itemId: number) {
       @click:close="error = ''">
       {{ error }}
     </v-alert>
-    <AddStock @add-item="handleStockItems" :disabled="isLoading" />
+    <v-btn color="primary" class="mb-4" @click="createDialog = true">
+      <v-icon start>mdi-plus</v-icon>
+      {{ t('common.create') }}
+    </v-btn>
     <div class="mt-6">
       <h2 class="text-xl font-semibold mb-3">{{ t('stock.currentStock') }}</h2>
       <div v-if="!isLoading">
@@ -156,6 +161,7 @@ async function deleteStockItem(itemId: number) {
     </div>
     <EditStockItemDialog v-model="editDialog" :item="editedItem" @save="updateStockItem" />
     <DeleteStockItemDialog v-model="deleteDialog" :item="itemToDelete" @delete="deleteStockItem" />
+    <AddStockItemDialog v-model="createDialog" @save="handleStockItems" />
   </div>
   <div v-else>
     <h1>{{ t('stock.pleaseLogin') }}</h1>

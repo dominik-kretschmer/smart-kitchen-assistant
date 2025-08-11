@@ -1,63 +1,78 @@
 <script setup lang="ts">
-const dialogVisible = defineModel<boolean>({ default: false });
+import type { StockItem } from '@/types/stockTypes';
+
+const { t } = useI18n();
+
 const props = defineProps<{
-  newIngredient: {
-    name: string;
-    calories: number;
-    carbs: number;
-    fat: number;
-    protein: number;
-  };
-  isLoading: boolean;
-  error: string | null;
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:error', value: string): void;
-  (e: 'update:is-loading', value: boolean): void;
-  (e: 'ingredient-created',
-    value: {
-      id: number;
-      name: string;
-      calories?: number;
-      carbs?: number;
-      fat?: number;
-      protein?: number;
-    },
-  ): void;
+  'add-item': [item: Omit<StockItem, 'id'>];
 }>();
 
-async function submit() {
-  emit('update:is-loading', true);
-  emit('update:error', '');
-  try {
-    const payload = {
-      name: props.newIngredient.name,
-      calories: props.newIngredient.calories,
-      carbs: props.newIngredient.carbs,
-      fat: props.newIngredient.fat,
-      protein: props.newIngredient.protein,
-    };
-    const created = await ingredientService.createIngredient(payload);
-    emit('ingredient-created', created);
-    dialogVisible.value = false;
-  } catch (err) {
-    const message =
-      'Failed to create ingredient. Please try again later.' +
-      (err instanceof Error ? ` ${err.message}` : '');
-    emit('update:error', message);
-  } finally {
-    emit('update:is-loading', false);
+const name = ref<string>('');
+const quantity = ref<number>(1);
+const unit = ref<string>(t('units.piece'));
+const localError = ref<string>('');
+
+function resetForm() {
+  name.value = '';
+  quantity.value = 1;
+  unit.value = t('units.piece');
+  localError.value = '';
+}
+
+function submit() {
+  localError.value = '';
+  if (!name.value.trim()) {
+    localError.value = t('editStockDialog.name') + ' ' + t('errors.required');
+    return;
   }
+  if (!quantity.value || quantity.value <= 0) {
+    localError.value = t('editStockDialog.quantity') + ' ' + (t('errors.mustBePositive') || 'must be > 0');
+    return;
+  }
+  const payload = {
+    name: name.value.trim(),
+    quantity: Number(quantity.value),
+    unit: unit.value || t('units.piece'),
+  };
+  emit('add-item', payload);
+  resetForm();
 }
 </script>
 <template>
-  <v-dialog v-model="dialogVisible" max-width="600">
-    <template #actions>
-      <v-btn variant="text" @click="dialogVisible = false">{{ t('common.cancel') }}</v-btn>
-      <v-btn color="primary" :loading="isLoading" :disabled="isLoading" @click="submit">
-        {{ t('common.save') }}
+  <v-card class="mb-4">
+    <v-card-text>
+      <v-alert
+        v-if="localError"
+        type="error"
+        variant="tonal"
+        class="mb-2"
+        closable
+        @click:close="localError = ''">
+        {{ localError }}
+      </v-alert>
+      <v-container class="pa-0">
+        <v-row>
+          <v-col cols="12" md="6">
+            <FormTextField v-model="name" :label="t('editStockDialog.name')" required />
+          </v-col>
+          <v-col cols="6" md="3">
+            <QuantityInput v-model="quantity" :label="t('editStockDialog.quantity')" required />
+          </v-col>
+          <v-col cols="6" md="3">
+            <UnitSelect v-model="unit" :label="t('editStockDialog.unit')" />
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn color="primary" :disabled="props.disabled" @click="submit">
+        {{ t('common.add') }}
       </v-btn>
-    </template>
-  </v-dialog>
+    </v-card-actions>
+  </v-card>
 </template>

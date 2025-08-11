@@ -44,19 +44,17 @@ async function submit() {
     emit('ingredient-created', created);
     dialogVisible.value = false;
   } catch (err) {
-    const message =
-      (err instanceof Error ? ` ${err.message}` : '');
+    const message = err instanceof Error ? ` ${err.message}` : '';
     emit('update:error', message);
   } finally {
     emit('update:is-loading', false);
   }
 }
-
 </script>
 <template>
   <v-dialog v-model="dialogVisible" max-width="600">
     <template #actions>
-      <v-btn variant="text" @click=" dialogVisible.value = false">{{ t('common.cancel') }}</v-btn>
+      <v-btn variant="text" @click="dialogVisible.value = false">{{ t('common.cancel') }}</v-btn>
       <v-btn color="primary" :loading="isLoading" :disabled="isLoading" @click="submit">
         {{ t('common.save') }}
       </v-btn>

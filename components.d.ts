@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddStock: typeof import('./src/components/forms/AddStock.vue')['default']
+    AddStockItemDialog: typeof import('./src/components/dialoges/AddStockItemDialog.vue')['default']
     AuthForm: typeof import('./src/components/forms/AuthForm.vue')['default']
     BottomNav: typeof import('./src/components/BottomNav.vue')['default']
     CreateNewIngredient: typeof import('./src/components/forms/CreateNewIngredient.vue')['default']

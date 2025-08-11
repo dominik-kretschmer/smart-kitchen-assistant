@@ -95,7 +95,7 @@ async function updateIngredient() {
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue-darken-1" variant="text" @click="dialogVisible.value=false">
+        <v-btn color="blue-darken-1" variant="text" @click="dialogVisible.value = false">
           {{ t('ingredients.cancel') }}
         </v-btn>
         <v-btn color="blue-darken-1" variant="text" @click="updateIngredient">

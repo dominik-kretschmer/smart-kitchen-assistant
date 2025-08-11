@@ -9,7 +9,7 @@ const ingredients = ref<FullIngredient[]>([]);
 const { isLoading, error } = useStatus();
 const userId = ref<number | null>(null);
 const { checkLoginStatus } = useAuth();
-
+const editDialog = ref(false);
 const newIngredientDialog = ref(false);
 const newIngredient = ref({
   name: '',
@@ -19,7 +19,6 @@ const newIngredient = ref({
   protein: 0,
 });
 
-const editDialog = ref(false);
 const editedItem = ref<FullIngredient>({
   id: 0,
   name: '',
@@ -44,7 +43,6 @@ onMounted(async () => {
 async function loadIngredients() {
   isLoading.value = true;
   error.value = '';
-
   try {
     ingredients.value = await ingredientService.getAllIngredients();
   } catch (err) {
