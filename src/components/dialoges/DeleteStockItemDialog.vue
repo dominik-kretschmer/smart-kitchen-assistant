@@ -25,10 +25,10 @@ function handleConfirm() {
   <DialogBase
     v-model="dialog"
     :title="t('deleteStockDialog.title')"
-    :cancelText="t('deleteStockDialog.cancel')"
-    :confirmText="t('deleteStockDialog.delete')"
+    :cancelText="t('common.cancel')"
+    :confirmText="t('common.delete')"
     confirmColor="error"
-    @cancel="dialog.set(false)"
+    @cancel="dialog.value = false"
     @confirm="handleConfirm">
     {{ t('deleteStockDialog.confirmMessage', { name: item?.name }) }}
   </DialogBase>

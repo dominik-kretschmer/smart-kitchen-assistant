@@ -6,6 +6,8 @@ const props = defineProps<{
   persistent?: boolean;
   hideActions?: boolean;
   confirmColor?: string;
+  cancelText?: string;
+  confirmText?: string;
 }>();
 
 const emit = defineEmits<{
@@ -35,12 +37,12 @@ function closeDialog() {
         <v-spacer></v-spacer>
         <slot name="cancel">
           <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
-            {{ t('common.cancel') }}
+            {{ props.cancelText || t('common.cancel') }}
           </v-btn>
         </slot>
         <slot name="confirm">
           <v-btn :color="confirmColor || 'blue-darken-1'" variant="text" @click="emit('confirm')">
-            {{ t('ingredients.save') }}
+            {{ props.confirmText || t('common.save') }}
           </v-btn>
         </slot>
       </v-card-actions>

@@ -52,7 +52,6 @@ function validateUserInput(item: StockItem | undefined = undefined) {
 
 async function useCreateStock(item: Omit<StockItem, 'id'>) {
   validateUserInput();
-  console.log(item);
   const stockData = {
     userId: userId.value,
     ...item,
@@ -115,7 +114,7 @@ function openDeleteDialog(item: StockItem) {
 async function deleteStockItem(itemId: number) {
   try {
     await stockService.deleteStock(itemId);
-    stockItems.value = stockItems.value.filter((item) => item.id !== itemId);
+    stockItems.value = stockItems.value.filter((item :stockItems) => item.id !== itemId);
     deleteDialog.value = false;
     itemToDelete.value = null;
   } catch (err) {

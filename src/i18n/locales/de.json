@@ -1,6 +1,7 @@
 {
   "common": {
     "add": "Hinzufügen",
+    "create": "Erstellen",
     "cancel": "Abbrechen",
     "edit": "Bearbeiten",
     "delete": "Löschen",

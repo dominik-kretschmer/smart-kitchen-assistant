@@ -1,6 +1,7 @@
 {
   "common": {
     "add": "Add",
+    "create": "Create",
     "cancel": "Cancel",
     "edit": "Edit",
     "delete": "Delete",
