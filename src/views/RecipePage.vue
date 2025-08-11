@@ -5,63 +5,68 @@ import { useStatus } from '@/composables/useStatus.ts';
 
 const { t } = useI18n();
 const { isLoading, error } = useStatus();
+
 const recipes = ref<Recipe[]>([]);
-const showCreateForm = ref(false);
-const showEditForm = ref(false);
+const showCreateForm = ref<boolean>(false);
+const showEditForm = ref<boolean>(false);
 const recipeToEdit = ref<Recipe | null>(null);
 
-const loadRecipes = async () => {
+const mapFormToApi = (data: Recipe)  => {
+  return {
+    name: data.name,
+    steps: data.steps.join('\n\n'),
+    recipeIngredients: data.ingredients.map((ing :ingredient) => ({
+      ingredientId: 0,
+      amount: `${ing.quantity} ${ing.unit}`,
+      ingredient: {
+        id: 0,
+        name: ing.name,
+      },
+    })),
+  };
+};
+
+const loadRecipes = async (): Promise<void> => {
   isLoading.value = true;
   error.value = '';
   try {
     recipes.value = await recipeService.getAllRecipes();
-  } catch (err) {
-    error.value = t('recipe.loadError') + err;
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    error.value = `${t('recipe.loadError')}${msg}`;
   } finally {
     isLoading.value = false;
   }
 };
 
-const toggleCreateForm = () => {
+const toggleCreateForm = (): void => {
   showCreateForm.value = !showCreateForm.value;
   if (showCreateForm.value) {
     cancelEdit();
   }
 };
 
-const startEditRecipe = (recipe: Recipe) => {
+const startEditRecipe = (recipe: Recipe): void => {
   recipeToEdit.value = recipe;
   showEditForm.value = true;
   showCreateForm.value = false;
 };
 
-const cancelEdit = () => {
+const cancelEdit = (): void => {
   showEditForm.value = false;
   recipeToEdit.value = null;
 };
 
-const handleSaveRecipe = async (recipeData) => {
+const handleSaveRecipe = async (recipeData: RecipeFormData): Promise<void> => {
   isLoading.value = true;
   error.value = '';
 
   try {
-    const apiRecipeData = {
-      name: recipeData.name,
-      steps: recipeData.steps.join('\n\n'),
-      recipeIngredients: recipeData.ingredients.map((ing) => ({
-        ingredientId: 0,
-        amount: `${ing.quantity} ${ing.unit}`,
-        ingredient: {
-          id: 0,
-          name: ing.name,
-        },
-      })),
-    };
-
+    const apiRecipeData = mapFormToApi(recipeData);
     await recipeService.createRecipe(apiRecipeData);
     showCreateForm.value = false;
     await loadRecipes();
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('Error creating recipe:', err);
     error.value = t('recipe.createError') || 'Failed to create recipe';
   } finally {
@@ -69,31 +74,19 @@ const handleSaveRecipe = async (recipeData) => {
   }
 };
 
-const handleUpdateRecipe = async (recipeData) => {
+const handleUpdateRecipe = async (recipeData: RecipeFormData): Promise<void> => {
   if (!recipeToEdit.value) return;
 
   isLoading.value = true;
   error.value = '';
 
   try {
-    const apiRecipeData = {
-      name: recipeData.name,
-      steps: recipeData.steps.join('\n\n'),
-      recipeIngredients: recipeData.ingredients.map((ing) => ({
-        ingredientId: 0,
-        amount: `${ing.quantity} ${ing.unit}`,
-        ingredient: {
-          id: 0,
-          name: ing.name,
-        },
-      })),
-    };
-
+    const apiRecipeData = mapFormToApi(recipeData);
     await recipeService.updateRecipe(recipeToEdit.value.id, apiRecipeData);
     showEditForm.value = false;
     recipeToEdit.value = null;
     await loadRecipes();
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('Error updating recipe:', err);
     error.value = t('recipe.updateError') || 'Failed to update recipe';
   } finally {

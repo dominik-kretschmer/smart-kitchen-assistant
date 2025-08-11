@@ -1,17 +1,23 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 const prisma = new PrismaClient();
 
-async function createUser(data) {
+interface UserData {
+  username: string;
+  password: string;
+  email?: string;
+}
+
+async function createUser(data: UserData): Promise<User> {
   return prisma.user.create({ data });
 }
 
-async function getUser(id) {
+async function getUser(id: number): Promise<User | null> {
   return prisma.user.findUnique({
     where: { id },
   });
 }
 
-async function deleteUser(id) {
+async function deleteUser(id: number): Promise<User> {
   return prisma.$transaction(async (tx) => {
     await tx.shoppingList.deleteMany({
       where: { userId: id },

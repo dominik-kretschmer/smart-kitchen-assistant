@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useI18n } from '@/i18n';
-
+const { t } = useI18n();
 const props = defineProps<{
   modelValue: string;
   label?: string;
@@ -13,8 +11,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:modelValue': [value: string];
 }>();
-
-const { t } = useI18n();
 
 const units = [
   t('units.piece'),
@@ -29,7 +25,7 @@ const units = [
 
 const selectedUnit = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (value:string) => emit('update:modelValue', value),
 });
 </script>
 

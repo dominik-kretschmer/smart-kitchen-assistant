@@ -5,7 +5,7 @@ import {
   getShoppingListsByUser,
   updateShoppingList,
   deleteShoppingList,
-} from '../prisma/crud/shoppingList.js';
+} from '../prisma/crud/shoppingList';
 
 router.post('/', async (req, res) => {
   try {
@@ -14,10 +14,7 @@ router.post('/', async (req, res) => {
       return res.status(401).json({ error: 'Not authenticated' });
     }
 
-    // Extract ingredient data from request body
     const { ingredient, ...restOfBody } = req.body;
-
-    // Format data with proper connect patterns for both user and ingredient
     const data = {
       ...restOfBody,
       user: {

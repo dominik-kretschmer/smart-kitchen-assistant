@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const dialogVisible = defineModel<boolean>({ default: false });
-
 const props = defineProps<{
   newIngredient: {
     name: string;
@@ -16,8 +15,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:error', value: string): void;
   (e: 'update:is-loading', value: boolean): void;
-  (
-    e: 'ingredient-created',
+  (e: 'ingredient-created',
     value: {
       id: number;
       name: string;

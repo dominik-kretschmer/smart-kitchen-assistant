@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ingredientService } from '@/services/ingredientService';
-import type { FullIngredient } from '@/types/ingriedientTypes';
 
 const { t } = useI18n();
 const props = defineProps<{
@@ -96,7 +95,7 @@ async function updateIngredient() {
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue-darken-1" variant="text" @click="emit('update:modelValue', false)">
+        <v-btn color="blue-darken-1" variant="text" @click="dialogVisible.value=false">
           {{ t('ingredients.cancel') }}
         </v-btn>
         <v-btn color="blue-darken-1" variant="text" @click="updateIngredient">

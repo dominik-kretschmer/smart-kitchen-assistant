@@ -1,5 +1,5 @@
 import express from 'express';
-import { createStock, deleteStock, getStockByUser, updateStock } from '../prisma/crud/stock.js';
+import { createStock, deleteStock, getStockByUser, updateStock } from '../prisma/crud/stock';
 
 const router = express.Router();
 

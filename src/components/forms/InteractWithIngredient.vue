@@ -49,7 +49,6 @@ function removeItem(index: number, item: object): void {
     item.value.splice(index, 1);
   }
 }
-
 function saveRecipe(): void {
   if (
     recipeName.value.trim() &&

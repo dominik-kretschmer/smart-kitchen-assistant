@@ -1,7 +1,21 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Stock } from '@prisma/client';
 const prisma = new PrismaClient();
 
-async function createStock(data) {
+interface StockData {
+  name: string;
+  userId: number;
+  quantity: number;
+  unit?: string;
+}
+
+interface StockResponse {
+  id: number;
+  name: string;
+  quantity: number;
+  unit: string;
+}
+
+async function createStock(data: StockData): Promise<StockResponse> {
   const { name, userId, quantity } = data;
 
   let ingredient = await prisma.ingredient.findFirst({
@@ -42,7 +56,7 @@ async function createStock(data) {
   };
 }
 
-async function getStockByUser(userId) {
+async function getStockByUser(userId: number): Promise<StockResponse[]> {
   const stockItems = await prisma.stock.findMany({
     where: { userId },
     include: {
@@ -58,7 +72,7 @@ async function getStockByUser(userId) {
   }));
 }
 
-async function updateStock(id, data) {
+async function updateStock(id: number, data: Partial<StockData>): Promise<StockResponse> {
   const { name, quantity, unit, userId } = data;
 
   const currentStock = await prisma.stock.findUnique({
@@ -119,7 +133,7 @@ async function updateStock(id, data) {
   };
 }
 
-async function deleteStock(id) {
+async function deleteStock(id: number): Promise<Stock> {
   return prisma.stock.delete({ where: { id } });
 }
 

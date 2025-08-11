@@ -5,14 +5,14 @@ import {
   getIngredient,
   getAllIngredients,
   updateIngredient,
-} from '../prisma/crud/ingredient.js';
+} from '../prisma/crud/ingredient';
 
 router.post('/', async (req, res) => {
   try {
     const ingredient = await createIngredient(req.body);
     res.status(201).json(ingredient);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create ingredient' });
+    res.status(500).json({ error: 'Failed to create ingredient' + error });
   }
 });
 
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     const ingredients = await getAllIngredients();
     res.json(ingredients);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to get ingredients' });
+    res.status(500).json({ error: 'Failed to get ingredients' + error });
   }
 });
 
@@ -33,7 +33,7 @@ router.get('/:id', async (req, res) => {
     }
     res.json(ingredient);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to get ingredient' });
+    res.status(500).json({ error: 'Failed to get ingredient' + error });
   }
 });
 
@@ -42,7 +42,7 @@ router.put('/:id', async (req, res) => {
     const ingredient = await updateIngredient(parseInt(req.params.id), req.body);
     res.json(ingredient);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update ingredient' });
+    res.status(500).json({ error: 'Failed to update ingredient' + error });
   }
 });
 

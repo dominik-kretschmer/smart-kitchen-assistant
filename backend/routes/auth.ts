@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import { getUser } from '../prisma/crud/user.js';
+import { getUser } from '../prisma/crud/user';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -22,7 +22,10 @@ router.post('/login', async (req, res) => {
       path: '/',
     });
 
-    const { password: _, ...userData } = user;
+    const userData = {
+      id: user.id,
+      username: user.username,
+    };
     res.status(200).json(userData);
   } catch {
     res.status(500).json({ error: 'Failed to login' });

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useI18n } from '@/i18n';
-
+const { t } = useI18n();
 const props = defineProps<{
   modelValue: number;
   label?: string;
@@ -17,7 +15,7 @@ const emit = defineEmits<{
   'update:modelValue': [value: number];
 }>();
 
-const { t } = useI18n();
+
 
 const quantity = computed({
   get: () => props.modelValue,

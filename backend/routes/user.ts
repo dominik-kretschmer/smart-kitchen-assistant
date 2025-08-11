@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { createUser, getUser } from '../prisma/crud/user.js';
+import { createUser, getUser } from '../prisma/crud/user';
 
 router.post('/', async (req, res) => {
   try {

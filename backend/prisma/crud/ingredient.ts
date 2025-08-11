@@ -1,11 +1,19 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Ingredient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-async function createIngredient(data) {
+interface IngredientData {
+  name: string;
+  calories: number;
+  carbs: number;
+  fat: number;
+  protein: number;
+}
+
+async function createIngredient(data: IngredientData): Promise<Ingredient> {
   return prisma.ingredient.create({ data });
 }
 
-async function getIngredient(id) {
+async function getIngredient(id: number): Promise<Ingredient | null> {
   return prisma.ingredient.findUnique({
     where: { id },
     include: {
@@ -28,7 +36,7 @@ async function getIngredient(id) {
   });
 }
 
-async function getAllIngredients() {
+async function getAllIngredients(): Promise<Ingredient[]> {
   return prisma.ingredient.findMany({
     include: {
       recipeIngredients: {
@@ -50,7 +58,7 @@ async function getAllIngredients() {
   });
 }
 
-async function updateIngredient(id, data) {
+async function updateIngredient(id: number, data: Partial<IngredientData>): Promise<Ingredient> {
   return prisma.ingredient.update({
     where: { id },
     data,

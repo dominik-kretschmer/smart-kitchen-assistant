@@ -1,7 +1,20 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Recipe } from '@prisma/client';
 const prisma = new PrismaClient();
 
-async function createRecipe(data) {
+interface RecipeIngredient {
+  ingredientId: number;
+  amount: number;
+}
+
+interface RecipeData {
+  title: string;
+  description?: string;
+  instructions?: string;
+  userId: number;
+  ingredients?: RecipeIngredient[];
+}
+
+async function createRecipe(data: RecipeData): Promise<Recipe> {
   const { ingredients, ...recipeData } = data;
 
   return prisma.$transaction(async (tx) => {
@@ -29,11 +42,11 @@ async function createRecipe(data) {
         },
         user: true,
       },
-    });
+    }) as Promise<Recipe>;
   });
 }
 
-async function getRecipe(id) {
+async function getRecipe(id: number): Promise<Recipe | null> {
   return prisma.recipe.findUnique({
     where: { id },
     include: {
@@ -47,7 +60,7 @@ async function getRecipe(id) {
   });
 }
 
-async function getAllRecipes() {
+async function getAllRecipes(): Promise<Recipe[]> {
   return prisma.recipe.findMany({
     include: {
       recipeIngredients: {
@@ -60,7 +73,7 @@ async function getAllRecipes() {
   });
 }
 
-async function updateRecipe(id, data) {
+async function updateRecipe(id: number, data: Partial<RecipeData>): Promise<Recipe> {
   const { ingredients, ...recipeData } = data;
 
   return prisma.$transaction(async (tx) => {
@@ -95,7 +108,7 @@ async function updateRecipe(id, data) {
         },
         user: true,
       },
-    });
+    }) as Promise<Recipe>;
   });
 }
 

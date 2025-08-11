@@ -1,7 +1,13 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, ShoppingList } from '@prisma/client';
 const prisma = new PrismaClient();
 
-async function createShoppingList(data) {
+interface ShoppingListData {
+  userId: number;
+  ingredientId: number;
+  quantity?: number;
+}
+
+async function createShoppingList(data: ShoppingListData): Promise<ShoppingList> {
   return prisma.shoppingList.create({
     data,
     include: {
@@ -11,7 +17,7 @@ async function createShoppingList(data) {
   });
 }
 
-async function getShoppingListsByUser(userId) {
+async function getShoppingListsByUser(userId: number): Promise<ShoppingList[]> {
   return prisma.shoppingList.findMany({
     where: { userId },
     include: {
@@ -20,7 +26,10 @@ async function getShoppingListsByUser(userId) {
   });
 }
 
-async function updateShoppingList(id, data) {
+async function updateShoppingList(
+  id: number,
+  data: Partial<ShoppingListData>,
+): Promise<ShoppingList> {
   return prisma.shoppingList.update({
     where: { id },
     data,
@@ -31,7 +40,7 @@ async function updateShoppingList(id, data) {
   });
 }
 
-async function deleteShoppingList(id) {
+async function deleteShoppingList(id: number): Promise<ShoppingList> {
   return prisma.shoppingList.delete({ where: { id } });
 }
 

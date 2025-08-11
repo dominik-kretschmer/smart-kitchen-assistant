@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ingredientService } from '@/services/ingredientService';
-import type { FullIngredient } from '@/types/ingriedientTypes';
 
 const { t } = useI18n();
-
 const props = defineProps<{
   modelValue: boolean;
   newIngredient: {
@@ -16,15 +14,13 @@ const props = defineProps<{
   isLoading: boolean;
   error: string;
 }>();
-
+const localNewIngredient = ref({ ...props.newIngredient });
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
   (e: 'update:error', value: string): void;
   (e: 'update:is-loading', value: boolean): void; // an Parent angepasst
   (e: 'ingredient-created', ingredient: FullIngredient): void;
 }>();
-
-const localNewIngredient = ref({ ...props.newIngredient });
 
 watch(
   () => props.newIngredient,

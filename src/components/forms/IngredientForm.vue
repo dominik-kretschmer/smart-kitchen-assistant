@@ -45,7 +45,6 @@ async function submit() {
     dialogVisible.value = false;
   } catch (err) {
     const message =
-      'Failed to create ingredient.ssss Please try again later.' +
       (err instanceof Error ? ` ${err.message}` : '');
     emit('update:error', message);
   } finally {
@@ -53,15 +52,11 @@ async function submit() {
   }
 }
 
-function cancel() {
-  dialogVisible.value = false;
-}
 </script>
-
 <template>
   <v-dialog v-model="dialogVisible" max-width="600">
     <template #actions>
-      <v-btn variant="text" @click="cancel">{{ t('common.cancel') }}</v-btn>
+      <v-btn variant="text" @click=" dialogVisible.value = false">{{ t('common.cancel') }}</v-btn>
       <v-btn color="primary" :loading="isLoading" :disabled="isLoading" @click="submit">
         {{ t('common.save') }}
       </v-btn>
