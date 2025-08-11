@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { ingredientService } from '@/services/ingredientService.ts';
+import SelectIngredientRow from './SelectIngredientRow.vue';
+import type { Recipe, RecipeIngredient, RecipeFormData, AddIngredientRow } from '@/types/recipeTypes.ts';
+import type { FullIngredient } from '@/types/ingriedientTypes.ts';
+
 const props = defineProps({
   recipe: {
     type: Object as () => Recipe | null,
@@ -13,10 +18,11 @@ const props = defineProps({
 const { t } = useI18n();
 const recipeName = ref<string>('');
 const description = ref<string>('');
-const ingredients = ref<Ingredient[]>([{ name: '', quantity: 1, unit: t('units.piece') }]);
+const availableIngredients = ref<FullIngredient[]>([]);
+const ingredients = ref<AddIngredientRow[]>([{ ingredientId: null, quantity: 1, unit: t('units.piece') }]);
 const steps = ref<string[]>(['']);
 const emit = defineEmits<{
-  'save-recipe': [recipe: EditableRecipe];
+  'save-recipe': [recipe: RecipeFormData];
 }>();
 
 watch(
@@ -31,18 +37,26 @@ watch(
         const quantity = parseFloat(amountParts[0]) || 1;
         const unit = amountParts.slice(1).join(' ') || t('units.piece');
         return {
-          name: ri.ingredient.name,
+          ingredientId: ri.ingredient.id,
           quantity,
           unit,
-        };
+        } as AddIngredientRow;
       });
       if (ingredients.value.length === 0) {
-        ingredients.value = [{ name: '', quantity: 1, unit: t('units.piece') }];
+        ingredients.value = [{ ingredientId: null, quantity: 1, unit: t('units.piece') }];
       }
     }
   },
   { immediate: true },
 );
+
+onMounted(async () => {
+  try {
+    availableIngredients.value = await ingredientService.getAllIngredients();
+  } catch (err) {
+    console.error('Failed to load ingredients', err);
+  }
+});
 
 function removeItem(index: number, item: object): void {
   if (item.value.length > 1) {
@@ -52,10 +66,10 @@ function removeItem(index: number, item: object): void {
 function saveRecipe(): void {
   if (
     recipeName.value.trim() &&
-    ingredients.value.every((ing: Ingredient) => ing.name.trim()) &&
+    ingredients.value.every((ing: AddIngredientRow) => ing.ingredientId !== null && ing.quantity > 0) &&
     steps.value.every((step: string) => step.trim())
   ) {
-    const recipe: EditableRecipe = {
+    const recipe: RecipeFormData = {
       name: recipeName.value,
       description: description.value,
       ingredients: ingredients.value,
@@ -66,7 +80,7 @@ function saveRecipe(): void {
 
     recipeName.value = '';
     description.value = '';
-    ingredients.value = [{ name: '', quantity: 1, unit: t('units.piece') }];
+    ingredients.value = [{ ingredientId: null, quantity: 1, unit: t('units.piece') }];
     steps.value = [''];
   }
 }
@@ -91,16 +105,17 @@ function saveRecipe(): void {
       customClass="mb-3" />
     <h3 class="text-lg font-medium mb-2">{{ t('navigation.ingredients') }}</h3>
     <div v-for="(ingredient, index) in ingredients" :key="index" class="mb-2">
-      <IngredientForm
+      <SelectIngredientRow
         v-model="ingredients[index]"
+        :availableIngredients="availableIngredients"
         :showRemoveButton="ingredients.length > 1"
-        @remove="removeItem(index, ingredient)" />
+        @remove="removeItem(index, ingredients)" />
     </div>
     <v-btn
       prepend-icon="mdi-plus"
       variant="text"
       class="mb-4"
-      @click="ingredients.push({ name: '', quantity: 1, unit: t('units.piece') })">
+      @click="ingredients.push({ ingredientId: null, quantity: 1, unit: t('units.piece') })">
       {{ t('recipe.addIngredient') }}
     </v-btn>
     <h3 class="text-lg font-medium mb-2">{{ t('recipe.steps') }}</h3>

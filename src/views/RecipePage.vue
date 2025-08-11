@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Recipe } from '@/types/recipeTypes.ts';
+import type { Recipe, RecipeFormData } from '@/types/recipeTypes.ts';
 import { recipeService } from '@/services/recipeService.ts';
 import { useStatus } from '@/composables/useStatus.ts';
 
@@ -10,18 +10,16 @@ const showCreateForm = ref<boolean>(false);
 const showEditForm = ref<boolean>(false);
 const recipeToEdit = ref<Recipe | null>(null);
 
-const mapFormToApi = (data: Recipe) => {
+const mapFormToApi = (data: RecipeFormData): any => {
   return {
     name: data.name,
     steps: data.steps.join('\n\n'),
-    recipeIngredients: data.ingredients.map((ing: ingredient) => ({
-      ingredientId: 0,
-      amount: `${ing.quantity} ${ing.unit}`,
-      ingredient: {
-        id: 0,
-        name: ing.name,
-      },
-    })),
+    ingredients: data.ingredients.map(
+      (ing: { ingredientId: number | null; quantity: number; unit: string }) => ({
+        ingredientId: ing.ingredientId ?? 0,
+        amount: `${ing.quantity} ${ing.unit}`,
+      }),
+    ),
   };
 };
 

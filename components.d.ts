@@ -29,6 +29,7 @@ declare module 'vue' {
     QuantityInput: typeof import('./src/components/common/QuantityInput.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelectIngredientRow: typeof import('./src/components/forms/SelectIngredientRow.vue')['default']
     UnitSelect: typeof import('./src/components/common/UnitSelect.vue')['default']
   }
 }

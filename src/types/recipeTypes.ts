@@ -1,4 +1,4 @@
-import type { FullIngredient, Ingredient } from '@/types/ingriedientTypes.ts';
+import type { FullIngredient } from '@/types/ingriedientTypes.ts';
 
 export interface RecipeIngredient {
   ingredientId: number;
@@ -6,10 +6,18 @@ export interface RecipeIngredient {
   ingredient: FullIngredient;
 }
 
-export interface EditableRecipe {
+// Row model used when adding/editing ingredients in the recipe form
+export interface AddIngredientRow {
+  ingredientId: number | null;
+  quantity: number;
+  unit: string;
+}
+
+// Data emitted by the recipe form component
+export interface RecipeFormData {
   name: string;
   description: string;
-  ingredients: Ingredient[];
+  ingredients: AddIngredientRow[];
   steps: string[];
 }
 
