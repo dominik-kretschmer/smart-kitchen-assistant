@@ -1,13 +1,11 @@
-import { createWebHistory, createRouter } from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 
-const routes = [
-  { path: '/', component: () => import('../views/HomePage.vue') },
-  { path: '/stock', component: () => import('../views/StockPage.vue') },
-  { path: '/recipe', component: () => import('../views/RecipePage.vue') },
-  { path: '/shoppingList', component: () => import('../views/ShoppinglistPage.vue') },
-  { path: '/login', component: () => import('../views/LoginPage.vue') },
-  { path: '/register', component: () => import('../views/RegisterPage.vue') },
-  { path: '/ingredients', component: () => import('../views/IngredientPage.vue') },
+const routes: RouteRecordRaw[] = [
+  { path: '/', name: 'home', component: () => import('@/views/HomePage.vue') },
+  { path: '/auth', name: 'auth', component: () => import('@/views/AuthPage.vue') },
+  { path: '/stock', name: 'stock', component: () => import('@/views/StockPage.vue') },
+  { path: '/ingredients', name: 'ingredients', component: () => import('@/views/IngredientPage.vue') },
+  { path: '/shopping-list', name: 'shopping-list', component: () => import('@/views/ShoppingListPage.vue') },
 ];
 
 export const router = createRouter({

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { UserState } from '@/types/validationTypes.ts';
+import type { UserState } from '@/types/types.ts';
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({

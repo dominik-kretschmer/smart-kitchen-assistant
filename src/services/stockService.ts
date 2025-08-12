@@ -1,4 +1,4 @@
-import type { StockItem, UpdatedStockItem } from '../types/stockTypes';
+import type {Stock  } from '../types/types';
 import { apiCallService } from '@/services/apiCallService.ts';
 
 const endPoints = {
@@ -7,7 +7,7 @@ const endPoints = {
 };
 
 export const stockService = {
-  async createStock(stockData: StockItem) {
+  async createStock(stockData: Stock) {
     return await apiCallService('POST', endPoints.stock, stockData);
   },
 
@@ -19,7 +19,7 @@ export const stockService = {
     return await apiCallService('GET', fullEndpoint);
   },
 
-  async updateStock(id: number, stockData: UpdatedStockItem) {
+  async updateStock(id: number, stockData: Stock) {
     const fullEndpoint = endPoints.stock + '/' + id;
     return await apiCallService('PUT', fullEndpoint, stockData);
   },
