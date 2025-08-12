@@ -7,6 +7,7 @@
     "delete": "Löschen",
     "quantity": "Menge",
     "unit": "Einheit",
+    "amount": "Menge",
     "noItems": "Keine Einträge vorhanden",
     "ingredient": "Zutat",
     "save": "Speichern"
@@ -33,6 +34,8 @@
     "failedToUpdateStock": "Fehler beim Aktualisieren des Vorrats. Bitte versuchen Sie es später erneut.",
     "failedToDeleteStock": "Fehler beim Löschen des Vorrats. Bitte versuchen Sie es später erneut.",
     "nameRequired": "Name ist erforderlich",
+    "required": "ist erforderlich",
+    "mustBePositive": "muss größer als 0 sein",
     "failedToLoadIngredients": "Fehler beim Laden der Zutaten. Bitte versuchen Sie es später erneut.",
     "failedToCreateIngredient": "Fehler beim Erstellen der Zutat. Bitte versuchen Sie es später erneut.",
     "failedToUpdateIngredient": "Fehler beim Aktualisieren der Zutat. Bitte versuchen Sie es später erneut.",
@@ -44,7 +47,11 @@
   },
   "editStockDialog": {
     "title": "Vorrat bearbeiten",
-    "name": "Name"
+    "name": "Name",
+    "quantity": "Menge",
+    "unit": "Einheit",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
   },
   "addStock": {
     "title": "Vorrat hinzufügen",
@@ -67,6 +74,8 @@
     "preparation": "Zubereitung:",
     "noRecipes": "Keine Rezepte vorhanden",
     "createNew": "Neues Rezept erstellen",
+    "editRecipe": "Rezept bearbeiten",
+    "updateRecipe": "Rezept aktualisieren",
     "recipeName": "Rezeptname",
     "recipeNamePlaceholder": "z.B. Spaghetti Bolognese",
     "description": "Beschreibung",
@@ -101,6 +110,8 @@
     "title": "Einkaufsliste",
     "myList": "Meine Einkaufsliste",
     "purchased": "Gekauft",
+    "loginRequired": "Bitte anmelden",
+    "ingredient": "Zutat",
     "loadError": "Fehler beim Laden der Einkaufsliste. Bitte versuche es später erneut.",
     "ingredientsLoadError": "Fehler beim Laden der Zutaten. Bitte versuche es später erneut.",
     "ingredientRequired": "Zutat ist erforderlich",

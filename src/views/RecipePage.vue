@@ -10,7 +10,7 @@ const showCreateForm = ref<boolean>(false);
 const showEditForm = ref<boolean>(false);
 const recipeToEdit = ref<Recipe | null>(null);
 
-const mapFormToApi = (data: RecipeFormData): any => {
+const mapFormToApi = (data: RecipeFormData) => {
   return {
     name: data.name,
     steps: data.steps.join('\n\n'),

@@ -13,7 +13,7 @@ export async function apiCallService(method: string, endPoint: string, body = {}
 
   const response = await fetch(url, options);
   const contentType = response.headers.get('content-type') || '';
-  let payload: any = null;
+  let payload = null;
   try {
     payload = contentType.includes('application/json') ? await response.json() : await response.text();
   } catch {
@@ -23,8 +23,8 @@ export async function apiCallService(method: string, endPoint: string, body = {}
     const message =
       typeof payload === 'string' && payload
         ? payload
-        : (payload && ((payload as any).message || (payload as any).error)) || response.statusText;
+        : (payload && ((payload).message || (payload).error)) || response.statusText;
     throw new Error(`${response.status} ${message}`);
   }
-  return payload as any;
+  return payload;
 }

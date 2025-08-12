@@ -7,6 +7,7 @@
     "delete": "Delete",
     "quantity": "Quantity",
     "unit": "Unit",
+    "amount": "Amount",
     "noItems": "No items available",
     "ingredient": "Ingredient",
     "save": "Save"
@@ -33,6 +34,8 @@
     "failedToUpdateStock": "Error updating stock. Please try again later.",
     "failedToDeleteStock": "Error deleting stock. Please try again later.",
     "nameRequired": "Name is required",
+    "required": "is required",
+    "mustBePositive": "must be greater than 0",
     "failedToLoadIngredients": "Error loading ingredients. Please try again later.",
     "failedToCreateIngredient": "Error creating ingredient. Please try again later.",
     "failedToUpdateIngredient": "Error updating ingredient. Please try again later.",
@@ -44,7 +47,11 @@
   },
   "editStockDialog": {
     "title": "Edit stock",
-    "name": "Name"
+    "name": "Name",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "addStock": {
     "title": "Add stock",
@@ -67,6 +74,8 @@
     "preparation": "Preparation:",
     "noRecipes": "No recipes available",
     "createNew": "Create new recipe",
+    "editRecipe": "Edit recipe",
+    "updateRecipe": "Update recipe",
     "recipeName": "Recipe name",
     "recipeNamePlaceholder": "e.g. Spaghetti Bolognese",
     "description": "Description",
@@ -101,6 +110,8 @@
     "title": "Shopping list",
     "myList": "My shopping list",
     "purchased": "Purchased",
+    "loginRequired": "Please log in",
+    "ingredient": "Ingredient",
     "loadError": "Error loading shopping list. Please try again later.",
     "ingredientsLoadError": "Error loading ingredients. Please try again later.",
     "ingredientRequired": "Ingredient is required",
