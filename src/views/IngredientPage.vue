@@ -36,7 +36,7 @@ onMounted(async () => {
       await loadIngredients();
     }
   } catch (err) {
-    error.value = '' + err;
+    error.value = err instanceof Error ? err.message : String(err);
   }
 });
 
@@ -46,7 +46,8 @@ async function loadIngredients() {
   try {
     ingredients.value = await ingredientService.getAllIngredients();
   } catch (err) {
-    error.value = t('errors.failedToLoadIngredients') + err;
+    const msg = err instanceof Error ? err.message : String(err);
+    error.value = `${t('errors.failedToLoadIngredients')}: ${msg}`;
   }
   isLoading.value = false;
 }
@@ -68,13 +69,12 @@ function openEditDialog(item: FullIngredient) {
 }
 
 function handleIngredientUpdated(updatedIngredient: FullIngredient) {
-  const index = ingredients.value.findIndex((item) => item.id === updatedIngredient.id);
-  if (index !== -1) {
-    ingredients.value[index] = updatedIngredient;
-  }
+  const index = ingredients.value.findIndex(
+    (item: FullIngredient) => item.id === updatedIngredient.id,
+  );
+  if (index !== -1) ingredients.value[index] = updatedIngredient;
 }
 </script>
-
 <template>
   <div class="p-4" v-if="userId !== null">
     <h1 class="text-2xl font-bold mb-4">{{ t('ingredients.title') }}</h1>
@@ -103,7 +103,7 @@ function handleIngredientUpdated(updatedIngredient: FullIngredient) {
             </v-list-item-subtitle>
             <div class="d-flex">
               <v-btn variant="text" color="white" @click="openEditDialog(item)">
-                {{ t('ingredients.edit') }}
+                {{ t('common.edit') }}
               </v-btn>
             </div>
           </v-list-item>

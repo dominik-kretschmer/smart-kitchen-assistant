@@ -130,10 +130,10 @@ onMounted(async () => {
     </v-alert>
     <v-btn color="primary" class="mb-4" @click="showAddForm = !showAddForm">
       <v-icon start>mdi-plus</v-icon>
-      {{ showAddForm ? t('common.cancel') : t('shoppingList.addItem') }}
+      {{ showAddForm ? t('common.cancel') : t('common.add') }}
     </v-btn>
     <v-card v-if="showAddForm" class="mb-6 pa-4">
-      <v-card-title>{{ t('shoppingList.addNewItem') }}</v-card-title>
+      <v-card-title>{{ t('common.add') }}</v-card-title>
       <v-card-text>
         <v-row>
           <v-col cols="12" sm="6">
@@ -143,18 +143,18 @@ onMounted(async () => {
               item-title="name"
               item-value="id"
               return-object
-              :label="t('shoppingList.ingredient')"
+              :label="t('common.ingredient')"
               required />
           </v-col>
           <v-col cols="6" sm="3">
             <v-text-field
               v-model.number="newItem.amount"
               type="number"
-              :label="t('shoppingList.amount')"
+              :label="t('common.amount')"
               required />
           </v-col>
           <v-col cols="6" sm="3">
-            <v-text-field v-model="newItem.unit" :label="t('shoppingList.unit')" required />
+            <v-text-field v-model="newItem.unit" :label="t('common.unit')" required />
           </v-col>
         </v-row>
       </v-card-text>
@@ -188,7 +188,7 @@ onMounted(async () => {
             </template>
           </v-list-item>
         </v-list>
-        <p v-else class="text-center py-4 text-gray-500">{{ t('shoppingList.noItems') }}</p>
+        <p v-else class="text-center py-4 text-gray-500">{{ t('common.noItems') }}</p>
       </div>
     </div>
   </div>

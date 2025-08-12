@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { ingredientService } from '@/services/ingredientService.ts';
 import SelectIngredientRow from './SelectIngredientRow.vue';
-import type { Recipe, RecipeIngredient, RecipeFormData, AddIngredientRow } from '@/types/recipeTypes.ts';
+import type {
+  Recipe,
+  RecipeIngredient,
+  RecipeFormData,
+  AddIngredientRow,
+} from '@/types/recipeTypes.ts';
 import type { FullIngredient } from '@/types/ingriedientTypes.ts';
 
 const props = defineProps({
@@ -19,7 +24,9 @@ const { t } = useI18n();
 const recipeName = ref<string>('');
 const description = ref<string>('');
 const availableIngredients = ref<FullIngredient[]>([]);
-const ingredients = ref<AddIngredientRow[]>([{ ingredientId: null, quantity: 1, unit: t('units.piece') }]);
+const ingredients = ref<AddIngredientRow[]>([
+  { ingredientId: null, quantity: 1, unit: t('units.piece') },
+]);
 const steps = ref<string[]>(['']);
 const emit = defineEmits<{
   'save-recipe': [recipe: RecipeFormData];
@@ -66,7 +73,9 @@ function removeItem(index: number, item: object): void {
 function saveRecipe(): void {
   if (
     recipeName.value.trim() &&
-    ingredients.value.every((ing: AddIngredientRow) => ing.ingredientId !== null && ing.quantity > 0) &&
+    ingredients.value.every(
+      (ing: AddIngredientRow) => ing.ingredientId !== null && ing.quantity > 0,
+    ) &&
     steps.value.every((step: string) => step.trim())
   ) {
     const recipe: RecipeFormData = {

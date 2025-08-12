@@ -32,7 +32,7 @@ const handleSubmit = () => {
       <router-link to="/" class="home-link">{{ t('auth.goToHome') }}</router-link>
     </div>
     <div v-else>
-      <h1>{{ formType === 'login' ? t('auth.login') : t('auth.register') }}</h1>
+      <h1>{{ formType === 'login' ? t('navigation.login') : t('navigation.register') }}</h1>
       <form @submit.prevent="handleSubmit" class="auth-form">
         <div class="form-group">
           <label for="username">{{ t('auth.username') }}</label>
@@ -65,16 +65,16 @@ const handleSubmit = () => {
           {{ error }}
         </div>
         <button type="submit" class="auth-button">
-          {{ formType === 'login' ? t('auth.login') : t('auth.register') }}
+          {{ formType === 'login' ? t('navigation.login') : t('navigation.register') }}
         </button>
         <div class="auth-link">
           <template v-if="formType === 'login'">
             {{ t('auth.noAccount') }}
-            <router-link to="/register">{{ t('auth.register') }}</router-link>
+            <router-link to="/register">{{ t('navigation.register') }}</router-link>
           </template>
           <template v-else>
             {{ t('auth.haveAccount') }}
-            <router-link to="/login">{{ t('auth.login') }}</router-link>
+            <router-link to="/login">{{ t('navigation.login') }}</router-link>
           </template>
         </div>
       </form>
