@@ -10,6 +10,7 @@ export interface ShoppingListData {
 export interface StockData {
   name: string;
   userId: number;
+  ingredientId: number;
   quantity: number;
   unit?: string;
 }

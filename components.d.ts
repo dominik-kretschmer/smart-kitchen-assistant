@@ -35,6 +35,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SelectIngredientRow: typeof import('./src/components/Ingredients/SelectIngredientRow.vue')['default']
     StockCreate: typeof import('./src/components/StockCreate.vue')['default']
+    StockDelet: typeof import('./src/components/StockDelet.vue')['default']
     StockList: typeof import('./src/components/StockList.vue')['default']
     UnitDropDown: typeof import('./src/components/UnitDropDown.vue')['default']
     UnitSelect: typeof import('./src/components/common/UnitSelect.vue')['default']

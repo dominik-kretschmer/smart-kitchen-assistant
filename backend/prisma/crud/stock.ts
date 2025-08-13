@@ -3,23 +3,7 @@ import { StockData, StockResponse } from '../../types/types';
 const prisma = new PrismaClient();
 
 async function createStock(data: StockData): Promise<StockResponse> {
-  const { name, userId, quantity } = data;
-
-  let ingredient = await prisma.ingredient.findFirst({
-    where: { name },
-  });
-  if (!ingredient) {
-    ingredient = await prisma.ingredient.create({
-      data: {
-        name,
-        calories: 0,
-        carbs: 0,
-        fat: 0,
-        protein: 0,
-      },
-    });
-  }
-
+  const {userId,ingredientId, quantity } = data;
   const createdStock = await prisma.stock.create({
     data: {
       quantity: quantity.toString(),
@@ -27,7 +11,7 @@ async function createStock(data: StockData): Promise<StockResponse> {
         connect: { id: userId },
       },
       ingredient: {
-        connect: { id: ingredient.id },
+        connect: { id: ingredientId },
       },
     },
     include: {

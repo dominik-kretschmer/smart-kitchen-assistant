@@ -30,8 +30,7 @@ function updatePage(val: number) {
           :model-value="page"
           :length="pageCount"
           :total-visible="7"
-          @update:modelValue="updatePage"
-        />
+          @update:modelValue="updatePage" />
       </v-card-actions>
     </v-card>
   </v-container>
