@@ -7,11 +7,9 @@ import { stockService } from '@/services/stockService';
 import { useUserStore } from '@/stores/userStore';
 
 const userStore = useUserStore();
-
 const dialog = ref(false);
 const formRef = ref();
 const formValid = ref(false);
-
 const selectedIngredient = ref<SelectedIngredient | null>(null);
 const quantity = ref<number>(0);
 const unit = ref<string>('');

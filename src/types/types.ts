@@ -19,3 +19,10 @@ export interface Stock {
 export interface SelectedIngredient extends Ingredient {
   id: number;
 }
+export interface StockListItem {
+  id?: number;
+  ingredientId?: number;
+  ingredient?: { name?: string | null } | null;
+  name?: string | null;
+  quantity: string;
+}
