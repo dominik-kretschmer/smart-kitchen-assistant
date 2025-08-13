@@ -23,6 +23,5 @@ onMounted(async () => {
     :items="Ingredients"
     item-title="name"
     item-value="id"
-    return-object
-  />
+    return-object />
 </template>

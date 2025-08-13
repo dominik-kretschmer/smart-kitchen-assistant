@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import IngredientDropDown from '@/components/IngredientDropDown.vue';
+import UnitDropDown from '@/components/UnitDropDown.vue';
 import type { SelectedIngredient } from '@/types/types';
 import { stockService } from '@/services/stockService';
-import UnitDropDown from './UnitDropDown.vue';
+import { useUserStore } from '@/stores/userStore';
+
+const userStore = useUserStore();
 
 const dialog = ref(false);
 const formRef = ref();
@@ -21,16 +24,23 @@ const reqText = (v: unknown) => !!String(v ?? '').trim() || 'Pflichtfeld';
 async function onSubmit() {
   const ok = await formRef.value?.validate?.();
   const valid = typeof ok === 'object' ? ok?.valid : ok;
-  if (!valid || !selectedIngredient.value) return;
+  const userId = userStore.getUserId;
+
+  if (!valid || !selectedIngredient.value || !userId) return;
+  console.log({
+    userId,
+    ingredientId: selectedIngredient.value.id,
+    quantity: `${quantity.value}${unit.value}`,
+  });
   try {
     await stockService.createStock({
-      userId: 0,
+      userId,
       ingredientId: selectedIngredient.value.id,
-      quantity: String(quantity.value + unit.value),
+      quantity: `${quantity.value}${unit.value}`,
     });
   } catch (e) {
     console.log(e);
-  }finally {
+  } finally {
     dialog.value = false;
     reset();
   }

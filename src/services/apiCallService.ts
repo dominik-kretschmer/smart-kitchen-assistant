@@ -15,7 +15,9 @@ export async function apiCallService(method: string, endPoint: string, body = {}
   const contentType = response.headers.get('content-type') || '';
   let payload = null;
   try {
-    payload = contentType.includes('application/json') ? await response.json() : await response.text();
+    payload = contentType.includes('application/json')
+      ? await response.json()
+      : await response.text();
   } catch {
     payload = '';
   }
@@ -23,7 +25,7 @@ export async function apiCallService(method: string, endPoint: string, body = {}
     const message =
       typeof payload === 'string' && payload
         ? payload
-        : (payload && ((payload).message || (payload).error)) || response.statusText;
+        : (payload && (payload.message || payload.error)) || response.statusText;
     throw new Error(`${response.status} ${message}`);
   }
   return payload;

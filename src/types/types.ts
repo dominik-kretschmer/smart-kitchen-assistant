@@ -1,18 +1,17 @@
-
 export interface UserState {
   userId: number | null;
   username: string;
   isLoggedIn: boolean;
 }
-export interface Ingredient{
+export interface Ingredient {
   name: string;
-  calories?: number ;
+  calories?: number;
   protein?: number;
   fat?: number;
   carbs?: number;
 }
 
-export interface Stock  {
+export interface Stock {
   userId: number;
   ingredientId: number;
   quantity: string;

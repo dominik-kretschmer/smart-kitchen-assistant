@@ -1,4 +1,4 @@
-import type {Stock  } from '../types/types';
+import type { Stock } from '../types/types';
 import { apiCallService } from '@/services/apiCallService.ts';
 
 const endPoints = {
@@ -8,6 +8,7 @@ const endPoints = {
 
 export const stockService = {
   async createStock(stockData: Stock) {
+    console.log(stockData);
     return await apiCallService('POST', endPoints.stock, stockData);
   },
 
