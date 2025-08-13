@@ -3,7 +3,7 @@ import { StockData, StockResponse } from '../../types/types';
 const prisma = new PrismaClient();
 
 async function createStock(data: StockData): Promise<StockResponse> {
-  const {userId,ingredientId, quantity } = data;
+  const { userId, ingredientId, quantity } = data;
   const createdStock = await prisma.stock.create({
     data: {
       quantity: quantity.toString(),

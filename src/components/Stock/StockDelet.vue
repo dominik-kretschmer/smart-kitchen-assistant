@@ -48,30 +48,19 @@ async function onConfirm() {
   <v-dialog
     :model-value="modelValue"
     max-width="480"
-    @update:model-value="emit('update:modelValue', $event)"
-  >
+    @update:model-value="emit('update:modelValue', $event)">
     <v-card>
       <v-card-title class="text-wrap">Vorrat löschen</v-card-title>
 
       <v-card-text class="text-body-2">
         <div>Möchtest du „{{ nameLabel }}“ wirklich aus deinem Vorrat löschen?</div>
-        <v-alert
-          v-if="localError"
-          type="error"
-          variant="tonal"
-          class="mt-3"
-        >
+        <v-alert v-if="localError" type="error" variant="tonal" class="mt-3">
           {{ localError }}
         </v-alert>
       </v-card-text>
 
       <v-card-actions class="justify-end">
-        <v-btn
-          variant="text"
-          :disabled="processing"
-          @click="onCancel"
-          aria-label="Abbrechen"
-        >
+        <v-btn variant="text" :disabled="processing" @click="onCancel" aria-label="Abbrechen">
           Abbrechen
         </v-btn>
         <v-btn
@@ -80,8 +69,7 @@ async function onConfirm() {
           :loading="processing"
           :disabled="processing"
           @click="onConfirm"
-          aria-label="Löschen"
-        >
+          aria-label="Löschen">
           Löschen
         </v-btn>
       </v-card-actions>

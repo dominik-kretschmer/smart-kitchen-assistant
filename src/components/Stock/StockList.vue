@@ -81,6 +81,5 @@ onMounted(load);
     v-model="showDelete"
     :item-id="selectedItem?.id ?? null"
     :item-name="selectedItem?.name ?? null"
-    @deleted="load"
-  />
+    @deleted="load" />
 </template>

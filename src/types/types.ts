@@ -26,3 +26,9 @@ export interface StockListItem {
   name?: string | null;
   quantity: string;
 }
+export interface NavItem {
+  name: string;
+  path: string;
+  label: string;
+  icon: string;
+}
