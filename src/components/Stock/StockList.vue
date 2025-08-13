@@ -2,8 +2,8 @@
 import { computed, onMounted, ref } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { stockService } from '@/services/stockService';
-import BaseList from '@/components/BaseList.vue';
-import StockDelet from '@/components/StockDelet.vue';
+import BaseList from '@/components/Base/BaseList.vue';
+import StockDelet from '@/components/Stock/StockDelet.vue';
 import type { StockListItem } from '@/types/types';
 
 //todo add decrease and increase change database structure

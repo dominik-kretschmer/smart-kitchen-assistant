@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import IngredientDropDown from '@/components/IngredientDropDown.vue';
-import UnitDropDown from '@/components/UnitDropDown.vue';
+import IngredientDropDown from '@/components/Ingredient/IngredientDropDown.vue';
+import UnitDropDown from '@/components/Base/UnitDropDown.vue';
 import type { SelectedIngredient } from '@/types/types';
 import { stockService } from '@/services/stockService';
 import { useUserStore } from '@/stores/userStore';
@@ -25,11 +25,6 @@ async function onSubmit() {
   const userId = userStore.getUserId;
 
   if (!valid || !selectedIngredient.value || !userId) return;
-  console.log({
-    userId,
-    ingredientId: selectedIngredient.value.id,
-    quantity: `${quantity.value}${unit.value}`,
-  });
   try {
     await stockService.createStock({
       userId,

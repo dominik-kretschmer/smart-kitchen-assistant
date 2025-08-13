@@ -8,7 +8,6 @@ const endPoints = {
 
 export const stockService = {
   async createStock(stockData: Stock) {
-    console.log(stockData);
     return await apiCallService('POST', endPoints.stock, stockData);
   },
 

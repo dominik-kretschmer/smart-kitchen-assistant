@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { ingredientService } from '@/services/ingredientService';
-import BaseList from '@/components/BaseList.vue';
+import BaseList from '@/components/Base/BaseList.vue';
 import type { Ingredient } from '@/types/types';
 
 const items = ref<Ingredient[]>([]);

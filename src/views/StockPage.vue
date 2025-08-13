@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import StockCreate from '@/components/StockCreate.vue';
-import StockList from '@/components/StockList.vue';
+import StockCreate from '@/components/Stock/StockCreate.vue';
+import StockList from '@/components/Stock/StockList.vue';
 </script>
 
 <template>
