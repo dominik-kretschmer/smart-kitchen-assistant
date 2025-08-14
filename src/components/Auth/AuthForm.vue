@@ -56,7 +56,7 @@ async function submit() {
 
     userStore.setUser(Number(userId), String(username));
     emit('success');
-  } catch (e: any) {
+  } catch (e) {
     error.value = e?.message || t('errors.httpError');
   } finally {
     loading.value = false;

@@ -6,7 +6,6 @@ import { ingredientService } from '@/services/ingredientService';
 const dialog = ref(false);
 const formRef = ref();
 const formValid = ref(false);
-
 const model = ref<Ingredient>({
   name: '',
   calories: null,
