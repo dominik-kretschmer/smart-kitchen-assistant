@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import AuthForm from '@/components/Auth/AuthForm.vue';
-import type { Mode } from '@/types/types.ts';
+import type { Mode } from '@/types/types';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -23,7 +23,6 @@ const title = computed(() =>
         class="tab"
         :class="{ 'tab--active': mode === 'login' }"
         role="tab"
-        aria-selected="mode === 'login'"
         @click="mode = 'login'">
         {{ t('navigation.login') }}
       </button>
@@ -32,7 +31,6 @@ const title = computed(() =>
         class="tab"
         :class="{ 'tab--active': mode === 'register' }"
         role="tab"
-        aria-selected="mode === 'register'"
         @click="mode = 'register'">
         {{ t('navigation.register') }}
       </button>
