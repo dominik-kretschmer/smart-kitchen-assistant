@@ -3,6 +3,7 @@ export interface UserState {
   username: string;
   isLoggedIn: boolean;
 }
+
 export interface Ingredient {
   name: string;
   calories?: number;
@@ -16,9 +17,11 @@ export interface Stock {
   ingredientId: number;
   quantity: string;
 }
+
 export interface SelectedIngredient extends Ingredient {
   id: number;
 }
+
 export interface StockListItem {
   id?: number;
   ingredientId?: number;
@@ -26,6 +29,7 @@ export interface StockListItem {
   name?: string | null;
   quantity: string;
 }
+
 export interface NavItem {
   name: string;
   path: string;
