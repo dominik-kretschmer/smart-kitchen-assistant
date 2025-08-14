@@ -25,7 +25,9 @@ function onSuccess() {
 
     <div v-if="isLoggedIn" class="auth-already">
       <p>{{ t('auth.alreadyLoggedIn') }}</p>
-      <router-link class="btn btn--primary" :to="{ name: 'home' }">{{ t('auth.goToHome') }}</router-link>
+      <router-link class="btn btn--primary" :to="{ name: 'home' }">{{
+        t('auth.goToHome')
+      }}</router-link>
     </div>
 
     <div v-else class="auth-card">

@@ -4,6 +4,8 @@ export interface UserState {
   isLoggedIn: boolean;
 }
 
+export type Mode = 'login' | 'register';
+
 export interface Ingredient {
   name: string;
   calories?: number;

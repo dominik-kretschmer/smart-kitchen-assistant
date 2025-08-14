@@ -4,8 +4,6 @@ import { useI18n } from 'vue-i18n';
 import { authService } from '@/services/authService';
 import { useUserStore } from '@/stores/userStore';
 
-type Mode = 'login' | 'register';
-
 const props = defineProps<{
   mode: Mode;
 }>();
@@ -14,10 +12,9 @@ const emit = defineEmits<{
   (e: 'success'): void;
 }>();
 
+const needsConfirm = computed(() => props.mode === 'register');
 const { t } = useI18n();
 const userStore = useUserStore();
-userStore.initUser?.();
-
 const loading = ref(false);
 const error = ref<string>('');
 const form = reactive({
@@ -26,8 +23,7 @@ const form = reactive({
   confirmPassword: '',
 });
 
-const needsConfirm = computed(() => props.mode === 'register');
-
+userStore.initUser?.();
 function validate(): boolean {
   if (!form.username.trim()) {
     error.value = t('auth.enterUsername');
@@ -71,7 +67,6 @@ async function submit() {
   }
 }
 </script>
-
 <template>
   <form class="auth-form" @submit.prevent="submit" autocomplete="on">
     <div class="form-row">
@@ -84,7 +79,6 @@ async function submit() {
         :placeholder="t('auth.enterUsername')"
         required />
     </div>
-
     <div class="form-row">
       <label class="label" for="password">{{ t('auth.password') }}</label>
       <input
@@ -106,9 +100,7 @@ async function submit() {
         :placeholder="t('auth.confirmPassword')"
         required />
     </div>
-
     <p v-if="error" class="error" role="alert">{{ error }}</p>
-
     <div class="actions">
       <button class="btn btn--primary" type="submit" :disabled="loading">
         <span v-if="loading">...</span>
@@ -119,58 +111,3 @@ async function submit() {
     </div>
   </form>
 </template>
-
-<style scoped>
-.auth-form {
-  display: grid;
-  gap: 12px;
-  border: 1px solid #eee;
-  padding: 16px;
-  border-radius: 8px;
-  background: #fff;
-}
-.form-row {
-  display: grid;
-  gap: 6px;
-}
-.label {
-  font-size: 12px;
-  color: #444;
-}
-.input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 8px 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  outline: none;
-}
-.input:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
-}
-.actions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-}
-.btn {
-  border: 1px solid #ddd;
-  background: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-.btn--primary {
-  background: #4f46e5;
-  border-color: #4f46e5;
-  color: #fff;
-}
-.error {
-  color: #b00020;
-  font-size: 13px;
-  margin: 0;
-}
-</style>
