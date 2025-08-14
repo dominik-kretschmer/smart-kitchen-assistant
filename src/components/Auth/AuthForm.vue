@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { authService } from '@/services/authService';
 import { useUserStore } from '@/stores/userStore';
+import type { Mode } from '@/types/types';
 
 const props = defineProps<{
   mode: Mode;
@@ -47,19 +48,14 @@ async function submit() {
   error.value = '';
 
   try {
-    const methode = props.mode === 'login' ? 'login' : 'register';
+    const methode = props.mode;
     const res = await authService.auth(form.username.trim(), form.password, methode);
-
     const payload = (res?.data ?? res) as any;
     const userId = payload?.userId ?? payload?.id ?? null;
     const username = payload?.username ?? form.username.trim();
 
-    if (typeof userId === 'number' || typeof userId === 'string') {
-      userStore.setUser(Number(userId), String(username));
-      emit('success');
-    } else {
-      error.value = t('errors.httpError');
-    }
+    userStore.setUser(Number(userId), String(username));
+    emit('success');
   } catch (e: any) {
     error.value = e?.message || t('errors.httpError');
   } finally {
@@ -89,7 +85,6 @@ async function submit() {
         :placeholder="t('auth.enterPassword')"
         required />
     </div>
-
     <div v-if="needsConfirm" class="form-row">
       <label class="label" for="confirm">{{ t('auth.confirmPassword') }}</label>
       <input
