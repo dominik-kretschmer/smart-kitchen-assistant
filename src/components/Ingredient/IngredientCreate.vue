@@ -15,7 +15,13 @@ const model = ref<Ingredient>({
 });
 
 function resetForm() {
-  model.value = { name: '', calories: undefined, protein: undefined, fat: undefined, carbs: undefined };
+  model.value = {
+    name: '',
+    calories: undefined,
+    protein: undefined,
+    fat: undefined,
+    carbs: undefined,
+  };
   formRef.value?.resetValidation?.();
 }
 

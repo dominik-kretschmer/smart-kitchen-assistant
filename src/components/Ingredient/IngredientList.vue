@@ -10,7 +10,6 @@ const error = ref<string | null>(null);
 const page = ref(1);
 const itemsPerPage = ref(12);
 const pageCount = computed(() => Math.max(1, Math.ceil(items.value.length / itemsPerPage.value)));
-
 const paginatedItems = computed(() => {
   const start = (page.value - 1) * itemsPerPage.value;
   return items.value.slice(start, start + itemsPerPage.value);

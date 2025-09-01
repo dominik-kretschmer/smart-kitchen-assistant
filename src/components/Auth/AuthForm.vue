@@ -50,7 +50,7 @@ async function submit() {
   try {
     const methode = props.mode;
     const res = await authService.auth(form.username.trim(), form.password, methode);
-    const payload = (res?.data ?? res);
+    const payload = res?.data ?? res;
     const userId = payload?.userId ?? payload?.id ?? null;
     const username = payload?.username ?? form.username.trim();
 
