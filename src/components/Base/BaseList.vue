@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   page: number;
   pageCount: number;
   title?: string;

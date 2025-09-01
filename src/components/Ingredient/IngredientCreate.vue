@@ -8,14 +8,14 @@ const formRef = ref();
 const formValid = ref(false);
 const model = ref<Ingredient>({
   name: '',
-  calories: null,
-  protein: null,
-  fat: null,
-  carbs: null,
+  calories: undefined,
+  protein: undefined,
+  fat: undefined,
+  carbs: undefined,
 });
 
 function resetForm() {
-  model.value = { name: '', calories: null, protein: null, fat: null, carbs: null };
+  model.value = { name: '', calories: undefined, protein: undefined, fat: undefined, carbs: undefined };
   formRef.value?.resetValidation?.();
 }
 

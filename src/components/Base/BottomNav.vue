@@ -6,21 +6,14 @@ import type { NavItem } from '@/types/types';
 const router = useRouter();
 const route = useRoute();
 const model = ref<string | null>((route.name as string) ?? null);
-const order: string[] = ['home', 'stock', 'ingredients', 'shopping-list', 'auth'];
+const order: string[] = ['home', 'stock', 'ingredients', 'shopping-list', 'recepie','auth'];
 const labels: Record<string, string> = {
   home: 'Start',
   stock: 'Vorrat',
   ingredients: 'Zutaten',
   'shopping-list': 'Einkauf',
+  recepie: 'Rezepte',
   auth: 'Anmelden',
-};
-
-const icons: Record<string, string> = {
-  home: 'mdi-home',
-  stock: 'mdi-warehouse',
-  ingredients: 'mdi-food-apple',
-  'shopping-list': 'mdi-cart',
-  auth: 'mdi-account',
 };
 
 const items = computed<NavItem[]>(() => {
@@ -38,7 +31,6 @@ const items = computed<NavItem[]>(() => {
         name,
         path: r.path,
         label: labels[name] ?? name,
-        icon: icons[name] ?? 'mdi-menu',
       };
     });
 });
@@ -66,7 +58,6 @@ async function onUpdate(val: string | null) {
         :value="it.name"
         :to="{ name: it.name }"
         variant="text">
-        <v-icon>{{ it.icon }}</v-icon>
         <span>{{ it.label }}</span>
       </v-btn>
     </v-bottom-navigation>

@@ -32,6 +32,7 @@ declare module 'vue' {
     LoginFrom: typeof import('./src/components/Auth/LoginFrom.vue')['default']
     NutritionForm: typeof import('./src/components/common/NutritionForm.vue')['default']
     QuantityInput: typeof import('./src/components/common/QuantityInput.vue')['default']
+    RecepieList: typeof import('./src/components/Recepie/RecepieList.vue')['default']
     RegisterForm: typeof import('./src/components/Auth/RegisterForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
