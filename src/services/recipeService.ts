@@ -1,4 +1,4 @@
-import type { Recipe } from '@/types/recipeTypes.ts';
+import type { Recipe } from '@/types/types.ts';
 import { apiCallService } from '@/services/apiCallService.ts';
 
 const ENDPOINT = import.meta.env.VITE_API_ENDPOINT_RECIPES;

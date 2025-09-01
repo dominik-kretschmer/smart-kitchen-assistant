@@ -37,3 +37,10 @@ export interface NavItem {
   path: string;
   label: string;
 }
+
+export interface ShoppingListItem{
+
+}
+export interface Recipe{
+
+}
