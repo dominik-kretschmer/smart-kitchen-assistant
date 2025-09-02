@@ -1,4 +1,4 @@
-import { ShoppingListItem } from '../types/types.ts';
+import type { ShoppingListItem } from '@/types/types.ts';
 import { apiCallService } from '@/services/apiCallService.ts';
 
 const endPoints = {

@@ -1,4 +1,4 @@
-import type { Stock } from '../types/types';
+import type { Stock } from '@/types/types';
 import { apiCallService } from '@/services/apiCallService.ts';
 
 const endPoints = {

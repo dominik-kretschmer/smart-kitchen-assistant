@@ -20,6 +20,12 @@ export interface Stock {
   quantity: string;
 }
 
+export type IngredientRow = {
+  ingredient: Ingredient | null;
+  amount: number | null;
+  unit: string | null;
+};
+
 export interface SelectedIngredient extends Ingredient {
   id: number;
 }
@@ -38,9 +44,5 @@ export interface NavItem {
   label: string;
 }
 
-export interface ShoppingListItem{
-
-}
-export interface Recipe{
-
-}
+export interface ShoppingListItem {}
+export interface Recipe {}
