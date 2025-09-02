@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { recipeService } from '@/services/recipeService';
 import { computed, onMounted, ref } from 'vue';
-import type { Ingredient } from '@/types/types';
+import type { Recipe } from '@/types/types';
 
-const items = ref<Ingredient[]>([]);
+const items = ref<Recipe[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
 const page = ref(1);
