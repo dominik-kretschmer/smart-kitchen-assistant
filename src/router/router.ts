@@ -19,6 +19,11 @@ const routes: RouteRecordRaw[] = [
     name: 'recepie',
     component: () => import('@/views/RecepiePage.vue'),
   },
+  {
+    path: '/recommended',
+    name: 'recommended',
+    component: () => import('@/views/RecommendedPage.vue'),
+  },
 ];
 
 export const router = createRouter({

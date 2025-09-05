@@ -6,13 +6,14 @@ import type { NavItem } from '@/types/types';
 const router = useRouter();
 const route = useRoute();
 const model = ref<string | null>((route.name as string) ?? null);
-const order: string[] = ['home', 'stock', 'ingredients', 'shopping-list', 'recepie', 'auth'];
+const order: string[] = ['home', 'stock', 'ingredients', 'shopping-list', 'recepie', 'recommended', 'auth'];
 const labels: Record<string, string> = {
   home: 'Start',
   stock: 'Vorrat',
   ingredients: 'Zutaten',
   'shopping-list': 'Einkauf',
   recepie: 'Rezepte',
+  recommended: 'Empfohlen',
   auth: 'Anmelden',
 };
 
