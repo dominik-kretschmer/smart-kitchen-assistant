@@ -7,7 +7,7 @@ const endPoints = {
 };
 
 export const shoppingListService = {
-  async createShoppingListItem(shoppingListItem: Omit<ShoppingListItem, 'id'>) {
+  async createShoppingListItem(shoppingListItem: { ingredient: { id: number; name?: string }; amount: number; unit: string }) {
     return await apiCallService('POST', endPoints.shoppingList, shoppingListItem);
   },
 
@@ -26,8 +26,8 @@ export const shoppingListService = {
 
   async deleteShoppingListItem(id: number) {
     const fullEndpoint = endPoints.shoppingList + '/' + id;
-    const response = await apiCallService('DELETE', fullEndpoint);
-    return response.status === 204;
+    await apiCallService('DELETE', fullEndpoint);
+    return true;
   },
 
   async markItemAsPurchased(id: number, purchased: boolean) {

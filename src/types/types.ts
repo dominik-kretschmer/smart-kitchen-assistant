@@ -7,6 +7,7 @@ export interface UserState {
 export type Mode = 'login' | 'register';
 
 export interface Ingredient {
+  id: number;
   name: string;
   calories?: number;
   protein?: number;
@@ -44,5 +45,15 @@ export interface NavItem {
   label: string;
 }
 
-export interface ShoppingListItem {}
-export interface Recipe {}
+export interface ShoppingListItem {
+  id: number;
+  userId: number;
+  ingredientId: number;
+  ingredient?: Pick<Ingredient, 'id' | 'name'> | null;
+  amount: number;
+  unit: string;
+}
+export interface Recipe {
+  id?: number;
+  name?: string;
+}

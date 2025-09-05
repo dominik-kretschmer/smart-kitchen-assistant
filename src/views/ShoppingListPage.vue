@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ShoppingList from '@/components/Shopping/ShoppingList.vue';
+</script>
 <template>
-  <div class="page page--shopping-list">Shopping List</div>
+  <ShoppingList />
 </template>
